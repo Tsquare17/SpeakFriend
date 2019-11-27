@@ -1,4 +1,4 @@
-package list;
+package com.tsquare.speakfriend.list;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

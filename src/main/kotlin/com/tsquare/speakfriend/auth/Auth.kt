@@ -1,4 +1,4 @@
-package auth
+package com.tsquare.speakfriend.auth
 
 class Auth(var user: String, var pass: String) {
 

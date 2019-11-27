@@ -1,6 +1,6 @@
-package speakfriend;
+package com.tsquare.speakfriend.main;
 
-import auth.Auth;
+import com.tsquare.speakfriend.auth.Auth;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +32,7 @@ public class Controller {
         URL file = Controller.class.getResource(resource);
 
         Parent scene = FXMLLoader.load(file);
-        Stage stage = speakfriend.Main.getStage();
+        Stage stage = Main.getStage();
         Scene currentScene = stage.getScene();
 
         stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));

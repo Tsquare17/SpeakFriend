@@ -1,4 +1,0 @@
-package account
-
-class Account {
-}
