@@ -1,10 +1,9 @@
-package com.tsquare.speakfriend.database
+package com.tsquare.speakfriend.database.schema
 
-import com.tsquare.speakfriend.database.users.Users
-import com.tsquare.speakfriend.database.accounts.Accounts
+import com.tsquare.speakfriend.database.tables.Users
+import com.tsquare.speakfriend.database.tables.Accounts
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.Connection

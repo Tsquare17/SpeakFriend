@@ -1,4 +1,4 @@
-package com.tsquare.speakfriend.database.users
+package com.tsquare.speakfriend.database.tables
 
 import org.jetbrains.exposed.sql.Table
 

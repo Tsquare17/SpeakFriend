@@ -1,7 +1,6 @@
-package com.tsquare.speakfriend.database.accounts
+package com.tsquare.speakfriend.database.tables
 
 import org.jetbrains.exposed.sql.Table
-import com.tsquare.speakfriend.database.users.Users
 import org.jetbrains.exposed.sql.ReferenceOption
 
 object Accounts : Table()
