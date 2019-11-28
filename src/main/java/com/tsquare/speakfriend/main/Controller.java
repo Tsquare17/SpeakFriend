@@ -22,9 +22,14 @@ public class Controller {
         Auth auth = new Auth(username.getText(), password.getText());
         if(auth.check()) {
             this.newScene("accounts-list");
+            // send to accountListController
         } else {
             errorMessage.setText("The user or password entered was incorrect.");
         }
+    }
+
+    @FXML protected void createNewAccount(ActionEvent event) throws IOException {
+        this.newScene("register");
     }
 
     @FXML private void newScene(String newScene) throws IOException {
