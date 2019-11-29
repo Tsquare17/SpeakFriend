@@ -32,7 +32,7 @@ public class Controller {
         this.newScene("register");
     }
 
-    @FXML private void newScene(String newScene) throws IOException {
+    @FXML public void newScene(String newScene) throws IOException {
         String resource = "/" + newScene + ".fxml";
         URL file = Controller.class.getResource(resource);
 

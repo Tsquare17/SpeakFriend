@@ -40,7 +40,7 @@
     -swatch-400: #42A5F5;
     -swatch-500: #2196F3;
     /*default text */
-    -fx-text-base-color: rgb(100.0, 100.0, 100.0);
+    -fx-text-base-color: #E1E1E1;
     -fx-text-button-normal: -swatch-500;
     -fx-text-button-colored: rgb(255.0, 255.0, 255.0);
     -fx-text-button-text: rgb(100.0, 100.0, 100.0);
@@ -56,7 +56,7 @@
     -fx-disabled-opacity: 0.6;
     /*default colors */
     -swatch-grey: rgb(200.0, 200.0, 200.0);
-    -swatch-dark-grey: rgb(150.0, 150.0, 150.0);
+    -swatch-dark-grey: rgb(250.0, 150.0, 150.0);
     -swatch-light-grey: rgb(230.0, 230.0, 230.0);
     -swatch-toolbar: rgb(245.0, 245.0, 245.0);
     -swatch-toolbar-selected: rgb(215.0, 215.0, 215.0);
