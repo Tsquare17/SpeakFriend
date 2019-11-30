@@ -1,15 +1,16 @@
-package com.tsquare.speakfriend.register;
+package com.tsquare.speakfriend.user;
 
 import com.tsquare.speakfriend.main.Controller;
-import com.tsquare.speakfriend.user.User;
+import com.tsquare.speakfriend.database.user.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-public class Register
+public class UserController
 {
     @FXML private TextField username;
     @FXML private TextField password;
@@ -25,7 +26,11 @@ public class Register
         } else {
             User user = new User();
             user.create(username.getText(), password.getText());
+            errorMessage.setFill(Color.rgb(255,255,255));
             errorMessage.setText("Successfully created account.");
+
+            Controller controller = new Controller();
+            controller.transitionScene("entry", 2);
         }
     }
 

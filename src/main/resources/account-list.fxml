@@ -5,14 +5,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
-<VBox prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.AccountController">
+   <padding>
+      <Insets bottom="40.0" top="20.0" />
+   </padding>
    <children>
-      <GridPane prefHeight="400.0" prefWidth="600.0">
+      <GridPane>
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -20,15 +21,13 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Account Name" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Hyperlink alignment="BASELINE_RIGHT" onAction="#createAccountView" text="New Account" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BASELINE">
                <font>
-                  <Font name="Fira Code Medium" size="13.0" />
+                  <Font name="Fira Code Light" size="13.0" />
                </font>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </Label>
+            </Hyperlink>
          </children>
       </GridPane>
+      <ListView />
    </children>
 </VBox>

@@ -32,7 +32,7 @@
 
     <HBox spacing="10" alignment="bottom_left"
     GridPane.columnIndex="1" GridPane.rowIndex="8">
-        <Hyperlink text="Create New Account" onAction="#createNewAccount" />
+        <Hyperlink text="Create New User" onAction="#createNewUser" />
     </HBox>
 
     <Text fx:id="errorMessage"

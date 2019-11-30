@@ -1,23 +1,28 @@
-package com.tsquare.speakfriend.account
+package com.tsquare.speakfriend.database.user
 
-import com.tsquare.speakfriend.database.tables.Accounts
+import com.tsquare.speakfriend.database.tables.Users
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.Connection
 
-class Account {
-    fun create(user: String, pass: String, url: String) {
+class User {
+    fun create(user: String, pass: String) {
         Database.connect("jdbc:sqlite:friend.db", "org.sqlite.JDBC")
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
 
+        val hashedPass = hashPass(pass);
+
         transaction {
-            Accounts.insert {
-                it[name]   = user
-                it[Accounts.pass]   = pass
-                it[Accounts.url]    = url
+            Users.insert {
+                it[Users.name] = user
+                it[Users.pass] = hashedPass
             }
         }
+    }
+
+    private fun hashPass(pass: String): String {
+        return pass;
     }
 }

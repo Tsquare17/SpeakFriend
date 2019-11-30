@@ -76,7 +76,6 @@
     /* A bright blue for highlighting/accenting objects.  For example: selected
      * text; selected items in menus, lists, trees, and tables; progress bars */
     -fx-accent: -swatch-400;
-    -fx-dark-text-color: white;
 }
 
 /*******************************************************************************
@@ -439,6 +438,9 @@
  * List, Tree, Table COMMON                                                    *
  *                                                                             *
  ******************************************************************************/
+.list-view {
+    -fx-background-color: -dark;
+}
 .list-view:focused .list-cell:filled:focused:selected {
     -fx-background-color: -swatch-light-grey;
     -fx-text-fill: -swatch-500;

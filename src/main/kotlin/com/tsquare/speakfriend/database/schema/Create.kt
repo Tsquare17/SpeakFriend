@@ -17,20 +17,6 @@ class Create
         transaction {
             SchemaUtils.create(Users, Accounts)
 
-//            Users.insert {
-//                it[id]   = 1
-//                it[name] = "Trevor"
-//                it[pass] = "password"
-//            }
-//
-//            Accounts.insert {
-//                it[id]     = 1
-//                it[userId] = 1
-//                it[name]   = "name"
-//                it[pass]   = "pass"
-//                it[url]    = "example.com"
-//            }
-//
 //            SchemaUtils.drop(Users, Accounts)
         }
     }
