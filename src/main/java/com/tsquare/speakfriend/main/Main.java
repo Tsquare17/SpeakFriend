@@ -1,5 +1,6 @@
 package com.tsquare.speakfriend.main;
 
+import com.tsquare.speakfriend.database.schema.Schema;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,13 +21,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Schema schema = new Schema();
+        schema.up();
         stage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/entry.fxml"));
         stage.setTitle("Speak Friend and Enter");
         Scene scene = new Scene(root, 600, 400);
         stage.setScene(scene);
         stage.show();
-        new com.tsquare.speakfriend.database.schema.Create();
     }
 
     public static void main(String[] args) {

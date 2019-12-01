@@ -8,16 +8,20 @@ import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.Connection
 
-class Create
-{
+class Schema {
     init {
         Database.connect("jdbc:sqlite:friend.db", "org.sqlite.JDBC")
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
+    }
 
+    fun up() {
         transaction {
             SchemaUtils.create(Users, Accounts)
-
-//            SchemaUtils.drop(Users, Accounts)
+        }
+    }
+    fun down() {
+        transaction {
+            SchemaUtils.drop(Users, Accounts)
         }
     }
 }

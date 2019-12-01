@@ -1,6 +1,7 @@
 package com.tsquare.speakfriend.crypt
 
-object Crypt {
+object Crypt
+{
     @JvmStatic
     fun encrypt(userId: Int, pass: String): String {
         return pass;
