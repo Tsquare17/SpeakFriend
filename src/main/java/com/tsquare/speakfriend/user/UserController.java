@@ -1,5 +1,7 @@
 package com.tsquare.speakfriend.user;
 
+import com.tsquare.speakfriend.account.AccountController;
+import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.database.user.User;
 import javafx.event.ActionEvent;
@@ -10,7 +12,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-public class UserController
+public class UserController extends Controller
 {
     @FXML private TextField username;
     @FXML private TextField password;
@@ -18,7 +20,23 @@ public class UserController
     @FXML private Text errorMessage;
 
     @FXML
-    protected void submitRegistration(ActionEvent event) throws IOException {
+    protected void loginAction(ActionEvent event) throws IOException {
+        Auth auth = new Auth();
+        if(auth.checkIn(username.getText(), password.getText())) {
+            AccountController accountController = new AccountController();
+            accountController.accountsView(event);
+        } else {
+            errorMessage.setText("The user or password entered was incorrect.");
+        }
+    }
+
+    @FXML
+    protected void registerView(ActionEvent event) throws IOException {
+        this.newScene("register");
+    }
+
+    @FXML
+    protected void registerSubmitAction(ActionEvent event) throws IOException {
         if(username.getText().isEmpty() || password.getText().isEmpty() || confirm_password.getText().isEmpty()) {
             errorMessage.setText("You must fill out all fields.");
         } else if(!password.getText().equals(confirm_password.getText())) {
@@ -29,14 +47,12 @@ public class UserController
             errorMessage.setFill(Color.rgb(255,255,255));
             errorMessage.setText("Successfully created account.");
 
-            Controller controller = new Controller();
-            controller.transitionScene("entry", 2);
+            this.transitionScene("entry", 2);
         }
     }
 
     @FXML
-    protected void backToEntry(ActionEvent event) throws IOException {
-        Controller controller = new Controller();
-        controller.newScene("entry");
+    protected void entryView(ActionEvent event) throws IOException {
+        this.newScene("entry");
     }
 }
