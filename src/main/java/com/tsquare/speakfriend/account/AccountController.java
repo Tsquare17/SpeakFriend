@@ -1,6 +1,7 @@
 package com.tsquare.speakfriend.account;
 
 import com.tsquare.speakfriend.auth.Auth;
+import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
 import com.tsquare.speakfriend.main.Controller;
 import javafx.event.ActionEvent;
@@ -11,7 +12,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
-
 
 public class AccountController {
     @FXML private TextField account_name;
@@ -26,7 +26,7 @@ public class AccountController {
         String pass;
 
         if(!password.getText().isEmpty()) {
-            pass = auth.encrypt(id, password.getText());
+            pass = Crypt.encrypt(id, password.getText());
         } else {
             pass = null;
         }
@@ -39,6 +39,11 @@ public class AccountController {
     @FXML protected void createAccountView(ActionEvent event) throws IOException {
         Controller controller = new Controller();
         controller.newScene("create-account");
+
+        Auth auth = new Auth();
+        int id = auth.getId();
+        // get accounts by user and insert them into view
+
     }
 
     @FXML protected void accountsView(ActionEvent event) throws IOException {

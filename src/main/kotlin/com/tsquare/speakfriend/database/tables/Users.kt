@@ -1,10 +1,9 @@
 package com.tsquare.speakfriend.database.tables
 
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.dao.IntIdTable
 
-object Users : Table()
+object Users : IntIdTable()
 {
-    val id   = Users.integer("id").autoIncrement().primaryKey()
     val name = Users.varchar("name", 50).uniqueIndex()
     val pass = Users.varchar("pass", 255)
 }

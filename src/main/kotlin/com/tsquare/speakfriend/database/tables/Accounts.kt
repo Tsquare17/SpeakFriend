@@ -1,11 +1,10 @@
 package com.tsquare.speakfriend.database.tables
 
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.dao.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 
-object Accounts : Table()
+object Accounts : IntIdTable()
 {
-    val id     = Accounts.integer("id").autoIncrement().primaryKey()
     val userId = Accounts.integer("user_id")
             .references(Users.id, ReferenceOption.CASCADE).index()
     val name   = Accounts.varchar("name", 50).nullable()

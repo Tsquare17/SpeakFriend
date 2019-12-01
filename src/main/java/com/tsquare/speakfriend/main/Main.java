@@ -26,6 +26,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 600, 400);
         stage.setScene(scene);
         stage.show();
+        new com.tsquare.speakfriend.database.schema.Create();
     }
 
     public static void main(String[] args) {

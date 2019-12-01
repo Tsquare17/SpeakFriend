@@ -1,6 +1,7 @@
 package com.tsquare.speakfriend.main;
 
 import com.tsquare.speakfriend.auth.Auth;
+import com.tsquare.speakfriend.auth.CurrentUser;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +23,7 @@ public class Controller {
 
     @FXML protected void handleSubmitButtonAction(ActionEvent event) throws IOException {
         Auth auth = new Auth();
-        if(auth.check(username.getText(), password.getText())) {
+        if(auth.checkIn(username.getText(), password.getText())) {
             this.newScene("account-list");
             // send to accountListController
         } else {
