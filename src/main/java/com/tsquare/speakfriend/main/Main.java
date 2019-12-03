@@ -11,11 +11,11 @@ public class Main extends Application {
     private static Stage stage;
     private static Scene scene;
 
-    static Stage getStage() {
+    public static Stage getStage() {
         return stage;
     }
 
-    static Scene getScene() {
+    public static Scene getScene() {
         return scene;
     }
 

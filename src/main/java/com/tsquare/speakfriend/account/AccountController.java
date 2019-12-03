@@ -4,16 +4,20 @@ import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
 import com.tsquare.speakfriend.database.account.AccountEntity;
+import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
+import com.tsquare.speakfriend.main.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import org.jetbrains.exposed.sql.SizedIterable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 public class AccountController extends Controller {
     @FXML private TextField account_name;
@@ -21,6 +25,7 @@ public class AccountController extends Controller {
     @FXML private TextField url;
     @FXML private TextArea notes;
     @FXML private Label errorMessage;
+    @FXML private ListView accountList;
 
     @FXML
     public void createAccountAction(ActionEvent event) {
@@ -45,14 +50,32 @@ public class AccountController extends Controller {
     }
 
     @FXML
-    public void accountsView(ActionEvent event) throws IOException {
-        this.newScene("account-list");
+    public void listAccountsView(ActionEvent event) throws IOException {
 
         Auth auth = new Auth();
         int id = auth.getId();
-        // get accounts by user and insert them into view
-        Account account = new Account();
-        SizedIterable<AccountEntity> accountList = account.getByUserId(id);
-        String test = "test";
+
+        String resource = "/account-list.fxml";
+        URL file = Controller.class.getResource(resource);
+
+        Parent scene = FXMLLoader.load(file);
+        Stage stage = Main.getStage();
+        Scene currentScene = stage.getScene();
+
+        ListView listView = (ListView) scene.lookup("#accountList");
+
+        int accountCount  = AccountList.generate(id);
+
+        // TODO: Refactor this awful code.
+        for (int i = 0; i < accountCount; i++) {
+            int accountId   = AccountList.getId(i);
+            String accountName = AccountList.getName(i);
+            String accountUrl  = AccountList.getUrl(i);
+            String accountNotes = AccountList.getNotes(i);
+            // TODO: Add items to listview in scene
+            listView.getItems().add(new Button(accountName));
+        }
+
+        stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
     }
 }

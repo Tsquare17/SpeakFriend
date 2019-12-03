@@ -70,7 +70,7 @@
                </GridPane.margin>
             </Label>
             <TextArea fx:id="notes" prefHeight="200.0" prefWidth="200.0" style="-fx-text-fill: #000000;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-            <Button accessibleText="Go Back" cancelButton="true" defaultButton="true" mnemonicParsing="false" onAction="#accountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Button accessibleText="Go Back" cancelButton="true" defaultButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#createAccountAction" text="Create Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <Label fx:id="errorMessage" textFill="WHITE" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
          </children>

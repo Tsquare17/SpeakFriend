@@ -10,7 +10,7 @@ import java.sql.Connection
 
 class Schema {
     init {
-        Database.connect("jdbc:sqlite:friend.db", "org.sqlite.JDBC")
+        Database.connect("jdbc:sqlite:friend.db;foreign_keys=true", "org.sqlite.JDBC")
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
     }
 

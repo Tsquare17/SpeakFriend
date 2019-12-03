@@ -24,7 +24,7 @@ public class UserController extends Controller
         Auth auth = new Auth();
         if(auth.checkIn(username.getText(), password.getText())) {
             AccountController accountController = new AccountController();
-            accountController.accountsView(event);
+            accountController.listAccountsView(event);
         } else {
             errorMessage.setText("The user or password entered was incorrect.");
         }

@@ -3,8 +3,7 @@ package com.tsquare.speakfriend.database.account
 import com.tsquare.speakfriend.database.tables.Accounts
 import com.tsquare.speakfriend.database.tables.Users
 import com.tsquare.speakfriend.database.user.UserEntity
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SizedIterable
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -28,11 +27,14 @@ class Account {
         }
     }
 
-    fun getByUserId(id: Int): SizedIterable<AccountEntity> {
+    fun getByUserId(id: Int): List<AccountEntity> {
         return transaction {
             AccountEntity.find {
                 Accounts.userId eq id
-            }
+            }.orderBy(
+                    Accounts.name.lowerCase() to SortOrder.ASC
+            ).toList()
         }
     }
+
 }

@@ -28,6 +28,6 @@
             </Hyperlink>
          </children>
       </GridPane>
-      <ListView />
+      <ListView id="accountList" />
    </children>
 </VBox>
