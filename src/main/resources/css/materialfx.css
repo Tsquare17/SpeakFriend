@@ -48,7 +48,9 @@
     -fx-text-subtitle-color: rgb(65.0, 65.0, 65.0);
     -fx-text-control-title-color: rgb(130.0, 130.0, 130.0);
     -fx-text-fill: -fx-text-base-color;
-    -dark: rgb(47.0, 52.0, 57.0);
+    -darkish: rgb(54, 56, 64);
+    -dark: rgb(47, 52, 57);
+    -darker: rgb(43, 46, 52);
     -fx-background-color: -dark;
     /*default font */
     -fx-font-family: 'Roboto Medium';
@@ -440,15 +442,21 @@
  ******************************************************************************/
 .list-view {
     -fx-background-color: -dark;
+    -fx-border-color: -dark;
 }
+.list-view .list-cell:even {
+    -fx-background-color: -dark;
+}
+.list-view .list-cell:odd {
+    -fx-background-color: -darker;
+}
+
 .list-view:focused .list-cell:filled:focused:selected {
-    -fx-background-color: -swatch-light-grey;
-    -fx-text-fill: -swatch-500;
+    -fx-background-color: -darkish;
 }
 
 .list-view:hover .list-cell:hover {
-    -fx-background-color: -swatch-light-grey;
-    -fx-text-fill: -fx-text-base-color;
+    -fx-background-color: -darkish;
 }
 
 .list-cell {
