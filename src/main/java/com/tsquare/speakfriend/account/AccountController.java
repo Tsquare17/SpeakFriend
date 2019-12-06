@@ -7,12 +7,16 @@ import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,7 +29,7 @@ public class AccountController extends Controller {
     @FXML private TextField url;
     @FXML private TextArea notes;
     @FXML private Label errorMessage;
-    @FXML private ListView accountList;
+    @FXML private StackPane accountList;
 
     @FXML
     public void createAccountAction(ActionEvent event) {
@@ -62,19 +66,26 @@ public class AccountController extends Controller {
         Stage stage = Main.getStage();
         Scene currentScene = stage.getScene();
 
-        ListView listView = (ListView) scene.lookup("#accountList");
-
+        GridPane gridPane = new GridPane();
+        ObservableList<GridPane> gridList = FXCollections.observableArrayList();
+        ListView<GridPane> list = new ListView<>();
+        StackPane accountList = (StackPane) scene.lookup("#accountList");
         int accountCount  = AccountList.generate(id);
 
-        // TODO: Refactor this awful code.
+        // TODO: Refactor account retrieval on Kotlin side.
         for (int i = 0; i < accountCount; i++) {
             int accountId   = AccountList.getId(i);
             String accountName = AccountList.getName(i);
             String accountUrl  = AccountList.getUrl(i);
             String accountNotes = AccountList.getNotes(i);
             // TODO: Add items to listview in scene
-            listView.getItems().add(new Button(accountName));
+
+            gridPane.add(new Label(accountName), 0, 1);
+            gridPane.add(new Button("View"), 1, 1);
+            gridList.add(gridPane);
         }
+        list.getItems().addAll(gridList);
+        accountList.getChildren().add(list);
 
         stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
     }

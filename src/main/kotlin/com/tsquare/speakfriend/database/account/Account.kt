@@ -1,18 +1,13 @@
 package com.tsquare.speakfriend.database.account
 
 import com.tsquare.speakfriend.database.tables.Accounts
-import com.tsquare.speakfriend.database.tables.Users
-import com.tsquare.speakfriend.database.user.UserEntity
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.sql.Connection
+import com.tsquare.speakfriend.database.connection.Conn
 
 class Account {
     init {
-        Database.connect("jdbc:sqlite:friend.db", "org.sqlite.JDBC")
-        TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
+        Conn()
     }
 
     fun create(userIdArg: Int, userArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
