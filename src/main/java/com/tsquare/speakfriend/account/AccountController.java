@@ -66,7 +66,6 @@ public class AccountController extends Controller {
         Stage stage = Main.getStage();
         Scene currentScene = stage.getScene();
 
-        GridPane gridPane = new GridPane();
         ObservableList<GridPane> gridList = FXCollections.observableArrayList();
         ListView<GridPane> list = new ListView<>();
         StackPane accountList = (StackPane) scene.lookup("#accountList");
@@ -79,9 +78,9 @@ public class AccountController extends Controller {
             String accountUrl  = AccountList.getUrl(i);
             String accountNotes = AccountList.getNotes(i);
             // TODO: Add items to listview in scene
-
-            gridPane.add(new Label(accountName), 0, 1);
-            gridPane.add(new Button("View"), 1, 1);
+            GridPane gridPane = new GridPane();
+            gridPane.add(new Label(accountName), 0, 0);
+            gridPane.add(new Button("View"), 1, 0);
             gridList.add(gridPane);
         }
         list.getItems().addAll(gridList);
