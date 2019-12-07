@@ -10,11 +10,13 @@ import com.tsquare.speakfriend.main.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -77,15 +79,27 @@ public class AccountController extends Controller {
             String accountName = AccountList.getName(i);
             String accountUrl  = AccountList.getUrl(i);
             String accountNotes = AccountList.getNotes(i);
-            // TODO: Add items to listview in scene
+
             GridPane gridPane = new GridPane();
+            gridPane.setId("account_" + accountId);
+            gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    System.out.println(accountId);
+                    // swap scene adding account details
+                }
+            });
             gridPane.add(new Label(accountName), 0, 0);
-            gridPane.add(new Button("View"), 1, 0);
             gridList.add(gridPane);
         }
         list.getItems().addAll(gridList);
         accountList.getChildren().add(list);
 
         stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
+    }
+
+    @FXML
+    public void accountDetailsView(int id, String name, String pass, String url, String notes) {
+
     }
 }
