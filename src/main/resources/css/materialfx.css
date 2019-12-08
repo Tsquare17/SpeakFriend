@@ -565,14 +565,20 @@
  * Scroll Bar			                                                       *
  *                                                                             *
  ******************************************************************************/
-.scroll-bar:vertical>.track-background, .scroll-bar:horizontal>.track-background
+.scroll-bar
 {
-    -fx-background-color: -swatch-light-grey;
-    -fx-background-insets: 0.0;
+    -fx-background-color: transparent;
+}
+
+.list-view,
+.scroll-pane,
+.scroll-pane > .viewport
+{
+    -fx-background-color: transparent;
 }
 
 .scroll-bar:vertical>.thumb, .scroll-bar:horizontal>.thumb {
-    -fx-background-color: -swatch-grey;
+    -fx-background-color: rgba(255, 255, 255, 0.02);
     -fx-background-insets: 0.0;
     -fx-background-radius: 4.0;
 }
@@ -585,12 +591,9 @@
 
 .scroll-bar>.increment-button>.increment-arrow, .scroll-bar>.decrement-button>.decrement-arrow
 {
-    -fx-background-color: -swatch-dark-grey;
-}
-
-.scroll-bar>.track-background {
     -fx-background-color: transparent;
 }
+
 
 /*******************************************************************************
  *                                                                             *
