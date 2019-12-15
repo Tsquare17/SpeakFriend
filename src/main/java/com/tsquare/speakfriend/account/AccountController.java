@@ -3,27 +3,23 @@ package com.tsquare.speakfriend.account;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
-import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 
 public class AccountController extends Controller {
     @FXML private TextField account_name;
@@ -31,7 +27,6 @@ public class AccountController extends Controller {
     @FXML private TextField url;
     @FXML private TextArea notes;
     @FXML private Label errorMessage;
-    @FXML private StackPane accountList;
 
     @FXML
     public void createAccountAction(ActionEvent event) {
@@ -73,20 +68,21 @@ public class AccountController extends Controller {
         StackPane accountList = (StackPane) scene.lookup("#accountList");
         int accountCount  = AccountList.generate(id);
 
-        // TODO: Refactor account retrieval on Kotlin side.
+        // TODO: Refactor account retrieval.
         for (int i = 0; i < accountCount; i++) {
             int accountId   = AccountList.getId(i);
             String accountName = AccountList.getName(i);
+            String accountPass = AccountList.getPass(i);
             String accountUrl  = AccountList.getUrl(i);
             String accountNotes = AccountList.getNotes(i);
 
             GridPane gridPane = new GridPane();
             gridPane.setId("account_" + accountId);
-            gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    System.out.println(accountId);
-                    // swap scene adding account details
+            gridPane.setOnMouseClicked(mouseEvent -> {
+                try {
+                    this.AccountDetails(accountId, accountName, accountPass, accountUrl, accountNotes);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             });
             gridPane.add(new Label(accountName), 0, 0);
@@ -98,8 +94,30 @@ public class AccountController extends Controller {
         stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
     }
 
-    @FXML
-    public void accountDetailsView(int id, String name, String pass, String url, String notes) {
+    protected void AccountDetails(int id, String name, String pass, String url, String notes) throws IOException {
 
+        String resource = "/account-details.fxml";
+        URL file = Controller.class.getResource(resource);
+
+        Parent scene = FXMLLoader.load(file);
+        Stage stage = Main.getStage();
+        Scene currentScene = stage.getScene();
+
+        TextField accountName      = (TextField) scene.lookup("#account_name");
+        PasswordField accountPass  = (PasswordField) scene.lookup("#account_password");
+        TextField accountUrl       = (TextField) scene.lookup("#account_url");
+        TextArea accountNotes     = (TextArea) scene.lookup("#account_notes");
+
+        accountName.setText(name);
+        accountPass.setText(pass);
+        accountUrl.setText(url);
+        accountNotes.setText(notes);
+
+        stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
+    }
+
+    @FXML
+    public void updateDetails(ActionEvent event) throws IOException {
+        System.out.println("update details");
     }
 }
