@@ -22,7 +22,7 @@ public class UserController extends Controller
     @FXML
     protected void loginAction(ActionEvent event) throws IOException {
         Auth auth = new Auth();
-        if(auth.checkIn(username.getText(), password.getText())) {
+        if(auth.checkIn(username.getText().trim(), password.getText())) {
             AccountController accountController = new AccountController();
             accountController.listAccountsView(event);
         } else {
@@ -43,7 +43,7 @@ public class UserController extends Controller
             errorMessage.setText("The password you entered doesn't match the confirmation.");
         } else {
             User user = new User();
-            user.create(username.getText(), password.getText());
+            user.create(username.getText().trim(), password.getText());
             errorMessage.setFill(Color.rgb(255,255,255));
             errorMessage.setText("Successfully created account.");
 
