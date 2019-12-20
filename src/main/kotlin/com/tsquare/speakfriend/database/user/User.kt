@@ -11,11 +11,13 @@ class User {
     }
 
     fun create(user: String, password: String) {
-        val hashedPass = Crypt.hash(password);
+        val hashedPass = Crypt.generatePass(password);
         transaction {
             UserEntity.new {
                 name = user
-                pass = hashedPass
+                if (hashedPass != null) {
+                    pass = hashedPass
+                }
             }
         }
     }

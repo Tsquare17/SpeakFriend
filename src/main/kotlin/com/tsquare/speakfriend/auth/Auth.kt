@@ -8,14 +8,14 @@ class Auth {
         val userModel = User()
         val match = userModel.get(user) ?: return false
 
-        val key = Crypt.hash(match.pass)
-        if(Crypt.hash(pass) != key) {
+        if(!Crypt.match(pass, match.pass)) {
             return false
         }
 
         CurrentUser.userId = match.id.value
         CurrentUser.userName = match.name
-        CurrentUser.userKey = Crypt.hash(key)
+        CurrentUser.userKey = Crypt.generateKey(match.pass).toString()
+
         return true;
     }
 
