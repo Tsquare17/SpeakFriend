@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.account;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
+import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 public class AccountController extends Controller {
     @FXML private TextField account_name;
@@ -65,22 +67,21 @@ public class AccountController extends Controller {
 
         ObservableList<GridPane> gridList = FXCollections.observableArrayList();
         ListView<GridPane> list = new ListView<>();
-        StackPane accountList = (StackPane) scene.lookup("#accountList");
-        int accountCount  = AccountList.generate(id);
+        StackPane accountListPane = (StackPane) scene.lookup("#accountList");
+        List<AccountEntity> accounts = AccountList.get(id);
 
-        // TODO: Refactor account retrieval.
-        for (int i = 0; i < accountCount; i++) {
-            int accountId   = AccountList.getId(i);
-            String accountName = AccountList.getName(i);
-            String accountPass = AccountList.getPass(i);
-            String accountUrl  = AccountList.getUrl(i);
-            String accountNotes = AccountList.getNotes(i);
+        for (AccountEntity account: accounts) {
+            int accountId = account.getId().getValue();
+            String accountName = account.getName();
+            String accountPass = account.getPass();
+            String accountUrl = account.getUrl();
+            String accountNotes = account.getNotes();
 
             GridPane gridPane = new GridPane();
             gridPane.setId("account_" + accountId);
             gridPane.setOnMouseClicked(mouseEvent -> {
                 try {
-                    this.AccountDetails(accountId, accountName, accountPass, accountUrl, accountNotes);
+                    this.showAccountDetails(accountId, accountName, accountPass, accountUrl, accountNotes);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -89,12 +90,12 @@ public class AccountController extends Controller {
             gridList.add(gridPane);
         }
         list.getItems().addAll(gridList);
-        accountList.getChildren().add(list);
+        accountListPane.getChildren().add(list);
 
         stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
     }
 
-    protected void AccountDetails(int id, String name, String pass, String url, String notes) throws IOException {
+    protected void showAccountDetails(int id, String name, String pass, String url, String notes) throws IOException {
 
         String resource = "/account-details.fxml";
         URL file = Controller.class.getResource(resource);
