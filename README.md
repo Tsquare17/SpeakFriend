@@ -1,3 +1,3 @@
 # Speak Friend and Enter
 
-A simple password management system.
+A simple account / password management system.
