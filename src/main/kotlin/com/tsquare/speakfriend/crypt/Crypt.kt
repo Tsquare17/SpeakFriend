@@ -1,18 +1,72 @@
 package com.tsquare.speakfriend.crypt
 
 import java.math.BigInteger
-import java.security.NoSuchAlgorithmException
-import java.security.SecureRandom
+import java.nio.ByteBuffer
+import java.security.*
 import java.security.spec.InvalidKeySpecException
-import javax.crypto.SecretKeyFactory
+import java.security.spec.KeySpec
+import javax.crypto.*
+import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.PBEKeySpec
+import javax.crypto.spec.SecretKeySpec
 
 
 object Crypt
 {
     @JvmStatic
-    fun encrypt(userId: Int, pass: String): String {
-        return pass;
+    @Throws(NoSuchAlgorithmException::class, InvalidAlgorithmParameterException::class,
+            InvalidKeyException::class, InvalidKeySpecException::class,
+            NoSuchPaddingException::class, BadPaddingException::class, IllegalBlockSizeException::class)
+    fun encrypt(key: String, subject: String): String {
+        val secureRandom = SecureRandom()
+        val iv = ByteArray(12)
+        secureRandom.nextBytes(iv)
+
+        val secretKey = generateSecretKey(key, iv)
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        val parameterSpec = GCMParameterSpec(128, iv)
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, parameterSpec)
+
+        val encryptedData = cipher.doFinal(subject.toByteArray())
+        val byteBuffer: ByteBuffer = ByteBuffer.allocate(4 + iv.size + encryptedData.size)
+
+        byteBuffer.putInt(iv.size)
+        byteBuffer.put(iv)
+        byteBuffer.put(encryptedData)
+
+        return toHex(byteBuffer.array())
+    }
+
+    @JvmStatic
+    @Throws(NoSuchAlgorithmException::class, InvalidAlgorithmParameterException::class,
+            InvalidKeyException::class, InvalidKeySpecException::class,
+            NoSuchPaddingException::class, BadPaddingException::class, IllegalBlockSizeException::class)
+    fun decrypt(key: String, subject: String?): String {
+        if(subject === null) {
+            return "";
+        }
+
+        val byteBuffer = ByteBuffer.wrap(fromHex(subject))
+        val ivSize = byteBuffer.int
+        val iv = ByteArray(ivSize)
+        byteBuffer[iv]
+
+        val secretKey = generateSecretKey(key, iv)
+        val cipherBytes = ByteArray(byteBuffer.remaining())
+        byteBuffer[cipherBytes]
+
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        val parameterSpec = GCMParameterSpec(128, iv)
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, parameterSpec)
+        return String(cipher.doFinal(cipherBytes))
+    }
+
+    @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
+    fun generateSecretKey(password: String, iv: ByteArray?): SecretKey? {
+        val spec: KeySpec = PBEKeySpec(password.toCharArray(), iv, 65536, 128) // AES-128
+        val secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
+        val key = secretKeyFactory.generateSecret(spec).encoded
+        return SecretKeySpec(key, "AES")
     }
 
     @JvmStatic
@@ -22,7 +76,14 @@ object Crypt
 
     @JvmStatic
     fun generateKey(key: String): String? {
-        return key
+        val parts = key.split(":".toRegex()).toTypedArray()
+        val salt = fromHex(parts[1])
+        val chars = key.toCharArray()
+        val spec = PBEKeySpec(chars, salt, 1000, 128)
+        val skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
+        val hash = skf.generateSecret(spec).encoded
+
+        return toHex(hash)
     }
 
     @JvmStatic
@@ -30,6 +91,7 @@ object Crypt
         return validatePassword(enteredPass, storedHash);
     }
 
+    @JvmStatic
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
     private fun generatePassword(password: String): String? {
         val iterations = 1000
@@ -47,6 +109,7 @@ object Crypt
         val sr = SecureRandom.getInstance("SHA1PRNG")
         val salt = ByteArray(16)
         sr.nextBytes(salt)
+
         return salt
     }
 
@@ -84,6 +147,7 @@ object Crypt
         val bi = BigInteger(1, array)
         val hex = bi.toString(16)
         val paddingLength = array.size * 2 - hex.length
+
         return if (paddingLength > 0) {
             String.format("%0" + paddingLength + "d", 0) + hex
         } else {

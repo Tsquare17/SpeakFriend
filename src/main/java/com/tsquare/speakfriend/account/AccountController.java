@@ -34,16 +34,39 @@ public class AccountController extends Controller {
     public void createAccountAction(ActionEvent event) {
         Auth auth = new Auth();
         int id = auth.getId();
-        String pass;
+        String key = auth.getKey();
+
+        String accountName = null;
+        String accountPass = null;
+        String accountUrl = null;
+        String accountNotes = null;
+
+        if(!account_name.getText().isEmpty()) {
+            try {
+                accountName = Crypt.encrypt(key, account_name.getText());
+            } catch (Exception ignored) {}
+        }
 
         if(!password.getText().isEmpty()) {
-            pass = Crypt.encrypt(id, password.getText());
-        } else {
-            pass = null;
+            try {
+                accountPass = Crypt.encrypt(key, password.getText());
+            } catch (Exception ignored) {}
+        }
+
+        if(!url.getText().isEmpty()) {
+            try {
+                accountUrl = Crypt.encrypt(key, url.getText());
+            } catch (Exception ignored) {}
+        }
+
+        if(!notes.getText().isEmpty()) {
+            try {
+                accountNotes = Crypt.encrypt(key, notes.getText());
+            } catch(Exception ignored) {}
         }
 
         Account account = new Account();
-        account.create(id, account_name.getText(), pass, url.getText(), notes.getText());
+        account.create(id, accountName, accountPass, accountUrl, accountNotes);
         errorMessage.setText("Account Created");
     }
 
@@ -57,6 +80,7 @@ public class AccountController extends Controller {
 
         Auth auth = new Auth();
         int id = auth.getId();
+        String key = auth.getKey();
 
         String resource = "/account-list.fxml";
         URL file = Controller.class.getResource(resource);
@@ -72,22 +96,25 @@ public class AccountController extends Controller {
 
         for (AccountEntity account: accounts) {
             int accountId = account.getId().getValue();
-            String accountName = account.getName();
-            String accountPass = account.getPass();
-            String accountUrl = account.getUrl();
-            String accountNotes = account.getNotes();
-
-            GridPane gridPane = new GridPane();
-            gridPane.setId("account_" + accountId);
-            gridPane.setOnMouseClicked(mouseEvent -> {
-                try {
-                    this.showAccountDetails(accountId, accountName, accountPass, accountUrl, accountNotes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            gridPane.add(new Label(accountName), 0, 0);
-            gridList.add(gridPane);
+            try {
+                String accountName = Crypt.decrypt(key, account.getName());
+                String accountPass = Crypt.decrypt(key, account.getPass());
+                String accountUrl = Crypt.decrypt(key, account.getUrl());
+                String accountNotes = Crypt.decrypt(key, account.getNotes());
+                GridPane gridPane = new GridPane();
+                gridPane.setId("account_" + accountId);
+                gridPane.setOnMouseClicked(mouseEvent -> {
+                    try {
+                        this.showAccountDetails(accountId, accountName, accountPass, accountUrl, accountNotes);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                gridPane.add(new Label(accountName), 0, 0);
+                gridList.add(gridPane);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         list.getItems().addAll(gridList);
         accountListPane.getChildren().add(list);

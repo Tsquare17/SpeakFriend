@@ -16,10 +16,14 @@ class Auth {
         CurrentUser.userName = match.name
         CurrentUser.userKey = Crypt.generateKey(match.pass).toString()
 
-        return true;
+        return true
     }
 
     fun getId(): Int {
-        return CurrentUser.userId;
+        return CurrentUser.userId
+    }
+
+    fun getKey(): String {
+        return CurrentUser.userKey
     }
 }

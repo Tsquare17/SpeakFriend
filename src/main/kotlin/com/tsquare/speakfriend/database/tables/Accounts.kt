@@ -7,7 +7,7 @@ object Accounts : IntIdTable()
 {
     val userId = Accounts.integer("user_id")
             .references(Users.id, ReferenceOption.CASCADE).index()
-    val name   = Accounts.varchar("name", 50).nullable()
+    val name   = Accounts.varchar("name", 255).nullable()
     val pass   = Accounts.varchar("pass", 255).nullable()
     val url    = Accounts.varchar("url", 255).nullable()
     val notes  = Accounts.text("notes").nullable()
