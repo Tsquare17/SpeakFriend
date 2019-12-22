@@ -24,7 +24,7 @@ public class Main extends Application {
         Schema schema = new Schema();
         schema.up();
         stage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/entry.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/sign-in.fxml"));
         stage.setTitle("Speak Friend");
         Scene scene = new Scene(root, 600, 400);
         stage.setScene(scene);
