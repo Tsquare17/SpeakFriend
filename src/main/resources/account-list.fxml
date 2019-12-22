@@ -27,6 +27,9 @@
                </font>
             </Hyperlink>
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </GridPane>
       <StackPane id="accountList" />
    </children>

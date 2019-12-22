@@ -472,6 +472,7 @@
 
 .text-area {
     -fx-padding: 0.15em;
+    -fx-highlight-text-fill: #FFF;
 }
 
 .text-area .content {
@@ -486,4 +487,11 @@
 
 .text-area:focused, .text-field:focused {
     -fx-border-color: -swatch-500;
+}
+
+
+
+.account-gridpane {
+    -fx-padding: 30px 30px;
+    -fx-cursor: hand;
 }

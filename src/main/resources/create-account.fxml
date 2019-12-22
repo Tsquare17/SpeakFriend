@@ -32,7 +32,7 @@
             </Label>
             <TextField fx:id="account_name" GridPane.columnIndex="1" GridPane.columnSpan="2">
                <GridPane.margin>
-                  <Insets right="20.0" />
+                  <Insets right="30.0" />
                </GridPane.margin>
             </TextField>
             <Label layoutX="63.0" layoutY="69.0" text="Password:" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
@@ -45,7 +45,7 @@
             </Label>
             <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets right="20.0" />
+                  <Insets right="30.0" />
                </GridPane.margin>
             </PasswordField>
             <Label layoutX="109.0" layoutY="202.0" text="URL:" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
@@ -58,7 +58,7 @@
             </Label>
             <TextField fx:id="url" layoutX="210.0" layoutY="60.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets right="20.0" />
+                  <Insets right="30.0" />
                </GridPane.margin>
             </TextField>
             <Label layoutX="148.0" layoutY="252.0" text="Notes:" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
@@ -69,7 +69,10 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextArea fx:id="notes" prefHeight="200.0" prefWidth="200.0" style="-fx-text-fill: #000000;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+            <TextArea fx:id="notes" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="30.0" />
+               </GridPane.margin></TextArea>
             <Button accessibleText="Go Back" cancelButton="true" defaultButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#createAccountAction" text="Create Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <Label fx:id="errorMessage" textFill="WHITE" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />

@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -103,6 +104,7 @@ public class AccountController extends Controller {
                 String accountNotes = Crypt.decrypt(key, account.getNotes());
                 GridPane gridPane = new GridPane();
                 gridPane.setId("account_" + accountId);
+                gridPane.getStyleClass().add("account-gridpane");
                 gridPane.setOnMouseClicked(mouseEvent -> {
                     try {
                         this.showAccountDetails(accountId, accountName, accountPass, accountUrl, accountNotes);
