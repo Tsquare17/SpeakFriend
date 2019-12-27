@@ -129,9 +129,12 @@
  * Button & ToggleButton                                                       *
  *                                                                             *
  ******************************************************************************/
+.button {
+    -fx-cursor: hand;
+}
+
 .button-raised {
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0,
-    1);
+    -fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);
     -fx-background-color: rgb(250, 250, 250);
 }
 

@@ -4,9 +4,15 @@ import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.database.user.User;
+import com.tsquare.speakfriend.main.Main;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -20,13 +26,20 @@ public class UserController extends Controller
     @FXML private Text errorMessage;
 
     @FXML
-    protected void loginAction(ActionEvent event) throws IOException {
+    protected void loginAction() throws IOException {
         Auth auth = new Auth();
         if(auth.checkIn(username.getText().trim(), password.getText())) {
             AccountController accountController = new AccountController();
-            accountController.listAccountsView(event);
+            accountController.listAccountsView();
         } else {
             errorMessage.setText("The user or password entered was incorrect.");
+        }
+    }
+
+    @FXML
+    protected void loginEnterKeyAction(KeyEvent event) throws IOException {
+        if(event.getCode().equals(KeyCode.ENTER)) {
+            this.loginAction();
         }
     }
 

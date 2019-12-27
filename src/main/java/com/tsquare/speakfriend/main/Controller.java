@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.main;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -37,5 +38,19 @@ public abstract class Controller {
             }
         });
         pause.play();
+    }
+
+    @FXML
+    public void buttonHovered() {
+        System.out.println("hover");
+        Scene scene = Main.getScene();
+        scene.setCursor(Cursor.HAND);
+    }
+
+    @FXML
+    public void buttonNotHovered() {
+        System.out.println("unhovered");
+        Scene scene = Main.getScene();
+        scene.setCursor(Cursor.DEFAULT);
     }
 }

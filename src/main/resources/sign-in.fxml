@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import javafx.scene.effect.Glow?>
-<?import javafx.geometry.Insets?>
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.user.UserController">
 <children>
     <Label alignment="CENTER" contentDisplay="CENTER" text="Speak friend and enter." textAlignment="CENTER" textFill="#e1e1e1" />
@@ -20,6 +20,11 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
         </rowConstraints>
         <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -32,7 +37,7 @@
                 </font>
             </Label>
 
-            <TextField fx:id="username" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <TextField fx:id="username" onKeyPressed="#loginEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
             <Label accessibleText="Password" text="Pass:" textFill="#e1e1e1" GridPane.columnIndex="0" GridPane.rowIndex="2">
                 <font>
@@ -40,18 +45,21 @@
                 </font>
             </Label>
 
-            <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <PasswordField fx:id="password" onKeyPressed="#loginEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+             <Button onKeyPressed="#loginEnterKeyAction" onMouseClicked="#loginAction" onMouseEntered="#buttonHovered" onMouseExited="#buttonNotHovered" text="Sign In" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
 
-            <HBox spacing="10" alignment="bottom_right" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                <Button text="Sign In" onAction="#loginAction"/>
-            </HBox>
-
-            <HBox spacing="10" alignment="bottom_left"
-                  GridPane.columnIndex="1" GridPane.rowIndex="8">
-                <Hyperlink text="Create New User" onAction="#registerView" />
+            <HBox alignment="bottom_left" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                <Hyperlink onAction="#registerView" text="Create New User" />
             </HBox>
 
         </children>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
     </GridPane>
     <Text fx:id="errorMessage" fill="#ff6161" textAlignment="CENTER" textOrigin="CENTER">
         <effect>

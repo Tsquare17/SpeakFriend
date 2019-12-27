@@ -23,7 +23,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="account_id" text="Label" visible="false" />
+            <Label fx:id="account_id" visible="false" />
             <Label text="Account Name" textAlignment="RIGHT" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                <font>
                   <Font name="Fira Code Medium" size="13.0" />
@@ -78,7 +78,7 @@
                </cursor>
             </TextArea>
             <Button defaultButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#updateAccountDetails" text="Update" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#updateAccountDetails" onMouseEntered="#buttonHovered" onMouseExited="#buttonNotHovered" text="Update" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <Label fx:id="response_message" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
          </children>
          <padding>

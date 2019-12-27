@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -78,7 +79,7 @@ public class AccountController extends Controller {
     }
 
     @FXML
-    public void listAccountsView(ActionEvent event) throws IOException {
+    public void listAccountsView() throws IOException {
 
         Auth auth = new Auth();
         int id = auth.getId();
