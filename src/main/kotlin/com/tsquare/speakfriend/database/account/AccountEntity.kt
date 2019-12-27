@@ -13,5 +13,4 @@ class AccountEntity(id: EntityID<Int>): Entity<Int>(id) {
     var pass by Accounts.pass
     var url by Accounts.url
     var notes by Accounts.notes
-
 }

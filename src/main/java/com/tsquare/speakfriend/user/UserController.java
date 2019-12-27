@@ -53,6 +53,6 @@ public class UserController extends Controller
 
     @FXML
     protected void entryView(ActionEvent event) throws IOException {
-        this.newScene("entry");
+        this.newScene("sign-in");
     }
 }

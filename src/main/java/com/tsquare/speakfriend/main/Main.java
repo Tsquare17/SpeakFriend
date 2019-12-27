@@ -9,14 +9,13 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     private static Stage stage;
-    private static Scene scene;
 
     public static Stage getStage() {
         return stage;
     }
 
     public static Scene getScene() {
-        return scene;
+        return stage.getScene();
     }
 
     @Override

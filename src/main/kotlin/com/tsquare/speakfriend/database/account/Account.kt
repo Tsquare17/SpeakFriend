@@ -10,11 +10,22 @@ class Account {
         Conn()
     }
 
-    fun create(userIdArg: Int, userArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
+    fun create(userIdArg: Int, nameArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
         transaction {
             AccountEntity.new {
                 userId = userIdArg
-                name = userArg
+                name = nameArg
+                pass = passArg
+                url = urlArg
+                notes = notesArg
+            }
+        }
+    }
+
+    fun update(accountIdArg: Int, nameArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
+        transaction {
+            AccountEntity[accountIdArg].apply {
+                name = nameArg
                 pass = passArg
                 url = urlArg
                 notes = notesArg
@@ -32,4 +43,9 @@ class Account {
         }
     }
 
+    fun getById(id: Int): AccountEntity? {
+        return transaction {
+            AccountEntity.findById(id)
+        }
+    }
 }
