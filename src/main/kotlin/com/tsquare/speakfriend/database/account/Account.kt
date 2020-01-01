@@ -33,6 +33,12 @@ class Account {
         }
     }
 
+    fun delete(accountIdArg: Int) {
+        transaction {
+            AccountEntity[accountIdArg].delete()
+        }
+    }
+
     fun getByUserId(id: Int): List<AccountEntity> {
         return transaction {
             AccountEntity.find {

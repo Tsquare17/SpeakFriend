@@ -20,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -27,11 +28,14 @@ import java.util.List;
 public class AccountController extends Controller {
     @FXML private Label account_id;
     @FXML private TextField account_name;
-    @FXML private PasswordField account_password;
+    @FXML private TextField account_password;
     @FXML private TextField account_url;
     @FXML private TextArea account_notes;
     @FXML private Label response_message;
-    private AccountEntity currentAccount;
+    @FXML private Button update_account_button;
+    @FXML private Button delete_account_button;
+    @FXML private Button back_button;
+    @FXML private Hyperlink edit_account_link;
 
     @FXML
     public void createAccountAction(ActionEvent event) {
@@ -149,7 +153,7 @@ public class AccountController extends Controller {
 
         Label accountIdField            = (Label) scene.lookup("#account_id");
         TextField accountNameField      = (TextField) scene.lookup("#account_name");
-        PasswordField accountPassField  = (PasswordField) scene.lookup("#account_password");
+        TextField accountPassField      = (TextField) scene.lookup("#account_password");
         TextField accountUrlField       = (TextField) scene.lookup("#account_url");
         TextArea accountNotesField      = (TextArea) scene.lookup("#account_notes");
 
@@ -191,5 +195,20 @@ public class AccountController extends Controller {
         account.update(accountId, encName, encPass, encUrl, encNotes);
 
         response_message.setText("Account Updated");
+    }
+
+    @FXML
+    public void editAccountAction(ActionEvent event) throws IOException {
+        update_account_button.setVisible(true);
+        delete_account_button.setVisible(true);
+        edit_account_link.setVisible(false);
+    }
+
+    @FXML
+    public void deleteAccountAction(ActionEvent event) throws IOException {
+        int accountId = Integer.parseInt(account_id.getText());
+        Account account = new Account();
+        account.delete(accountId);
+        this.listAccountsView();
     }
 }

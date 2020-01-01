@@ -15,16 +15,17 @@
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="account_id" visible="false" />
-            <Label text="Account Name" textAlignment="RIGHT" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+            <Label fx:id="account_id" visible="false" GridPane.rowIndex="1" />
+            <Label text="Account Name" textAlignment="RIGHT" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font name="Fira Code Medium" size="13.0" />
                </font>
@@ -32,11 +33,11 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_name" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
+            <TextField fx:id="account_name" editable="false" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin></TextField>
-            <Label layoutX="62.0" layoutY="69.0" text="Password" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Label layoutX="62.0" layoutY="69.0" text="Password" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <font>
                   <Font name="Fira Code Medium" size="13.0" />
                </font>
@@ -44,11 +45,11 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <PasswordField fx:id="account_password" prefWidth="196.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <TextField fx:id="account_password" editable="false" prefWidth="196.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="30.0" />
-               </GridPane.margin></PasswordField>
-            <Label layoutX="75.0" layoutY="202.0" text="URL" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               </GridPane.margin></TextField>
+            <Label layoutX="75.0" layoutY="202.0" text="URL" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <font>
                   <Font name="Fira Code Medium" size="13.0" />
                </font>
@@ -56,7 +57,7 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <Label layoutX="94.0" layoutY="335.0" text="Notes" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+            <Label layoutX="94.0" layoutY="335.0" text="Notes" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <font>
                   <Font name="Fira Code Medium" size="13.0" />
                </font>
@@ -64,12 +65,12 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_url" layoutX="202.0" layoutY="43.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <TextField fx:id="account_url" layoutX="202.0" layoutY="43.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin>
             </TextField>
-            <TextArea fx:id="account_notes" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <TextArea fx:id="account_notes" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin>
@@ -77,9 +78,11 @@
                   <Cursor fx:constant="TEXT" />
                </cursor>
             </TextArea>
-            <Button defaultButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#updateAccountDetails" onMouseEntered="#buttonHovered" onMouseExited="#buttonNotHovered" text="Update" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-            <Label fx:id="response_message" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+            <Button fx:id="back_button" defaultButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+            <Button fx:id="update_account_button" mnemonicParsing="false" onAction="#updateAccountDetails" onMouseEntered="#buttonHovered" onMouseExited="#buttonNotHovered" text="Update" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+            <Label fx:id="response_message" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+            <Hyperlink fx:id="edit_account_link" onAction="#editAccountAction" text="Edit Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="delete_account_button" cancelButton="true" mnemonicParsing="false" onAction="#deleteAccountAction" style="-fx-background-color: red;" text="DELETE" textFill="WHITE" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

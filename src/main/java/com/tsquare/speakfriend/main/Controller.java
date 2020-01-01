@@ -42,14 +42,12 @@ public abstract class Controller {
 
     @FXML
     public void buttonHovered() {
-        System.out.println("hover");
         Scene scene = Main.getScene();
         scene.setCursor(Cursor.HAND);
     }
 
     @FXML
     public void buttonNotHovered() {
-        System.out.println("unhovered");
         Scene scene = Main.getScene();
         scene.setCursor(Cursor.DEFAULT);
     }
