@@ -36,6 +36,7 @@ public class AccountController extends Controller {
     @FXML private Button delete_account_button;
     @FXML private Button back_button;
     @FXML private Hyperlink edit_account_link;
+    @FXML private Button create_account_button;
 
     @FXML
     public void createAccountAction(ActionEvent event) {
@@ -75,6 +76,7 @@ public class AccountController extends Controller {
         Account account = new Account();
         account.create(id, accountName, accountPass, accountUrl, accountNotes);
         response_message.setText("Account Created");
+        create_account_button.setVisible(false);
     }
 
     @FXML
@@ -198,14 +200,18 @@ public class AccountController extends Controller {
     }
 
     @FXML
-    public void editAccountAction(ActionEvent event) throws IOException {
+    public void editAccountAction() {
         update_account_button.setVisible(true);
         delete_account_button.setVisible(true);
         edit_account_link.setVisible(false);
+        account_name.setEditable(true);
+        account_password.setEditable(true);
+        account_url.setEditable(true);
+        account_notes.setEditable(true);
     }
 
     @FXML
-    public void deleteAccountAction(ActionEvent event) throws IOException {
+    public void deleteAccountAction() throws IOException {
         int accountId = Integer.parseInt(account_id.getText());
         Account account = new Account();
         account.delete(accountId);

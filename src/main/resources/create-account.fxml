@@ -74,7 +74,7 @@
                   <Insets right="30.0" />
                </GridPane.margin></TextArea>
             <Button accessibleText="Go Back" cancelButton="true" defaultButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#createAccountAction" text="Create Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Button fx:id="create_account_button" mnemonicParsing="false" onAction="#createAccountAction" text="Create Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <Label fx:id="response_message" textFill="WHITE" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
          </children>
          <padding>
