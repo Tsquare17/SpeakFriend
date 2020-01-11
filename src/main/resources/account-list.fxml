@@ -21,7 +21,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Hyperlink alignment="BASELINE_RIGHT" onAction="#createAccountView" text="New Account" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BASELINE">
+            <Hyperlink alignment="BASELINE_RIGHT" focusTraversable="false" onAction="#createAccountView" text="New Account" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BASELINE">
                <font>
                   <Font name="Fira Code Light" size="13.0" />
                </font>

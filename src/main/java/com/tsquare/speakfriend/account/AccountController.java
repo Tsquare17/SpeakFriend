@@ -7,12 +7,12 @@ import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
+import com.tsquare.speakfriend.utils.AccountListComparator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,9 +20,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountController extends Controller {
@@ -103,22 +103,37 @@ public class AccountController extends Controller {
         StackPane accountListPane = (StackPane) scene.lookup("#accountList");
         List<AccountEntity> accounts = AccountList.get(id);
 
-        // TODO: Sort accounts by name before adding to scene, as opposed to db sort since info is now encrypted.
+        List<List<String>> decryptedList = new ArrayList<>();
+
         for (AccountEntity account: accounts) {
-            int accountId = account.getId().getValue();
+            List<String> decryptedAccount = new ArrayList<>();
+            String accountId = account.getId().getValue().toString();
+            String accountName = "";
             try {
-                String accountName = Crypt.decrypt(key, account.getName());
+                accountName = Crypt.decrypt(key, account.getName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            decryptedAccount.add(accountId);
+            decryptedAccount.add(accountName);
+            decryptedList.add(decryptedAccount);
+        }
+
+        decryptedList.sort(new AccountListComparator<>());
+
+        for (List<String> account: decryptedList) {
+            try {
                 GridPane gridPane = new GridPane();
-                gridPane.setId("account_" + accountId);
+                gridPane.setId("account_" + account.get(0));
                 gridPane.getStyleClass().add("account-gridpane");
                 gridPane.setOnMouseClicked(mouseEvent -> {
                     try {
-                        this.showAccountDetails(account);
+                        this.showAccountDetails(account.get(0));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
-                gridPane.add(new Label(accountName), 0, 0);
+                gridPane.add(new Label(account.get(1)), 0, 0);
                 gridList.add(gridPane);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -130,20 +145,25 @@ public class AccountController extends Controller {
         stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
     }
 
-    protected void showAccountDetails(AccountEntity account) throws IOException {
+    protected void showAccountDetails(String accountId) throws IOException {
 
         Auth auth = new Auth();
         String key = auth.getKey();
+
+        int id = Integer.parseInt(accountId);
+        Account account = new Account();
+        AccountEntity accountEntity = account.getById(id);
 
         String accountName = "";
         String accountPass = "";
         String accountUrl = "";
         String accountNotes = "";
         try {
-            accountName = Crypt.decrypt(key, account.getName());
-            accountPass = Crypt.decrypt(key, account.getPass());
-            accountUrl = Crypt.decrypt(key, account.getUrl());
-            accountNotes = Crypt.decrypt(key, account.getNotes());
+            assert accountEntity != null;
+            accountName = Crypt.decrypt(key, accountEntity.getName());
+            accountPass = Crypt.decrypt(key, accountEntity.getPass());
+            accountUrl = Crypt.decrypt(key, accountEntity.getUrl());
+            accountNotes = Crypt.decrypt(key, accountEntity.getNotes());
         } catch (Exception ignore) {};
 
         String resource = "/account-details.fxml";
@@ -159,7 +179,7 @@ public class AccountController extends Controller {
         TextField accountUrlField       = (TextField) scene.lookup("#account_url");
         TextArea accountNotesField      = (TextArea) scene.lookup("#account_notes");
 
-        accountIdField.setText(String.valueOf(account.getId().getValue()));
+        accountIdField.setText(accountId);
         accountNameField.setText(accountName);
         accountPassField.setText(accountPass);
         accountUrlField.setText(accountUrl);
