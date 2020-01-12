@@ -1,5 +1,6 @@
 package com.tsquare.speakfriend.account;
 
+import com.tsquare.speakfriend.account.preview.AccountPreview;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
@@ -7,7 +8,8 @@ import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
-import com.tsquare.speakfriend.utils.AccountListComparator;
+import com.tsquare.speakfriend.nodes.accountListCell;
+import com.tsquare.speakfriend.utils.AccountPreviewComparator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,8 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -34,7 +35,6 @@ public class AccountController extends Controller {
     @FXML private Label response_message;
     @FXML private Button update_account_button;
     @FXML private Button delete_account_button;
-    @FXML private Button back_button;
     @FXML private Hyperlink edit_account_link;
     @FXML private Button create_account_button;
 
@@ -44,34 +44,10 @@ public class AccountController extends Controller {
         int id = auth.getId();
         String key = auth.getKey();
 
-        String accountName = null;
-        String accountPass = null;
-        String accountUrl = null;
-        String accountNotes = null;
-
-        if(!account_name.getText().isEmpty()) {
-            try {
-                accountName = Crypt.encrypt(key, account_name.getText());
-            } catch (Exception ignored) {}
-        }
-
-        if(!account_password.getText().isEmpty()) {
-            try {
-                accountPass = Crypt.encrypt(key, account_password.getText());
-            } catch (Exception ignored) {}
-        }
-
-        if(!account_url.getText().isEmpty()) {
-            try {
-                accountUrl = Crypt.encrypt(key, account_url.getText());
-            } catch (Exception ignored) {}
-        }
-
-        if(!account_notes.getText().isEmpty()) {
-            try {
-                accountNotes = Crypt.encrypt(key, account_notes.getText());
-            } catch(Exception ignored) {}
-        }
+        String accountName = this.getDecryptedText(key, account_name);
+        String accountPass = this.getDecryptedText(key, account_password);
+        String accountUrl = this.getDecryptedText(key, account_url);
+        String accountNotes = this.getDecryptedText(key, account_notes);
 
         Account account = new Account();
         account.create(id, accountName, accountPass, accountUrl, accountNotes);
@@ -87,73 +63,63 @@ public class AccountController extends Controller {
     @FXML
     public void listAccountsView() throws IOException {
 
-        Auth auth = new Auth();
-        int id = auth.getId();
+        // Get decryption key.
+        Auth auth  = new Auth();
+        int id     = auth.getId();
         String key = auth.getKey();
 
         String resource = "/account-list.fxml";
         URL file = Controller.class.getResource(resource);
 
-        Parent scene = FXMLLoader.load(file);
-        Stage stage = Main.getStage();
+        Parent scene       = FXMLLoader.load(file);
+        Stage stage        = Main.getStage();
         Scene currentScene = stage.getScene();
 
-        ObservableList<GridPane> gridList = FXCollections.observableArrayList();
-        ListView<GridPane> list = new ListView<>();
-        StackPane accountListPane = (StackPane) scene.lookup("#accountList");
+        // Get the account list container.
+        VBox accountListContainer = (VBox) scene.lookup("#accountList");
+
+        // Get all accounts for the current user.
         List<AccountEntity> accounts = AccountList.get(id);
 
-        List<List<String>> decryptedList = new ArrayList<>();
-
+        // Collect list of decrypted account previews.
+        List<AccountPreview> decryptedList = new ArrayList<>();
         for (AccountEntity account: accounts) {
-            List<String> decryptedAccount = new ArrayList<>();
-            String accountId = account.getId().getValue().toString();
+            int accountId = account.getId().getValue();
             String accountName = "";
             try {
                 accountName = Crypt.decrypt(key, account.getName());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            decryptedAccount.add(accountId);
-            decryptedAccount.add(accountName);
-            decryptedList.add(decryptedAccount);
+            decryptedList.add(new AccountPreview(accountId, accountName));
         }
 
-        decryptedList.sort(new AccountListComparator<>());
+        // Sort the list of accounts by name.
+        decryptedList.sort(new AccountPreviewComparator<>());
 
-        for (List<String> account: decryptedList) {
-            try {
-                GridPane gridPane = new GridPane();
-                gridPane.setId("account_" + account.get(0));
-                gridPane.getStyleClass().add("account-gridpane");
-                gridPane.setOnMouseClicked(mouseEvent -> {
-                    try {
-                        this.showAccountDetails(account.get(0));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                gridPane.add(new Label(account.get(1)), 0, 0);
-                gridList.add(gridPane);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        list.getItems().addAll(gridList);
-        accountListPane.getChildren().add(list);
+        ListView<AccountPreview> listView        = new ListView<>();
+        ObservableList<AccountPreview> listItems = FXCollections.observableArrayList();
+
+        // Add the accounts to the list, set them in the list view, and add it to the container.
+        listItems.addAll(decryptedList);
+        listView.setItems(listItems);
+        listView.setCellFactory(
+                accountListView -> new accountListCell()
+        );
+        accountListContainer.getChildren().add(listView);
 
         stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
     }
 
-    protected void showAccountDetails(String accountId) throws IOException {
+    public void showAccountDetails(int id) throws IOException {
 
         Auth auth = new Auth();
         String key = auth.getKey();
 
-        int id = Integer.parseInt(accountId);
         Account account = new Account();
         AccountEntity accountEntity = account.getById(id);
 
+        String accountId = String.valueOf(id);
         String accountName = "";
         String accountPass = "";
         String accountUrl = "";

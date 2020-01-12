@@ -1,11 +1,14 @@
 package com.tsquare.speakfriend.main;
 
+import com.tsquare.speakfriend.crypt.Crypt;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -50,5 +53,23 @@ public abstract class Controller {
     public void buttonNotHovered() {
         Scene scene = Main.getScene();
         scene.setCursor(Cursor.DEFAULT);
+    }
+
+    protected String getDecryptedText(String key, TextField field) {
+        if(!field.getText().isEmpty()) {
+            try {
+                return Crypt.encrypt(key, field.getText());
+            } catch(Exception ignored) {}
+        }
+        return "";
+    }
+
+    protected String getDecryptedText(String key, TextArea field) {
+        if(!field.getText().isEmpty()) {
+            try {
+                return Crypt.encrypt(key, field.getText());
+            } catch(Exception ignored) {}
+        }
+        return "";
     }
 }

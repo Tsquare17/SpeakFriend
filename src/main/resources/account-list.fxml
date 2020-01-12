@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.AccountController">
+<VBox id="accountList" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.AccountController">
    <padding>
       <Insets bottom="40.0" top="20.0" />
    </padding>
@@ -31,6 +31,5 @@
             <Insets />
          </VBox.margin>
       </GridPane>
-      <StackPane id="accountList" />
    </children>
 </VBox>
