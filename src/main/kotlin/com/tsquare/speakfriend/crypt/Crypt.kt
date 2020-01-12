@@ -97,7 +97,7 @@ object Crypt
         val iterations = 1000
         val chars = password.toCharArray()
         val salt = getSalt()
-        val spec = PBEKeySpec(chars, salt, iterations, 64 * 8)
+        val spec = PBEKeySpec(chars, salt, iterations, 512)
         val skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
         val hash = skf.generateSecret(spec).encoded
 
