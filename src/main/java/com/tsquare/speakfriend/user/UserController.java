@@ -56,7 +56,7 @@ public class UserController extends Controller
             errorMessage.setFill(Color.rgb(255,255,255));
             errorMessage.setText("Successfully created account.");
 
-            this.transitionScene("entry", 2);
+            this.transitionScene("sign-in", 2);
         }
     }
 
