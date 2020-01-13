@@ -11,6 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -55,7 +56,7 @@ public abstract class Controller {
         scene.setCursor(Cursor.DEFAULT);
     }
 
-    protected String getDecryptedText(String key, TextField field) {
+    protected String getEncryptedText(String key, TextField field) {
         if(!field.getText().isEmpty()) {
             try {
                 return Crypt.encrypt(key, field.getText());
@@ -64,7 +65,7 @@ public abstract class Controller {
         return "";
     }
 
-    protected String getDecryptedText(String key, TextArea field) {
+    protected String getEncryptedText(String key, TextArea field) {
         if(!field.getText().isEmpty()) {
             try {
                 return Crypt.encrypt(key, field.getText());

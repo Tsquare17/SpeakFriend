@@ -44,10 +44,10 @@ public class AccountController extends Controller {
         int id = auth.getId();
         String key = auth.getKey();
 
-        String accountName = this.getDecryptedText(key, account_name);
-        String accountPass = this.getDecryptedText(key, account_password);
-        String accountUrl = this.getDecryptedText(key, account_url);
-        String accountNotes = this.getDecryptedText(key, account_notes);
+        String accountName = this.getEncryptedText(key, account_name);
+        String accountPass = this.getEncryptedText(key, account_password);
+        String accountUrl = this.getEncryptedText(key, account_url);
+        String accountNotes = this.getEncryptedText(key, account_notes);
 
         Account account = new Account();
         account.create(id, accountName, accountPass, accountUrl, accountNotes);
