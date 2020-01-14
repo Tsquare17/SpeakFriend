@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -26,6 +27,7 @@ public class Main extends Application {
         Main.setup();
 
         stage = primaryStage;
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/icon.png")));
         Parent root = FXMLLoader.load(getClass().getResource("/sign-in.fxml"));
         stage.setTitle("Speak Friend");
         Scene scene = new Scene(root, 600, 400);
@@ -38,6 +40,8 @@ public class Main extends Application {
     }
 
     protected static void setup() {
+
+
         File dir = new File(System.getProperty("user.home") + "/.speakfriend");
         if(!dir.exists()) {
             dir.mkdir();
