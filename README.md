@@ -2,11 +2,11 @@
 
 A simple account / password management system.
 
-Speak Friend secures your information using AES/GCM authenticated encryption in an internally stored sqlite database.
+Speak Friend secures account information using AES/GCM authenticated encryption.
 
 ## Building
 
-Speak Friend uses Maven to manage dependencies.
+Speak Friend uses Maven to manage dependencies and build the package.
 
 ### Installing Dependencies
 * mvn install
