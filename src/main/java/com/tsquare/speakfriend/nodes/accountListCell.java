@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.nodes;
 import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.account.preview.AccountPreview;
 
+import javafx.scene.Cursor;
 import javafx.scene.control.ListCell;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class accountListCell extends ListCell<AccountPreview> {
             setText(null);
             setGraphic(null);
         } else {
-
+            this.setCursor(Cursor.HAND);
             setText(account.getAccountName());
 
             this.setOnMouseClicked(e -> {
