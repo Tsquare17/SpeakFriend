@@ -62,7 +62,6 @@ public class AccountController extends Controller {
 
     @FXML
     public void listAccountsView() throws IOException {
-
         // Get decryption key.
         Auth auth  = new Auth();
         int id     = auth.getId();
@@ -108,7 +107,10 @@ public class AccountController extends Controller {
         );
         accountListContainer.getChildren().add(listView);
 
-        stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
+        VBox box = FXMLLoader.load(getClass().getResource("/container.fxml"));
+        box.getChildren().add(scene);
+
+        stage.setScene(new Scene(box, currentScene.getWidth(), currentScene.getHeight()));
     }
 
     public void showAccountDetails(int id) throws IOException {

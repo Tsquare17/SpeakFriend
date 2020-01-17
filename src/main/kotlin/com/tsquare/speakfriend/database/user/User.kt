@@ -35,4 +35,10 @@ class User {
             }.firstOrNull()
         }
     }
+
+    fun delete(id: Int) {
+        transaction {
+            UserEntity.findById(id)?.delete()
+        }
+    }
 }

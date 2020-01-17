@@ -498,3 +498,20 @@
     -fx-padding: 30px 30px;
     -fx-cursor: hand;
 }
+
+.menu-bar {
+    -fx-background-color: #000000;
+}
+
+.menu-item {
+    -fx-background-color: #000000;
+}
+
+.context-menu {
+    -fx-background-color: #000000;
+}
+
+.menu:hover,
+.menu:openvertically {
+    -fx-background-color: #000000;
+}

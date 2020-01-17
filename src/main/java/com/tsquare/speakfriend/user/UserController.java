@@ -20,6 +20,8 @@ public class UserController extends Controller
     @FXML private TextField password;
     @FXML private TextField confirm_password;
     @FXML private Text errorMessage;
+    @FXML private Text notice_text;
+    private int clickCount;
 
     @FXML
     protected void loginAction() throws IOException {
@@ -61,7 +63,43 @@ public class UserController extends Controller
     }
 
     @FXML
+    public void deleteUserAction(ActionEvent event) throws IOException {
+
+        if(!this.password.getText().equals(this.confirm_password.getText())) {
+            this.notice_text.setText("Password mismatch. Please confirm.");
+            this.clickCount = 0;
+            return;
+        }
+
+        Auth auth = new Auth();
+        String userName = auth.getName();
+
+        if(!auth.checkIn(userName, password.getText())) {
+            this.notice_text.setText("The password entered was incorrect.");
+            this.clickCount = 0;
+            return;
+        }
+
+        if(this.clickCount < 1) {
+            this.notice_text.setText("Click delete once more to permanently remove this account.");
+            this.clickCount++;
+            return;
+        }
+
+        User user = new User();
+        user.delete(auth.getId());
+
+        this.newScene("sign-in");
+    }
+
+    @FXML
     protected void entryView(ActionEvent event) throws IOException {
         this.newScene("sign-in");
+    }
+
+    @FXML
+    public void accountListView(ActionEvent event) throws IOException {
+        AccountController accountController = new AccountController();
+        accountController.listAccountsView();
     }
 }

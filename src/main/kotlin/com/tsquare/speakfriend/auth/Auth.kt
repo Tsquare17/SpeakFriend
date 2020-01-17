@@ -23,6 +23,10 @@ class Auth {
         return CurrentUser.userId
     }
 
+    fun getName(): String {
+        return CurrentUser.userName
+    }
+
     fun getKey(): String {
         return CurrentUser.userKey
     }
