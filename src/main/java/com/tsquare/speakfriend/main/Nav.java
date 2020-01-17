@@ -1,5 +1,6 @@
 package com.tsquare.speakfriend.main;
 
+import com.tsquare.speakfriend.auth.Auth;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
@@ -10,7 +11,7 @@ public class Nav extends Controller {
 
 
     @FXML
-    public void quit(ActionEvent event) {
+    public void quitAction(ActionEvent event) {
         Stage stage = Main.getStage();
         stage.close();
     }
@@ -18,5 +19,12 @@ public class Nav extends Controller {
     @FXML
     public void deleteUserView(ActionEvent event) throws IOException {
         this.newScene("delete-user");
+    }
+
+    @FXML
+    public void logoutAction(ActionEvent event) throws IOException {
+        Auth auth = new Auth();
+        auth.checkout();
+        this.newScene("sign-in");
     }
 }

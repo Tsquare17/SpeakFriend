@@ -19,6 +19,12 @@ class Auth {
         return true
     }
 
+    fun checkout() {
+        CurrentUser.userId = 0
+        CurrentUser.userName = ""
+        CurrentUser.userKey = ""
+    }
+
     fun getId(): Int {
         return CurrentUser.userId
     }
