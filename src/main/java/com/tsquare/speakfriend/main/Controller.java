@@ -44,18 +44,6 @@ public abstract class Controller {
         pause.play();
     }
 
-    @FXML
-    public void buttonHovered() {
-        Scene scene = Main.getScene();
-        scene.setCursor(Cursor.HAND);
-    }
-
-    @FXML
-    public void buttonNotHovered() {
-        Scene scene = Main.getScene();
-        scene.setCursor(Cursor.DEFAULT);
-    }
-
     protected String getEncryptedText(String key, TextField field) {
         if(!field.getText().isEmpty()) {
             try {

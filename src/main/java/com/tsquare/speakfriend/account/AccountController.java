@@ -37,6 +37,7 @@ public class AccountController extends Controller {
     @FXML private Button delete_account_button;
     @FXML private Hyperlink edit_account_link;
     @FXML private Button create_account_button;
+    private int clickCount;
 
     @FXML
     public void createAccountAction(ActionEvent event) {

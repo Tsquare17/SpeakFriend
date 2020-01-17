@@ -79,7 +79,7 @@
                </cursor>
             </TextArea>
             <Button fx:id="back_button" defaultButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-            <Button fx:id="update_account_button" mnemonicParsing="false" onAction="#updateAccountDetails" onMouseEntered="#buttonHovered" onMouseExited="#buttonNotHovered" text="Update" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+            <Button fx:id="update_account_button" mnemonicParsing="false" onAction="#updateAccountDetails" text="Update" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             <Label fx:id="response_message" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
             <Hyperlink fx:id="edit_account_link" onAction="#editAccountAction" text="Edit Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button fx:id="delete_account_button" cancelButton="true" mnemonicParsing="false" onAction="#deleteAccountAction" style="-fx-background-color: red;" text="DELETE" textFill="WHITE" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />

@@ -46,7 +46,7 @@
             </Label>
 
             <PasswordField fx:id="password" onKeyPressed="#loginEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-             <Button onKeyPressed="#loginEnterKeyAction" onMouseClicked="#loginAction" onMouseEntered="#buttonHovered" onMouseExited="#buttonNotHovered" text="Sign In" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+             <Button onKeyPressed="#loginEnterKeyAction" onMouseClicked="#loginAction" text="Sign In" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
