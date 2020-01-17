@@ -24,7 +24,7 @@ public class Nav extends Controller {
     @FXML
     public void logoutAction(ActionEvent event) throws IOException {
         Auth auth = new Auth();
-        auth.checkout();
+        auth.checkOut();
         this.newScene("sign-in");
     }
 }

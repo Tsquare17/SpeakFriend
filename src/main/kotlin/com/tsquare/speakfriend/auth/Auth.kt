@@ -19,7 +19,7 @@ class Auth {
         return true
     }
 
-    fun checkout() {
+    fun checkOut() {
         CurrentUser.userId = 0
         CurrentUser.userName = ""
         CurrentUser.userKey = ""
