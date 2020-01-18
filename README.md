@@ -1,4 +1,4 @@
-# Speak Friend and Enter
+# Speak Friend
 
 A simple account / password management system.
 
