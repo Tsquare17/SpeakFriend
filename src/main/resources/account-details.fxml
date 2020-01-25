@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -33,7 +34,7 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_name" editable="false" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <TextField fx:id="account_name" editable="false" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin></TextField>
@@ -45,10 +46,22 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_password" editable="false" prefWidth="196.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <AnchorPane GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
+               <children>
+                  <TextField fx:id="account_password" editable="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0">
+                     <padding>
+                        <Insets right="30.0" />
+                     </padding>
+                  </TextField>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" onMouseClicked="#passwordGenAction" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                     <image>
+                        <Image url="@img/gear.png" />
+                     </image></ImageView>
+               </children>
                <GridPane.margin>
                   <Insets right="30.0" />
-               </GridPane.margin></TextField>
+               </GridPane.margin>
+            </AnchorPane>
             <Label layoutX="75.0" layoutY="202.0" text="URL" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <font>
                   <Font name="Fira Code Medium" size="13.0" />
@@ -57,6 +70,11 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
+            <TextField fx:id="account_url" layoutX="202.0" layoutY="43.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="30.0" />
+               </GridPane.margin>
+            </TextField>
             <Label layoutX="94.0" layoutY="335.0" text="Notes" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <font>
                   <Font name="Fira Code Medium" size="13.0" />
@@ -65,12 +83,7 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_url" layoutX="202.0" layoutY="43.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextArea fx:id="account_notes" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
+            <TextArea fx:id="account_notes" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin>

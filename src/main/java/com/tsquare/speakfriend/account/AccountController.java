@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -205,5 +206,16 @@ public class AccountController extends Controller {
         Account account = new Account();
         account.delete(accountId);
         this.listAccountsView();
+    }
+
+    @FXML
+    public void passwordGenAction() throws IOException {
+        Stage stage = Main.getStage();
+        Stage newStage = new Stage();
+        newStage.initOwner(stage);
+        VBox modal = FXMLLoader.load(getClass().getResource("/generate-password.fxml"));
+        newStage.setScene(new Scene(modal, 200, 350));
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.show();
     }
 }
