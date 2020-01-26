@@ -4,7 +4,6 @@ import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.database.user.User;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -19,7 +18,6 @@ public class UserController extends Controller
     @FXML private TextField username;
     @FXML private TextField password;
     @FXML private TextField confirm_password;
-    @FXML private Text errorMessage;
     @FXML private Text notice_text;
     private int clickCount;
 
@@ -30,7 +28,7 @@ public class UserController extends Controller
             AccountController accountController = new AccountController();
             accountController.listAccountsView();
         } else {
-            errorMessage.setText("The user or password entered was incorrect.");
+            notice_text.setText("The user or password entered was incorrect.");
         }
     }
 
@@ -42,29 +40,34 @@ public class UserController extends Controller
     }
 
     @FXML
-    protected void registerView(ActionEvent event) throws IOException {
+    protected void registerView() throws IOException {
         this.newScene("register");
     }
 
     @FXML
-    protected void registerSubmitAction(ActionEvent event) throws IOException {
+    protected void registerSubmitAction() {
         if(username.getText().isEmpty() || password.getText().isEmpty() || confirm_password.getText().isEmpty()) {
-            errorMessage.setText("You must fill out all fields.");
+            notice_text.setText("You must fill out all fields.");
         } else if(!password.getText().equals(confirm_password.getText())) {
-            errorMessage.setText("The password you entered doesn't match the confirmation.");
+            notice_text.setText("The password you entered doesn't match the confirmation.");
         } else {
             User user = new User();
-            user.create(username.getText().trim(), password.getText());
-            errorMessage.setFill(Color.rgb(255,255,255));
-            errorMessage.setText("Successfully created account.");
+            boolean success = user.create(username.getText().trim(), password.getText());
+
+            if(!success) {
+                notice_text.setText("A user with that name already exists.");
+                return;
+            }
+
+            notice_text.setFill(Color.rgb(255,255,255));
+            notice_text.setText("Successfully created account.");
 
             this.transitionScene("sign-in", 2);
         }
     }
 
     @FXML
-    public void deleteUserAction(ActionEvent event) throws IOException {
-
+    public void deleteUserAction() throws IOException {
         if(!this.password.getText().equals(this.confirm_password.getText())) {
             this.notice_text.setText("Password mismatch. Please confirm.");
             this.clickCount = 0;
@@ -93,12 +96,12 @@ public class UserController extends Controller
     }
 
     @FXML
-    protected void entryView(ActionEvent event) throws IOException {
+    protected void entryView() throws IOException {
         this.newScene("sign-in");
     }
 
     @FXML
-    public void accountListView(ActionEvent event) throws IOException {
+    public void accountListView() throws IOException {
         AccountController accountController = new AccountController();
         accountController.listAccountsView();
     }

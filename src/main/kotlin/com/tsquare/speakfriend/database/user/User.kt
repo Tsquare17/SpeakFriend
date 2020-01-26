@@ -10,16 +10,21 @@ class User {
         Conn()
     }
 
-    fun create(user: String, password: String) {
+    fun create(user: String, password: String): Boolean {
         val hashedPass = Crypt.generatePass(password);
-        transaction {
-            UserEntity.new {
-                name = user
-                if (hashedPass != null) {
-                    pass = hashedPass
+        try {
+            transaction {
+                UserEntity.new {
+                    name = user
+                    if (hashedPass != null) {
+                        pass = hashedPass
+                    }
                 }
             }
+        } catch (e: Exception) {
+            return false;
         }
+        return true;
     }
 
     fun get(id: Int) {

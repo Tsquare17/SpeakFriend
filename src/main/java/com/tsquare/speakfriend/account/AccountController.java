@@ -12,7 +12,6 @@ import com.tsquare.speakfriend.nodes.accountListCell;
 import com.tsquare.speakfriend.utils.AccountPreviewComparator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,7 +32,7 @@ public class AccountController extends Controller {
     @FXML private TextField account_password;
     @FXML private TextField account_url;
     @FXML private TextArea account_notes;
-    @FXML private Label response_message;
+    @FXML private Label notice_text;
     @FXML private Button update_account_button;
     @FXML private Button delete_account_button;
     @FXML private Hyperlink edit_account_link;
@@ -41,7 +40,7 @@ public class AccountController extends Controller {
     private int clickCount;
 
     @FXML
-    public void createAccountAction(ActionEvent event) {
+    public void createAccountAction() {
         Auth auth = new Auth();
         int id = auth.getId();
         String key = auth.getKey();
@@ -53,12 +52,12 @@ public class AccountController extends Controller {
 
         Account account = new Account();
         account.create(id, accountName, accountPass, accountUrl, accountNotes);
-        response_message.setText("Account Created");
+        notice_text.setText("Account Created");
         create_account_button.setVisible(false);
     }
 
     @FXML
-    public void createAccountView(ActionEvent event) throws IOException {
+    public void createAccountView() throws IOException {
         this.newScene("create-account");
     }
 
@@ -159,7 +158,7 @@ public class AccountController extends Controller {
     }
 
     @FXML
-    public void updateAccountDetails(ActionEvent event) throws IOException {
+    public void updateAccountDetails() {
 
         int accountId = Integer.parseInt(account_id.getText());
         String accountName = account_name.getText();
@@ -172,21 +171,21 @@ public class AccountController extends Controller {
 
         Account account = new Account();
 
-        String encName = null;
-        String encPass = null;
-        String encUrl = null;
-        String encNotes = null;
+        String encryptedName = null;
+        String encryptedPass = null;
+        String encryptedUrl = null;
+        String encryptedNotes = null;
 
         try {
-            encName = Crypt.encrypt(key, accountName);
-            encPass = Crypt.encrypt(key, accountPass);
-            encUrl = Crypt.encrypt(key, accountUrl);
-            encNotes = Crypt.encrypt(key, accountNotes);
+            encryptedName = Crypt.encrypt(key, accountName);
+            encryptedPass = Crypt.encrypt(key, accountPass);
+            encryptedUrl = Crypt.encrypt(key, accountUrl);
+            encryptedNotes = Crypt.encrypt(key, accountNotes);
         } catch (Exception ignored) {};
 
-        account.update(accountId, encName, encPass, encUrl, encNotes);
+        account.update(accountId, encryptedName, encryptedPass, encryptedUrl, encryptedNotes);
 
-        response_message.setText("Account Updated");
+        notice_text.setText("Account Updated");
     }
 
     @FXML
@@ -202,6 +201,11 @@ public class AccountController extends Controller {
 
     @FXML
     public void deleteAccountAction() throws IOException {
+        if(this.clickCount < 1) {
+            this.notice_text.setText("Click delete once more to permanently remove this account.");
+            this.clickCount++;
+            return;
+        }
         int accountId = Integer.parseInt(account_id.getText());
         Account account = new Account();
         account.delete(accountId);
