@@ -41,6 +41,8 @@ public class AccountController extends Controller {
     @FXML private Button create_account_button;
     @FXML private ImageView generate_password_icon;
     @FXML private Slider password_length;
+    @FXML private CheckBox specify_digits;
+    @FXML private CheckBox specify_symbols;
     @FXML private Slider number_of_digits;
     @FXML private Slider number_of_symbols;
     private int clickCount;
@@ -238,8 +240,14 @@ public class AccountController extends Controller {
 
         Password password = new Password();
         password.setPasswordLength(passwordLength);
-        password.setNumberOfDigits(digits);
-        password.setNumberOfSymbols(symbols);
+
+        if(this.specify_digits.isSelected()) {
+            password.setNumberOfDigits(digits);
+        }
+
+        if(this.specify_symbols.isSelected()) {
+            password.setNumberOfSymbols(symbols);
+        }
 
         String newPassword = password.generate();
 
