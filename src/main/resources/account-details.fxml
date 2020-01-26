@@ -34,7 +34,7 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_name" editable="false" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <TextField fx:id="account_name" editable="false" focusTraversable="false" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin></TextField>
@@ -48,12 +48,12 @@
             </Label>
             <AnchorPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <children>
-                  <TextField fx:id="account_password" editable="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0">
+                  <TextField fx:id="account_password" editable="false" focusTraversable="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0">
                      <padding>
                         <Insets right="30.0" />
                      </padding>
                   </TextField>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" onMouseClicked="#passwordGenAction" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                  <ImageView fx:id="generate_password_icon" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#passwordModalView" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
                      <image>
                         <Image url="@img/gear.png" />
                      </image></ImageView>
@@ -70,7 +70,7 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_url" layoutX="202.0" layoutY="43.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <TextField fx:id="account_url" focusTraversable="false" layoutX="202.0" layoutY="43.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin>
@@ -83,7 +83,7 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextArea fx:id="account_notes" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
+            <TextArea fx:id="account_notes" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin>

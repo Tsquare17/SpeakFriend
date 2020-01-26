@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.account;
 import com.tsquare.speakfriend.account.preview.AccountPreview;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
+import com.tsquare.speakfriend.crypt.Password;
 import com.tsquare.speakfriend.database.account.Account;
 import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
@@ -17,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -37,6 +39,10 @@ public class AccountController extends Controller {
     @FXML private Button delete_account_button;
     @FXML private Hyperlink edit_account_link;
     @FXML private Button create_account_button;
+    @FXML private ImageView generate_password_icon;
+    @FXML private Slider password_length;
+    @FXML private Slider number_of_digits;
+    @FXML private Slider number_of_symbols;
     private int clickCount;
 
     @FXML
@@ -142,11 +148,11 @@ public class AccountController extends Controller {
         Stage stage = Main.getStage();
         Scene currentScene = Main.getScene();
 
-        Label accountIdField            = (Label) scene.lookup("#account_id");
-        TextField accountNameField      = (TextField) scene.lookup("#account_name");
-        TextField accountPassField      = (TextField) scene.lookup("#account_password");
-        TextField accountUrlField       = (TextField) scene.lookup("#account_url");
-        TextArea accountNotesField      = (TextArea) scene.lookup("#account_notes");
+        Label accountIdField       = (Label) scene.lookup("#account_id");
+        TextField accountNameField = (TextField) scene.lookup("#account_name");
+        TextField accountPassField = (TextField) scene.lookup("#account_password");
+        TextField accountUrlField  = (TextField) scene.lookup("#account_url");
+        TextArea accountNotesField = (TextArea) scene.lookup("#account_notes");
 
         accountIdField.setText(accountId);
         accountNameField.setText(accountName);
@@ -192,6 +198,7 @@ public class AccountController extends Controller {
     public void editAccountAction() {
         update_account_button.setVisible(true);
         delete_account_button.setVisible(true);
+        generate_password_icon.setVisible(true);
         edit_account_link.setVisible(false);
         account_name.setEditable(true);
         account_password.setEditable(true);
@@ -213,7 +220,7 @@ public class AccountController extends Controller {
     }
 
     @FXML
-    public void passwordGenAction() throws IOException {
+    public void passwordModalView() throws IOException {
         Stage stage = Main.getStage();
         Stage newStage = new Stage();
         newStage.initOwner(stage);
@@ -221,5 +228,22 @@ public class AccountController extends Controller {
         newStage.setScene(new Scene(modal, 200, 350));
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.show();
+    }
+
+    @FXML
+    public void generatePasswordAction() {
+        int passwordLength = (int) password_length.getValue();
+        int digits = (int) number_of_digits.getValue();
+        int symbols = (int) number_of_symbols.getValue();
+
+        Password password = new Password();
+        password.setPasswordLength(passwordLength);
+        password.setNumberOfDigits(digits);
+        password.setNumberOfSymbols(symbols);
+
+        String newPassword = password.generate();
+
+        TextField accountPassField = (TextField) Main.getScene().lookup("#account_password");
+        accountPassField.setText(newPassword);
     }
 }
