@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -33,7 +34,7 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_name" editable="false" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <TextField fx:id="account_name" editable="false" focusTraversable="false" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin></TextField>
@@ -45,10 +46,18 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_password" editable="false" prefWidth="196.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <AnchorPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+               <children>
+                  <TextField fx:id="account_password" editable="false" focusTraversable="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <ImageView fx:id="generate_password_icon" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#passwordModalView" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                     <image>
+                        <Image url="@img/gear.png" />
+                     </image></ImageView>
+               </children>
                <GridPane.margin>
                   <Insets right="30.0" />
-               </GridPane.margin></TextField>
+               </GridPane.margin>
+            </AnchorPane>
             <Label layoutX="75.0" layoutY="202.0" text="URL" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <font>
                   <Font name="Fira Code Medium" size="13.0" />
@@ -57,6 +66,11 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
+            <TextField fx:id="account_url" focusTraversable="false" layoutX="202.0" layoutY="43.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="30.0" />
+               </GridPane.margin>
+            </TextField>
             <Label layoutX="94.0" layoutY="335.0" text="Notes" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <font>
                   <Font name="Fira Code Medium" size="13.0" />
@@ -65,12 +79,7 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_url" layoutX="202.0" layoutY="43.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextArea fx:id="account_notes" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
+            <TextArea fx:id="account_notes" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin>
@@ -80,7 +89,7 @@
             </TextArea>
             <Button fx:id="back_button" defaultButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             <Button fx:id="update_account_button" mnemonicParsing="false" onAction="#updateAccountDetails" text="Update" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-            <Label fx:id="response_message" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+            <Label fx:id="notice_text" alignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
             <Hyperlink fx:id="edit_account_link" onAction="#editAccountAction" text="Edit Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button fx:id="delete_account_button" cancelButton="true" mnemonicParsing="false" onAction="#deleteAccountAction" style="-fx-background-color: red;" text="DELETE" textFill="WHITE" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>

@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.account;
 import com.tsquare.speakfriend.account.preview.AccountPreview;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
+import com.tsquare.speakfriend.crypt.Password;
 import com.tsquare.speakfriend.database.account.Account;
 import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
@@ -12,13 +13,14 @@ import com.tsquare.speakfriend.nodes.accountListCell;
 import com.tsquare.speakfriend.utils.AccountPreviewComparator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,15 +34,21 @@ public class AccountController extends Controller {
     @FXML private TextField account_password;
     @FXML private TextField account_url;
     @FXML private TextArea account_notes;
-    @FXML private Label response_message;
+    @FXML private Label notice_text;
     @FXML private Button update_account_button;
     @FXML private Button delete_account_button;
     @FXML private Hyperlink edit_account_link;
     @FXML private Button create_account_button;
+    @FXML private ImageView generate_password_icon;
+    @FXML private Slider password_length;
+    @FXML private CheckBox specify_digits;
+    @FXML private CheckBox specify_symbols;
+    @FXML private Slider number_of_digits;
+    @FXML private Slider number_of_symbols;
     private int clickCount;
 
     @FXML
-    public void createAccountAction(ActionEvent event) {
+    public void createAccountAction() {
         Auth auth = new Auth();
         int id = auth.getId();
         String key = auth.getKey();
@@ -52,12 +60,12 @@ public class AccountController extends Controller {
 
         Account account = new Account();
         account.create(id, accountName, accountPass, accountUrl, accountNotes);
-        response_message.setText("Account Created");
+        notice_text.setText("Account Created");
         create_account_button.setVisible(false);
     }
 
     @FXML
-    public void createAccountView(ActionEvent event) throws IOException {
+    public void createAccountView() throws IOException {
         this.newScene("create-account");
     }
 
@@ -142,11 +150,11 @@ public class AccountController extends Controller {
         Stage stage = Main.getStage();
         Scene currentScene = Main.getScene();
 
-        Label accountIdField            = (Label) scene.lookup("#account_id");
-        TextField accountNameField      = (TextField) scene.lookup("#account_name");
-        TextField accountPassField      = (TextField) scene.lookup("#account_password");
-        TextField accountUrlField       = (TextField) scene.lookup("#account_url");
-        TextArea accountNotesField      = (TextArea) scene.lookup("#account_notes");
+        Label accountIdField       = (Label) scene.lookup("#account_id");
+        TextField accountNameField = (TextField) scene.lookup("#account_name");
+        TextField accountPassField = (TextField) scene.lookup("#account_password");
+        TextField accountUrlField  = (TextField) scene.lookup("#account_url");
+        TextArea accountNotesField = (TextArea) scene.lookup("#account_notes");
 
         accountIdField.setText(accountId);
         accountNameField.setText(accountName);
@@ -158,7 +166,7 @@ public class AccountController extends Controller {
     }
 
     @FXML
-    public void updateAccountDetails(ActionEvent event) throws IOException {
+    public void updateAccountDetails() {
 
         int accountId = Integer.parseInt(account_id.getText());
         String accountName = account_name.getText();
@@ -171,27 +179,28 @@ public class AccountController extends Controller {
 
         Account account = new Account();
 
-        String encName = null;
-        String encPass = null;
-        String encUrl = null;
-        String encNotes = null;
+        String encryptedName = null;
+        String encryptedPass = null;
+        String encryptedUrl = null;
+        String encryptedNotes = null;
 
         try {
-            encName = Crypt.encrypt(key, accountName);
-            encPass = Crypt.encrypt(key, accountPass);
-            encUrl = Crypt.encrypt(key, accountUrl);
-            encNotes = Crypt.encrypt(key, accountNotes);
+            encryptedName = Crypt.encrypt(key, accountName);
+            encryptedPass = Crypt.encrypt(key, accountPass);
+            encryptedUrl = Crypt.encrypt(key, accountUrl);
+            encryptedNotes = Crypt.encrypt(key, accountNotes);
         } catch (Exception ignored) {};
 
-        account.update(accountId, encName, encPass, encUrl, encNotes);
+        account.update(accountId, encryptedName, encryptedPass, encryptedUrl, encryptedNotes);
 
-        response_message.setText("Account Updated");
+        notice_text.setText("Account Updated");
     }
 
     @FXML
     public void editAccountAction() {
         update_account_button.setVisible(true);
         delete_account_button.setVisible(true);
+        generate_password_icon.setVisible(true);
         edit_account_link.setVisible(false);
         account_name.setEditable(true);
         account_password.setEditable(true);
@@ -201,9 +210,48 @@ public class AccountController extends Controller {
 
     @FXML
     public void deleteAccountAction() throws IOException {
+        if(this.clickCount < 1) {
+            this.notice_text.setText("Click delete once more to permanently remove this account.");
+            this.clickCount++;
+            return;
+        }
         int accountId = Integer.parseInt(account_id.getText());
         Account account = new Account();
         account.delete(accountId);
         this.listAccountsView();
+    }
+
+    @FXML
+    public void passwordModalView() throws IOException {
+        Stage stage = Main.getStage();
+        Stage newStage = new Stage();
+        newStage.initOwner(stage);
+        VBox modal = FXMLLoader.load(getClass().getResource("/generate-password.fxml"));
+        newStage.setScene(new Scene(modal, 200, 350));
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.show();
+    }
+
+    @FXML
+    public void generatePasswordAction() {
+        int passwordLength = (int) password_length.getValue();
+        int digits = (int) number_of_digits.getValue();
+        int symbols = (int) number_of_symbols.getValue();
+
+        Password password = new Password();
+        password.setPasswordLength(passwordLength);
+
+        if(this.specify_digits.isSelected()) {
+            password.setNumberOfDigits(digits);
+        }
+
+        if(this.specify_symbols.isSelected()) {
+            password.setNumberOfSymbols(symbols);
+        }
+
+        String newPassword = password.generate();
+
+        TextField accountPassField = (TextField) Main.getScene().lookup("#account_password");
+        accountPassField.setText(newPassword);
     }
 }
