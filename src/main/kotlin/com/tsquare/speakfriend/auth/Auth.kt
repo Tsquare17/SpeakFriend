@@ -14,7 +14,7 @@ class Auth {
 
         CurrentUser.userId = match.id.value
         CurrentUser.userName = match.name
-        CurrentUser.userKey = Crypt.generateKey(match.pass).toString()
+        CurrentUser.userKey = Crypt.generateKey(match.pass, pass).toString()
 
         return true
     }

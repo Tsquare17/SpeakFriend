@@ -70,20 +70,15 @@ object Crypt
     }
 
     @JvmStatic
-    fun generatePass(pass: String): String? {
-        return generatePassword(pass)
-    }
-
-    @JvmStatic
-    fun generateKey(key: String): String? {
-        val parts = key.split(":".toRegex()).toTypedArray()
+    fun generateKey(hash: String, pass: String): String? {
+        val parts = hash.split(":".toRegex()).toTypedArray()
         val salt = fromHex(parts[1])
-        val chars = key.toCharArray()
-        val spec = PBEKeySpec(chars, salt, 1000, 128)
+        val chars = pass.reversed().toCharArray()
+        val spec = PBEKeySpec(chars, salt, 1500, 128)
         val skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
-        val hash = skf.generateSecret(spec).encoded
+        val hashed = skf.generateSecret(spec).encoded
 
-        return toHex(hash)
+        return toHex(hashed)
     }
 
     @JvmStatic
@@ -93,7 +88,7 @@ object Crypt
 
     @JvmStatic
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
-    private fun generatePassword(password: String): String? {
+    fun generatePassword(password: String): String? {
         val iterations = 1000
         val chars = password.toCharArray()
         val salt = getSalt()
