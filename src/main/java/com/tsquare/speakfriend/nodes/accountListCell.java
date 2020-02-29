@@ -18,12 +18,12 @@ public class accountListCell extends ListCell<AccountPreview> {
             setGraphic(null);
         } else {
             this.setCursor(Cursor.HAND);
-            setText(account.getAccountName());
+            setText(account.getName());
 
             this.setOnMouseClicked(e -> {
                 AccountController accountController = new AccountController();
                 try {
-                    accountController.showAccountDetails(account.getAccountId());
+                    accountController.showAccountDetails(account.getId());
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
