@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.AccountController">
+    <children>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="400.0">
+         <children>
+            <HTMLEditor fx:id="account_notes_edited" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" prefHeight="400.0" prefWidth="506.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+        <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
+            <padding>
+                <Insets bottom="5.0" top="5.0" />
+            </padding>
+            <children>
+                <Button fx:id="notes_add_button" mnemonicParsing="false" onAction="#createAccountNotesAction" text="Update" />
+            </children>
+        </HBox>
+      <Label fx:id="account_id" focusTraversable="false" visible="false" />
+    </children>
+</VBox>

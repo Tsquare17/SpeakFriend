@@ -4,14 +4,12 @@ import com.tsquare.speakfriend.crypt.Crypt;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,10 +51,10 @@ public abstract class Controller {
         return "";
     }
 
-    protected String getEncryptedText(String key, TextArea field) {
-        if(!field.getText().isEmpty()) {
+    protected String getEncryptedText(String key, HTMLEditor field) {
+        if(!field.getHtmlText().isEmpty()) {
             try {
-                return Crypt.encrypt(key, field.getText());
+                return Crypt.encrypt(key, field.getHtmlText());
             } catch(Exception ignored) {}
         }
         return "";
