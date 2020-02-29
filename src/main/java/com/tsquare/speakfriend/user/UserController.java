@@ -67,6 +67,13 @@ public class UserController extends Controller
     }
 
     @FXML
+    protected void registerEnterKeyAction(KeyEvent event) {
+        if(event.getCode().equals(KeyCode.ENTER)) {
+            this.registerSubmitAction();
+        }
+    }
+
+    @FXML
     public void deleteUserAction() throws IOException {
         if(!this.password.getText().equals(this.confirm_password.getText())) {
             this.notice_text.setText("Password mismatch. Please confirm.");

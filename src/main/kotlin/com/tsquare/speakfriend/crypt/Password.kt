@@ -11,7 +11,7 @@ class Password {
     var passwordLength: Int = 12
     var numberOfDigits: Int = -1
     var numberOfSymbols: Int = -1
-    var generator: PasswordGenerator = PasswordGenerator()
+    private var generator: PasswordGenerator = PasswordGenerator()
     private val lowerCaseRule: CharacterRule = CharacterRule(EnglishCharacterData.LowerCase)
     private val upperCaseRule: CharacterRule = CharacterRule(EnglishCharacterData.UpperCase)
     private val digitRule: CharacterRule = CharacterRule(EnglishCharacterData.Digit)
@@ -60,7 +60,7 @@ class Password {
     }
 
     // maybe just check if greater than or equal to zero, use rule
-    private fun generateWithSpecifiedDigitsAndSymbols(): String? {
+    private fun generateWithSpecifiedDigitsAndSymbols(): String {
         // both specified 0
         if(numberOfDigits == 0 && numberOfSymbols == 0) {
             return generator.generatePassword(passwordLength, lowerCaseRule, upperCaseRule)
@@ -78,7 +78,10 @@ class Password {
             return generator.generatePassword(passwordLength, lowerCaseRule, upperCaseRule, digitRule)
         }
 
-        return null
+        digitRule.numberOfCharacters = numberOfDigits
+        symbolRule.numberOfCharacters = numberOfSymbols
+
+        return generator.generatePassword(passwordLength, lowerCaseRule, upperCaseRule, digitRule, symbolRule)
     }
 
     private fun generateWithSpecifiedDigits(): String? {

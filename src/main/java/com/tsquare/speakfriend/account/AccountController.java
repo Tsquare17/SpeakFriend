@@ -13,8 +13,6 @@ import com.tsquare.speakfriend.nodes.accountListCell;
 import com.tsquare.speakfriend.utils.AccountPreviewComparator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,13 +34,16 @@ public class AccountController extends Controller {
     @FXML private TextField account_name;
     @FXML private TextField account_password;
     @FXML private TextField account_url;
-    @FXML private HTMLEditor account_notes;
+    @FXML private TextField account_notes;
     @FXML private HTMLEditor account_notes_edited;
     @FXML private Label notice_text;
     @FXML private Button update_account_button;
     @FXML private Button delete_account_button;
     @FXML private Hyperlink edit_account_link;
     @FXML private Button create_account_button;
+    @FXML private Button edit_notes_button;
+    @FXML private Button view_notes_button;
+    @FXML private Button account_notes_update_button;
     @FXML private ImageView generate_password_icon;
     @FXML private Slider password_length;
     @FXML private CheckBox specify_digits;
@@ -58,6 +59,11 @@ public class AccountController extends Controller {
         String key = auth.getKey();
 
         String accountName = this.getEncryptedText(key, account_name);
+        if(accountName.equals("")) {
+            notice_text.setText("Account name is required.");
+            return;
+        }
+
         String accountPass = this.getEncryptedText(key, account_password);
         String accountUrl = this.getEncryptedText(key, account_url);
         String accountNotes = this.getEncryptedText(key, account_notes);
@@ -157,13 +163,13 @@ public class AccountController extends Controller {
         TextField accountNameField = (TextField) scene.lookup("#account_name");
         TextField accountPassField = (TextField) scene.lookup("#account_password");
         TextField accountUrlField  = (TextField) scene.lookup("#account_url");
-        // HTMLEditor accountNotesField = (HTMLEditor) scene.lookup("#account_notes");
+        TextField accountNotesField = (TextField) scene.lookup("#account_notes");
 
         accountIdField.setText(accountId);
         accountNameField.setText(accountName);
         accountPassField.setText(accountPass);
         accountUrlField.setText(accountUrl);
-        // accountNotesField.setHtmlText(accountNotes);
+        accountNotesField.setText(accountNotes);
 
         stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
     }
@@ -172,9 +178,14 @@ public class AccountController extends Controller {
     public void updateAccountDetails() {
         int accountId = Integer.parseInt(account_id.getText());
         String accountName = account_name.getText();
+        if (accountName.equals("")) {
+            notice_text.setText("Account name is required.");
+            return;
+        }
+
         String accountPass = account_password.getText();
         String accountUrl = account_url.getText();
-        String accountNotes = account_notes.getHtmlText();
+        String accountNotes = account_notes.getText();
 
         Auth auth = new Auth();
         String key = auth.getKey();
@@ -207,7 +218,9 @@ public class AccountController extends Controller {
         account_name.setEditable(true);
         account_password.setEditable(true);
         account_url.setEditable(true);
-        // account_notes.setEditable(true);
+        view_notes_button.setVisible(false);
+        edit_notes_button.setDisable(false);
+        edit_notes_button.setVisible(true);
     }
 
     @FXML
@@ -260,23 +273,26 @@ public class AccountController extends Controller {
 
         Scene newScene = newStage.getScene();
 
-        Label accountIdLabel = (Label) newScene.lookup("#account_id");
-        accountIdLabel.setText(accountId);
-
         HTMLEditor htmlEditor = (HTMLEditor) newScene.lookup("#account_notes_edited");
         htmlEditor.setHtmlText(accountNotes);
-
     }
 
     @FXML
-    public void accountNotesModalCreateView() throws IOException {
+    public void accountNotesEditModalView() throws IOException {
+        String accountNotes = account_notes.getText();
+
         Stage stage = Main.getStage();
         Stage newStage = new Stage();
         newStage.initOwner(stage);
-        VBox modal = FXMLLoader.load(getClass().getResource("/create-account-notes.fxml"));
+
+        VBox modal = FXMLLoader.load(getClass().getResource("/edit-account-notes.fxml"));
         newStage.setScene(new Scene(modal, 600, 400));
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.show();
+
+        Scene newScene = newStage.getScene();
+        HTMLEditor htmlEditor = (HTMLEditor) newScene.lookup("#account_notes_edited");
+        htmlEditor.setHtmlText(accountNotes);
     }
 
     @FXML
@@ -305,14 +321,11 @@ public class AccountController extends Controller {
     @FXML
     public void updateAccountNotesAction() {
         String notes = account_notes_edited.getHtmlText();
-        String accountId = account_id.getText();
 
-        String test = "";
-    }
+        TextField accountNotes = (TextField) Main.getScene().lookup("#account_notes");
+        accountNotes.setText(notes);
 
-    @FXML
-    public void createAccountNotesAction() {
-        Scene scene = Main.getScene();
-        // need to find a way to add the notes, preferably as text to a hidden textarea to prevent loading html editor.
+        Stage stage = (Stage) account_notes_update_button.getScene().getWindow();
+        stage.close();
     }
 }

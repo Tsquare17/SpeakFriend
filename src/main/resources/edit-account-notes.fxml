@@ -17,9 +17,8 @@
                 <Insets bottom="5.0" top="5.0" />
             </padding>
             <children>
-                <Button fx:id="notes_add_button" mnemonicParsing="false" onAction="#createAccountNotesAction" text="Update" />
+                <Button fx:id="account_notes_update_button" mnemonicParsing="false" onAction="#updateAccountNotesAction" text="Update" />
             </children>
         </HBox>
-      <Label fx:id="account_id" focusTraversable="false" visible="false" />
     </children>
 </VBox>

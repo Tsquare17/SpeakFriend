@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -22,7 +21,6 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label fx:id="account_id" visible="false" GridPane.rowIndex="1" />
@@ -79,23 +77,22 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextArea fx:id="account_notes" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
-            </TextArea>
+            <Button fx:id="view_notes_button" mnemonicParsing="false" onAction="#accountNotesModalView" text="View" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Button fx:id="edit_notes_button" disable="true" mnemonicParsing="false" onAction="#accountNotesEditModalView" text="Edit" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Button fx:id="back_button" defaultButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             <Button fx:id="update_account_button" mnemonicParsing="false" onAction="#updateAccountDetails" text="Update" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-            <Label fx:id="notice_text" alignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
             <Hyperlink fx:id="edit_account_link" onAction="#editAccountAction" text="Edit Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button fx:id="delete_account_button" cancelButton="true" mnemonicParsing="false" onAction="#deleteAccountAction" style="-fx-background-color: red;" text="DELETE" textFill="WHITE" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <TextField fx:id="account_notes" cacheShape="false" centerShape="false" focusTraversable="false" opacity="0.0" scaleShape="false" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </GridPane>
+      <AnchorPane prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="notice_text" alignment="CENTER" contentDisplay="CENTER" style="-fx-text-alignment: center;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
    </children>
 </VBox>

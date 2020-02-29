@@ -63,7 +63,7 @@ object Crypt
 
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
     fun generateSecretKey(password: String, iv: ByteArray?): SecretKey? {
-        val spec: KeySpec = PBEKeySpec(password.toCharArray(), iv, 65536, 128) // AES-128
+        val spec: KeySpec = PBEKeySpec(password.toCharArray(), iv, 65536, 128)
         val secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
         val key = secretKeyFactory.generateSecret(spec).encoded
         return SecretKeySpec(key, "AES")

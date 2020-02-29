@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -46,15 +45,6 @@ public abstract class Controller {
         if(!field.getText().isEmpty()) {
             try {
                 return Crypt.encrypt(key, field.getText());
-            } catch(Exception ignored) {}
-        }
-        return "";
-    }
-
-    protected String getEncryptedText(String key, HTMLEditor field) {
-        if(!field.getHtmlText().isEmpty()) {
-            try {
-                return Crypt.encrypt(key, field.getHtmlText());
             } catch(Exception ignored) {}
         }
         return "";
