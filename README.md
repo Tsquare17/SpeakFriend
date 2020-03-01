@@ -4,6 +4,8 @@ A simple account / password management system.
 
 Speak Friend secures account information using AES/GCM authenticated encryption.
 
+![Alt text](screenshot.png?raw=true "Optional Title")
+
 ## Building
 
 Speak Friend uses Maven to manage dependencies and build the package.
