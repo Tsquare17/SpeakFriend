@@ -273,43 +273,6 @@
 
 /*******************************************************************************
  *                                                                             *
- * Date picker						                                           *
- *                                                                             *
- ******************************************************************************/
-.date-picker .arrow-button {
-    -fx-background-color: transparent;
-}
-
-.date-picker .arrow-button .arrow {
-    -fx-background-insets: -4;
-}
-
-.date-picker .date-picker-display-node {
-    -fx-border-width: 0;
-}
-
-/*******************************************************************************
- *                                                                             *
- * HTML Editor 				                       			  				   *
- *                                                                             *
- ******************************************************************************/
-.html-editor {
-    -fx-background-color: white;
-    -fx-border-width: 2 0 2 0;
-    -fx-border-color: -swatch-grey;
-}
-
-.html-editor .web-view {
-    -fx-border-color: grey;
-    -fx-border-width: grey;
-}
-
-.web-view {
-    -fx-font-smoothing-type: gray;
-}
-
-/*******************************************************************************
- *                                                                             *
  * Label                                                                       *
  *                                                                             *
  ******************************************************************************/

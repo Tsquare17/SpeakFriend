@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="accountList" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.AccountController">
+<VBox id="accountListContainer" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.AccountController">
    <padding>
-      <Insets bottom="40.0" top="20.0" />
+      <Insets top="20.0" />
    </padding>
    <children>
       <GridPane>
@@ -18,18 +18,26 @@
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Hyperlink alignment="BASELINE_RIGHT" focusTraversable="false" onAction="#createAccountView" text="New Account" textAlignment="RIGHT" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BASELINE">
+            <Hyperlink alignment="BASELINE_RIGHT" focusTraversable="false" onAction="#createAccountView" text="New Account" textAlignment="RIGHT" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="BASELINE">
                <font>
                   <Font name="Fira Code Light" size="13.0" />
                </font>
             </Hyperlink>
+            <TextField fx:id="account_filter_field" onKeyReleased="#setFilteredList" promptText="Filter Accounts" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets right="30.0" />
+               </GridPane.margin>
+            </TextField>
          </children>
          <VBox.margin>
             <Insets />
          </VBox.margin>
+         <padding>
+            <Insets bottom="20.0" />
+         </padding>
       </GridPane>
+      <AnchorPane id="accountAnchor" VBox.vgrow="ALWAYS" />
    </children>
 </VBox>

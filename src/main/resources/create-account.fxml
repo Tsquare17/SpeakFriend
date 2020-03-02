@@ -79,7 +79,7 @@
                </GridPane.margin>
             </Label>
             <Button mnemonicParsing="false" onAction="#accountNotesEditModalView" text="Add Notes" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button accessibleText="Go Back" cancelButton="true" defaultButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Button accessibleText="Go Back" cancelButton="true" mnemonicParsing="false" onAction="#listAccountsView" style="-fx-background-color: red; -fx-text-fill: white;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <Button fx:id="create_account_button" mnemonicParsing="false" onAction="#createAccountAction" text="Create Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <Label fx:id="notice_text" textFill="WHITE" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             <TextField fx:id="account_notes" cacheShape="false" centerShape="false" editable="false" focusTraversable="false" opacity="0.0" scaleShape="false" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />

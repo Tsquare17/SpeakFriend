@@ -20,3 +20,5 @@
 *.ipr
 target/
 friend.db
+libs/
+scenicView*

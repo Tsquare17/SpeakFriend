@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="*nix" type="Application" factoryName="Application">
+  <configuration default="false" name="Windows JAVA 13" type="Application" factoryName="Application">
     <option name="ALTERNATIVE_JRE_PATH" value="$USER_HOME$/.sdkman/candidates/java/13.0.1.j9-adpt" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="com.tsquare.speakfriend.main.Main" />
     <module name="SpeakFriend" />
-    <option name="VM_PARAMETERS" value="--module-path ${MAVEN_REPOSITORY}/org/openjfx/javafx-base/13:${MAVEN_REPOSITORY}/org/openjfx/javafx-graphics/13:${MAVEN_REPOSITORY}/org/openjfx/javafx-controls/13:${MAVEN_REPOSITORY}/org/openjfx/javafx-fxml/13:${MAVEN_REPOSITORY}/org/openjfx/javafx-web/13:${MAVEN_REPOSITORY}/org/openjfx/javafx-media/13 --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.media" />
+    <option name="VM_PARAMETERS" value="--module-path ${MAVEN_REPOSITORY}/org/openjfx/javafx-base/13;${MAVEN_REPOSITORY}/org/openjfx/javafx-graphics/13;${MAVEN_REPOSITORY}/org/openjfx/javafx-controls/13;${MAVEN_REPOSITORY}/org/openjfx/javafx-fxml/13 --add-modules javafx.controls,javafx.fxml" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="sample.*" />

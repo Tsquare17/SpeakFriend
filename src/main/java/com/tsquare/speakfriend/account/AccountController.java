@@ -9,18 +9,23 @@ import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
-import com.tsquare.speakfriend.nodes.accountListCell;
 import com.tsquare.speakfriend.utils.AccountPreviewComparator;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.web.HTMLEditor;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -50,6 +55,7 @@ public class AccountController extends Controller {
     @FXML private CheckBox specify_symbols;
     @FXML private Slider number_of_digits;
     @FXML private Slider number_of_symbols;
+    @FXML private TextField account_filter_field;
     private int clickCount;
 
     @FXML
@@ -83,21 +89,30 @@ public class AccountController extends Controller {
     public void listAccountsView() throws IOException {
         // Get decryption key.
         Auth auth  = new Auth();
-        int id     = auth.getId();
+        int userId     = auth.getId();
         String key = auth.getKey();
 
-        String resource = "/account-list.fxml";
-        URL file = Controller.class.getResource(resource);
+        URL file = Controller.class.getResource("/account-list.fxml");
 
         Parent scene       = FXMLLoader.load(file);
         Stage stage        = Main.getStage();
         Scene currentScene = stage.getScene();
 
         // Get the account list container.
-        VBox accountListContainer = (VBox) scene.lookup("#accountList");
+        AnchorPane accountListAnchor = (AnchorPane) scene.lookup("#accountAnchor");
+        accountListAnchor.setPadding(new Insets(30, 0, 0, 0));
+
+        VBox accountListContainerContainer = (VBox) scene.lookup("#accountListContainer");
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+
+        VBox accountsVBox = new VBox();
+        accountsVBox.setFillWidth(true);
 
         // Get all accounts for the current user.
-        List<AccountEntity> accounts = AccountList.get(id);
+        List<AccountEntity> accounts = AccountList.get(userId);
 
         // Collect list of decrypted account previews.
         List<AccountPreview> decryptedList = new ArrayList<>();
@@ -115,21 +130,77 @@ public class AccountController extends Controller {
         // Sort the list of accounts by name.
         decryptedList.sort(new AccountPreviewComparator<>());
 
-        ListView<AccountPreview> listView        = new ListView<>();
-        ObservableList<AccountPreview> listItems = FXCollections.observableArrayList();
+        int count = 0;
+        for(AccountPreview item: decryptedList) {
+            HBox accountBox = new HBox();
+            accountBox.getChildren().add(new Label(item.getName()));
+            accountBox.setId(item.getName().replace(" ", "$:$").toLowerCase());
+            accountBox.setPadding(new Insets(20, 30, 20, 30));
+            accountBox.setCursor(Cursor.HAND);
+            if (count % 2 != 0) {
+                Color darkGrey = Color.rgb(43, 46, 52);
+                accountBox.setBackground(
+                        new Background(
+                                new BackgroundFill(darkGrey, CornerRadii.EMPTY, Insets.EMPTY)
+                        )
+                );
+            }
+            accountBox.setOnMouseClicked(e -> {
+                try {
+                    this.showAccountDetails(item.getId());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+            accountsVBox.getChildren().add(accountBox);
+            count++;
+        }
 
-        // Add the accounts to the list, set them in the list view, and add it to the container.
-        listItems.addAll(decryptedList);
-        listView.setItems(listItems);
-        listView.setCellFactory(
-                accountListView -> new accountListCell()
-        );
-        accountListContainer.getChildren().add(listView);
+        accountsVBox.setId("account_list");
+        scrollPane.setContent(accountsVBox);
+        accountListAnchor.getChildren().add(scrollPane);
 
         VBox box = FXMLLoader.load(getClass().getResource("/container.fxml"));
         box.getChildren().add(scene);
 
+        scrollPane.setPrefWidth(stage.getWidth());
+        scrollPane.setPrefHeight(stage.getHeight() - 60);
+        // Bind the scroll pane's size to the parent anchor pane's size.
+        stage.heightProperty().addListener(e -> {
+            accountListContainerContainer.setPrefHeight(stage.getHeight() - 30);
+            accountListAnchor.setPrefHeight(stage.getHeight() - 60);
+        });
+        stage.widthProperty().addListener(e -> {
+            scrollPane.setPrefWidth(stage.getWidth());
+        });
+
         stage.setScene(new Scene(box, currentScene.getWidth(), currentScene.getHeight()));
+    }
+
+    @FXML
+    private void setFilteredList(KeyEvent event) {
+        String filter = account_filter_field.getText().replace(" ", "").toLowerCase();
+
+        if(event.getCode().equals(KeyCode.DELETE)) {
+            if(filter.isEmpty()) {
+                return;
+            }
+        }
+
+        Scene scene = Main.getScene();
+
+        VBox vBox = (VBox) scene.lookup("#account_list");
+        ObservableList<Node> listView = vBox.getChildren();
+        for (Node item: listView) {
+            if (item.getId().replace("$:$", " ").toLowerCase().startsWith(filter)) {
+                item.setVisible(true);
+                item.setManaged(true);
+            } else {
+                item.setVisible(false);
+                item.setManaged(false);
+            }
+
+        }
     }
 
     public void showAccountDetails(int id) throws IOException {
@@ -273,8 +344,13 @@ public class AccountController extends Controller {
 
         Scene newScene = newStage.getScene();
 
-        HTMLEditor htmlEditor = (HTMLEditor) newScene.lookup("#account_notes_edited");
-        htmlEditor.setHtmlText(accountNotes);
+        WebView webView = (WebView) newScene.lookup("#account_notes_view");
+        webView.setContextMenuEnabled(false);
+        if(accountNotes.contains("contenteditable=\"true\"")){
+            accountNotes = accountNotes.replace("contenteditable=\"true\"", "contenteditable=\"false\"");
+        }
+
+        webView.getEngine().loadContent(accountNotes);
     }
 
     @FXML
