@@ -19,6 +19,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -30,8 +34,12 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import kotlin.jvm.Throws;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +67,7 @@ public class AccountController extends Controller {
     @FXML private Slider number_of_symbols;
     @FXML private TextField account_filter_field;
     @FXML private ImageView password_clipboard;
+    @FXML private ImageView go_to_url;
     private int clickCount;
 
     @FXML
@@ -296,6 +305,7 @@ public class AccountController extends Controller {
         edit_notes_button.setDisable(false);
         edit_notes_button.setVisible(true);
         password_clipboard.setVisible(false);
+        go_to_url.setVisible(false);
     }
 
     @FXML
@@ -415,5 +425,15 @@ public class AccountController extends Controller {
         final ClipboardContent content = new ClipboardContent();
         content.putString(account_password.getText());
         clipboard.setContent(content);
+    }
+
+    @FXML
+    public void goToUrl() {
+        String url = account_url.getText();
+        try {
+            new ProcessBuilder("x-www-browser", url).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -69,11 +69,19 @@
                   <Insets right="30.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="account_url" focusTraversable="false" layoutX="202.0" layoutY="43.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <AnchorPane layoutX="210.0" layoutY="118.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <children>
+                  <TextField fx:id="account_url" focusTraversable="false" prefWidth="180.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <ImageView fx:id="go_to_url" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#goToUrl" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <image>
+                        <Image url="@img/goto.png" />
+                     </image>
+                  </ImageView>
+               </children>
                <GridPane.margin>
                   <Insets right="30.0" />
                </GridPane.margin>
-            </TextField>
+            </AnchorPane>
             <Label layoutX="94.0" layoutY="335.0" text="Notes" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <font>
                   <Font name="Fira Code Medium" size="13.0" />
