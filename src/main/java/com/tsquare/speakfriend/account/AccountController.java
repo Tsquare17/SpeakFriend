@@ -20,6 +20,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
@@ -56,6 +58,7 @@ public class AccountController extends Controller {
     @FXML private Slider number_of_digits;
     @FXML private Slider number_of_symbols;
     @FXML private TextField account_filter_field;
+    @FXML private ImageView password_clipboard;
     private int clickCount;
 
     @FXML
@@ -292,6 +295,7 @@ public class AccountController extends Controller {
         view_notes_button.setVisible(false);
         edit_notes_button.setDisable(false);
         edit_notes_button.setVisible(true);
+        password_clipboard.setVisible(false);
     }
 
     @FXML
@@ -403,5 +407,13 @@ public class AccountController extends Controller {
 
         Stage stage = (Stage) account_notes_update_button.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    public void copyToClipboard() {
+        final Clipboard clipboard = Clipboard.getSystemClipboard();
+        final ClipboardContent content = new ClipboardContent();
+        content.putString(account_password.getText());
+        clipboard.setContent(content);
     }
 }

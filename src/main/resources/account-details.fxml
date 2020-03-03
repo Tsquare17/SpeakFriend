@@ -51,6 +51,11 @@
                      <image>
                         <Image url="@img/gear.png" />
                      </image></ImageView>
+                  <ImageView fx:id="password_clipboard" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#copyToClipboard" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                     <image>
+                        <Image url="@img/clipboard.png" />
+                     </image>
+                  </ImageView>
                </children>
                <GridPane.margin>
                   <Insets right="30.0" />
