@@ -34,12 +34,8 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import kotlin.jvm.Throws;
 
-import java.awt.*;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +44,7 @@ public class AccountController extends Controller {
     @FXML private Label account_id;
     @FXML private TextField account_name;
     @FXML private TextField account_password;
+    @FXML private PasswordField account_password_masked;
     @FXML private TextField account_url;
     @FXML private TextField account_notes;
     @FXML private HTMLEditor account_notes_edited;
@@ -245,12 +242,14 @@ public class AccountController extends Controller {
         Label accountIdField       = (Label) scene.lookup("#account_id");
         TextField accountNameField = (TextField) scene.lookup("#account_name");
         TextField accountPassField = (TextField) scene.lookup("#account_password");
+        PasswordField accountPassMaskedField = (PasswordField) scene.lookup("#account_password_masked");
         TextField accountUrlField  = (TextField) scene.lookup("#account_url");
         TextField accountNotesField = (TextField) scene.lookup("#account_notes");
 
         accountIdField.setText(accountId);
         accountNameField.setText(accountName);
         accountPassField.setText(accountPass);
+        accountPassMaskedField.setText(accountPass);
         accountUrlField.setText(accountUrl);
         accountNotesField.setText(accountNotes);
 
@@ -299,7 +298,9 @@ public class AccountController extends Controller {
         generate_password_icon.setVisible(true);
         edit_account_link.setVisible(false);
         account_name.setEditable(true);
+        account_password.setVisible(true);
         account_password.setEditable(true);
+        account_password_masked.setVisible(false);
         account_url.setEditable(true);
         view_notes_button.setVisible(false);
         edit_notes_button.setDisable(false);
@@ -434,6 +435,17 @@ public class AccountController extends Controller {
             new ProcessBuilder("x-www-browser", url).start();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void showPassword() {
+        if (account_password.isVisible()) {
+            account_password.setVisible(false);
+            account_password_masked.setVisible(true);
+        } else {
+            account_password.setVisible(true);
+            account_password_masked.setVisible(false);
         }
     }
 }

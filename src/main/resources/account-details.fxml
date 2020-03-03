@@ -46,14 +46,20 @@
             </Label>
             <AnchorPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <children>
-                  <TextField fx:id="account_password" editable="false" focusTraversable="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <PasswordField id="account_password_masked" fx:id="account_password_masked" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <TextField fx:id="account_password" editable="false" focusTraversable="false" visible="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <ImageView fx:id="generate_password_icon" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#passwordModalView" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
                      <image>
                         <Image url="@img/gear.png" />
                      </image></ImageView>
-                  <ImageView fx:id="password_clipboard" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#copyToClipboard" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                  <ImageView fx:id="password_clipboard" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#copyToClipboard" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="10.0">
                      <image>
                         <Image url="@img/clipboard.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="show_password" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#showPassword" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                     <image>
+                        <Image url="@img/eyecon.png" />
                      </image>
                   </ImageView>
                </children>
