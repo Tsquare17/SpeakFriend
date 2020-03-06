@@ -16,7 +16,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#deleteUserView" text="Delete User" />
+              <MenuItem mnemonicParsing="false" onAction="#editSettingsView" text="Settings" />
+                  <MenuItem mnemonicParsing="false" onAction="#deleteUserView" text="Delete User" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

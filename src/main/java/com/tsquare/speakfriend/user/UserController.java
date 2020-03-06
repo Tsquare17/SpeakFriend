@@ -106,10 +106,4 @@ public class UserController extends Controller
     protected void entryView() throws IOException {
         this.newScene("sign-in");
     }
-
-    @FXML
-    public void accountListView() throws IOException {
-        AccountController accountController = new AccountController();
-        accountController.listAccountsView();
-    }
 }

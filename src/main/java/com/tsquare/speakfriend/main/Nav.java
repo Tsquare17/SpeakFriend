@@ -27,4 +27,9 @@ public class Nav extends Controller {
         auth.checkOut();
         this.newScene("sign-in");
     }
+
+    @FXML
+    public void editSettingsView() throws IOException {
+        this.newScene("settings");
+    }
 }

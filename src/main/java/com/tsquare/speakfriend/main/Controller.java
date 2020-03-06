@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -15,15 +16,17 @@ import java.net.URL;
 
 public abstract class Controller {
     @FXML
-    public void newScene(String newScene) throws IOException {
-        String resource = "/" + newScene + ".fxml";
+    public void newScene(String nextScene) throws IOException {
+        String resource = "/" + nextScene + ".fxml";
         URL file = Controller.class.getResource(resource);
 
         Parent scene = FXMLLoader.load(file);
         Stage stage = Main.getStage();
         Scene currentScene = stage.getScene();
 
-        stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
+        Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
+
+        stage.setScene(newScene);
     }
 
     @FXML
@@ -39,6 +42,13 @@ public abstract class Controller {
             }
         });
         pause.play();
+    }
+
+    protected Scene addSceneTimer(Scene scene) {
+        PauseTransition transition = Main.getTransition();
+        scene.addEventFilter(InputEvent.ANY, evt -> transition.playFromStart());
+
+        return scene;
     }
 
     protected String getEncryptedText(String key, TextField field) {

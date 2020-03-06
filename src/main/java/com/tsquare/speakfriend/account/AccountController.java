@@ -7,9 +7,11 @@ import com.tsquare.speakfriend.crypt.Password;
 import com.tsquare.speakfriend.database.account.Account;
 import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
+import com.tsquare.speakfriend.database.settings.Setting;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.utils.AccountPreviewComparator;
+import javafx.animation.PauseTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,10 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.web.HTMLEditor;
@@ -183,7 +182,11 @@ public class AccountController extends Controller {
             scrollPane.setPrefWidth(stage.getWidth());
         });
 
-        stage.setScene(new Scene(box, currentScene.getWidth(), currentScene.getHeight()));
+        Scene newScene = this.addSceneTimer(
+                new Scene(box, currentScene.getWidth(), currentScene.getHeight())
+        );
+
+        stage.setScene(newScene);
     }
 
     @FXML
@@ -253,7 +256,11 @@ public class AccountController extends Controller {
         accountUrlField.setText(accountUrl);
         accountNotesField.setText(accountNotes);
 
-        stage.setScene(new Scene(scene, currentScene.getWidth(), currentScene.getHeight()));
+        Scene newScene = this.addSceneTimer(
+                new Scene(scene, currentScene.getWidth(), currentScene.getHeight())
+        );
+
+        stage.setScene(newScene);
     }
 
     @FXML
@@ -328,7 +335,11 @@ public class AccountController extends Controller {
         Stage newStage = new Stage();
         newStage.initOwner(stage);
         VBox modal = FXMLLoader.load(getClass().getResource("/generate-password.fxml"));
-        newStage.setScene(new Scene(modal, 300, 350));
+        newStage.setScene(
+                this.addSceneTimer(
+                        new Scene(modal, 300, 350)
+                )
+        );
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.show();
     }
@@ -353,7 +364,11 @@ public class AccountController extends Controller {
         Stage newStage = new Stage();
         newStage.initOwner(stage);
         VBox modal = FXMLLoader.load(getClass().getResource("/account-notes.fxml"));
-        newStage.setScene(new Scene(modal, 600, 400));
+        newStage.setScene(
+                this.addSceneTimer(
+                        new Scene(modal, 600, 400)
+                )
+        );
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.show();
 
@@ -377,7 +392,11 @@ public class AccountController extends Controller {
         newStage.initOwner(stage);
 
         VBox modal = FXMLLoader.load(getClass().getResource("/edit-account-notes.fxml"));
-        newStage.setScene(new Scene(modal, 600, 400));
+        newStage.setScene(
+            this.addSceneTimer(
+                    new Scene(modal, 600, 400)
+            )
+        );
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.show();
 
