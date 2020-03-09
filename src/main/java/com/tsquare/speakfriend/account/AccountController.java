@@ -7,11 +7,9 @@ import com.tsquare.speakfriend.crypt.Password;
 import com.tsquare.speakfriend.database.account.Account;
 import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
-import com.tsquare.speakfriend.database.settings.Setting;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.utils.AccountPreviewComparator;
-import javafx.animation.PauseTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -95,7 +93,6 @@ public class AccountController extends Controller {
 
     @FXML
     public void listAccountsView() throws IOException {
-        // Get decryption key.
         Auth auth  = new Auth();
         int userId     = auth.getId();
         String key = auth.getKey();

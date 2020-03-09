@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.main;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.database.schema.Schema;
 import com.tsquare.speakfriend.database.settings.Setting;
+import com.tsquare.speakfriend.database.settings.SettingsEntity;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -50,21 +51,24 @@ public class Main extends Application {
         try {
             String autoLogoutTime = setting.getOption("auto_logout_time").getValue();
 
-            transition = new PauseTransition(new javafx.util.Duration(Integer.parseInt(autoLogoutTime)));
-            transition.setOnFinished(evt -> {
-                try {
-                    this.logout();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+            if(!autoLogoutTime.equals("Never")) {
+                transition = new PauseTransition(new javafx.util.Duration(Integer.parseInt(autoLogoutTime)));
+                transition.setOnFinished(evt -> {
+                    try {
+                        this.logout();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
 
-            // Restart transition on user interaction.
-            scene.addEventFilter(InputEvent.ANY, evt -> {
-                transition.playFromStart();
-            });
-            transition.play();
-
+                // Restart transition on user interaction.
+                scene.addEventFilter(InputEvent.ANY, evt -> {
+                    transition.playFromStart();
+                });
+                transition.play();
+            } else {
+                transition = new PauseTransition();
+            }
         } catch (Exception e) {
             transition = new PauseTransition();
         }
@@ -86,6 +90,12 @@ public class Main extends Application {
 
         Schema schema = new Schema();
         schema.up();
+
+        Setting setting = new Setting();
+        SettingsEntity dbVersion = setting.getOption("db_version");
+        if (dbVersion != null && !dbVersion.getValue().equals("0.4.0")) {
+            setting.create("auto_logout_timer", "1 hour");
+        }
     }
 
     protected void logout() throws IOException {

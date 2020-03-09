@@ -28,29 +28,35 @@ class Setting {
     }
 
     fun update(optionArg: String, valueArg: String) {
-        val userId = CurrentUser.userId
+        val setting = this.getOption(optionArg)
 
-        val setting = transaction {
-            SettingsEntity.find {
-                Settings.option eq optionArg
-                Settings.userId eq userId
-            }.first()
+        if (setting != null) {
+            transaction {
+                SettingsEntity[setting.id].apply {
+                    value = valueArg
+                }
+            }
         }
+    }
 
-        transaction {
-            SettingsEntity[setting.id].apply {
-                value = valueArg
+    fun delete(optionArg: String) {
+        val setting = this.getOption(optionArg)
+
+        if (setting != null) {
+            transaction {
+                SettingsEntity[setting.id].delete()
             }
         }
     }
 
     fun getOption(optionArg: String): SettingsEntity? {
         val userId = CurrentUser.userId
+
         return transaction {
             SettingsEntity.find {
                 Settings.userId eq userId
                 Settings.option eq optionArg
-            }.first()
+            }.firstOrNull()
         }
     }
 }
