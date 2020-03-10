@@ -179,11 +179,11 @@ public class AccountController extends Controller {
             scrollPane.setPrefWidth(stage.getWidth());
         });
 
-        Scene newScene = this.addSceneTimer(
-                new Scene(box, currentScene.getWidth(), currentScene.getHeight())
-        );
+        Scene newScene = new Scene(box, currentScene.getWidth(), currentScene.getHeight());
 
         stage.setScene(newScene);
+
+        this.setTimer();
     }
 
     @FXML
@@ -253,11 +253,11 @@ public class AccountController extends Controller {
         accountUrlField.setText(accountUrl);
         accountNotesField.setText(accountNotes);
 
-        Scene newScene = this.addSceneTimer(
-                new Scene(scene, currentScene.getWidth(), currentScene.getHeight())
-        );
+        Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
 
         stage.setScene(newScene);
+
+        this.setTimer();
     }
 
     @FXML

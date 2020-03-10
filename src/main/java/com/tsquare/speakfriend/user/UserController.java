@@ -4,6 +4,7 @@ import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.database.user.User;
+import com.tsquare.speakfriend.settings.Options;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -25,6 +26,8 @@ public class UserController extends Controller
     protected void loginAction() throws IOException {
         Auth auth = new Auth();
         if(auth.checkIn(username.getText().trim(), password.getText())) {
+            this.checkDb();
+
             AccountController accountController = new AccountController();
             accountController.listAccountsView();
         } else {
@@ -105,5 +108,13 @@ public class UserController extends Controller
     @FXML
     protected void entryView() throws IOException {
         this.newScene("sign-in");
+    }
+
+    private void checkDb() {
+        String dbVersion = Options.get("db_version");
+        if (dbVersion.equals("")) {
+            Options.put("db_version", "1");
+            Options.put("auto_logout_time", "30");
+        }
     }
 }
