@@ -1,5 +1,6 @@
 package com.tsquare.speakfriend.main;
 
+import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -48,5 +49,17 @@ public abstract class Controller {
             } catch(Exception ignored) {}
         }
         return "";
+    }
+
+    protected String getDecryptedText(String encrypted) {
+        Auth auth = new Auth();
+        String key = auth.getKey();
+
+        String decrypted = "";
+        try {
+            decrypted = Crypt.decrypt(key, encrypted);
+        } catch (Exception ignore) {};
+
+        return decrypted;
     }
 }

@@ -43,6 +43,7 @@ import java.util.List;
 public class AccountController extends Controller {
     @FXML private Label account_id;
     @FXML private TextField account_name;
+    @FXML private TextField account_user;
     @FXML private TextField account_password;
     @FXML private PasswordField account_password_masked;
     @FXML private TextField account_url;
@@ -64,6 +65,7 @@ public class AccountController extends Controller {
     @FXML private Slider number_of_symbols;
     @FXML private TextField account_filter_field;
     @FXML private ImageView password_clipboard;
+    @FXML private ImageView username_clipboard;
     @FXML private ImageView go_to_url;
     private int clickCount;
 
@@ -79,12 +81,13 @@ public class AccountController extends Controller {
             return;
         }
 
+        String accountUser = this.getEncryptedText(key, account_user);
         String accountPass = this.getEncryptedText(key, account_password);
         String accountUrl = this.getEncryptedText(key, account_url);
         String accountNotes = this.getEncryptedText(key, account_notes);
 
         Account account = new Account();
-        account.create(id, accountName, accountPass, accountUrl, accountNotes);
+        account.create(id, accountName, accountUser, accountPass, accountUrl, accountNotes);
         notice_text.setText("Account Created");
         create_account_button.setVisible(false);
     }
@@ -213,24 +216,16 @@ public class AccountController extends Controller {
     }
 
     public void showAccountDetails(int id) throws IOException {
-        Auth auth = new Auth();
-        String key = auth.getKey();
-
         Account account = new Account();
         AccountEntity accountEntity = account.getById(id);
 
         String accountId = String.valueOf(id);
-        String accountName = "";
-        String accountPass = "";
-        String accountUrl = "";
-        String accountNotes = "";
-        try {
-            assert accountEntity != null;
-            accountName = Crypt.decrypt(key, accountEntity.getName());
-            accountPass = Crypt.decrypt(key, accountEntity.getPass());
-            accountUrl = Crypt.decrypt(key, accountEntity.getUrl());
-            accountNotes = Crypt.decrypt(key, accountEntity.getNotes());
-        } catch (Exception ignore) {};
+        assert accountEntity != null;
+        String accountName = this.getDecryptedText(accountEntity.getName());
+        String accountUser = this.getDecryptedText(accountEntity.getUser());
+        String accountPass = this.getDecryptedText(accountEntity.getPass());
+        String accountUrl = this.getDecryptedText(accountEntity.getUrl());
+        String accountNotes = this.getDecryptedText(accountEntity.getNotes());
 
         String resource = "/account-details.fxml";
         URL file = Controller.class.getResource(resource);
@@ -241,6 +236,7 @@ public class AccountController extends Controller {
 
         Label accountIdField       = (Label) scene.lookup("#account_id");
         TextField accountNameField = (TextField) scene.lookup("#account_name");
+        TextField accountUserField = (TextField) scene.lookup("#account_user");
         TextField accountPassField = (TextField) scene.lookup("#account_password");
         PasswordField accountPassMaskedField = (PasswordField) scene.lookup("#account_password_masked");
         TextField accountUrlField  = (TextField) scene.lookup("#account_url");
@@ -248,6 +244,7 @@ public class AccountController extends Controller {
 
         accountIdField.setText(accountId);
         accountNameField.setText(accountName);
+        accountUserField.setText(accountUser);
         accountPassField.setText(accountPass);
         accountPassMaskedField.setText(accountPass);
         accountUrlField.setText(accountUrl);
@@ -265,6 +262,7 @@ public class AccountController extends Controller {
             return;
         }
 
+        String accountUser = account_user.getText();
         String accountPass = account_password.getText();
         String accountUrl = account_url.getText();
         String accountNotes = account_notes.getText();
@@ -275,18 +273,20 @@ public class AccountController extends Controller {
         Account account = new Account();
 
         String encryptedName = null;
+        String encryptedUser = null;
         String encryptedPass = null;
         String encryptedUrl = null;
         String encryptedNotes = null;
 
         try {
             encryptedName = Crypt.encrypt(key, accountName);
+            encryptedUser = Crypt.encrypt(key, accountUser);
             encryptedPass = Crypt.encrypt(key, accountPass);
             encryptedUrl = Crypt.encrypt(key, accountUrl);
             encryptedNotes = Crypt.encrypt(key, accountNotes);
         } catch (Exception ignored) {};
 
-        account.update(accountId, encryptedName, encryptedPass, encryptedUrl, encryptedNotes);
+        account.update(accountId, encryptedName, encryptedUser, encryptedPass, encryptedUrl, encryptedNotes);
 
         notice_text.setText("Account Updated");
     }
@@ -298,6 +298,7 @@ public class AccountController extends Controller {
         generate_password_icon.setVisible(true);
         edit_account_link.setVisible(false);
         account_name.setEditable(true);
+        account_user.setEditable(true);
         account_password.setVisible(true);
         account_password.setEditable(true);
         account_password_masked.setVisible(false);
@@ -306,6 +307,7 @@ public class AccountController extends Controller {
         edit_notes_button.setDisable(false);
         edit_notes_button.setVisible(true);
         password_clipboard.setVisible(false);
+        username_clipboard.setVisible(false);
         go_to_url.setVisible(false);
     }
 
@@ -425,6 +427,14 @@ public class AccountController extends Controller {
         final Clipboard clipboard = Clipboard.getSystemClipboard();
         final ClipboardContent content = new ClipboardContent();
         content.putString(account_password.getText());
+        clipboard.setContent(content);
+    }
+
+    @FXML
+    public void copyUsernameToClipboard() {
+        final Clipboard clipboard = Clipboard.getSystemClipboard();
+        final ClipboardContent content = new ClipboardContent();
+        content.putString(account_user.getText());
         clipboard.setContent(content);
     }
 
