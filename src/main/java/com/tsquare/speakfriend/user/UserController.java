@@ -26,7 +26,6 @@ public class UserController extends Controller
     protected void loginAction() throws IOException {
         Auth auth = new Auth();
         if(auth.checkIn(username.getText().trim(), password.getText())) {
-            this.checkDb();
 
             AccountController accountController = new AccountController();
             accountController.listAccountsView();

@@ -2,14 +2,12 @@ package com.tsquare.speakfriend.main;
 
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
-import com.tsquare.speakfriend.settings.Options;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -17,7 +15,6 @@ import java.io.IOException;
 import java.net.URL;
 
 public abstract class Controller {
-    private PauseTransition transition;
 
     @FXML
     public void newScene(String nextScene) throws IOException {
@@ -46,12 +43,6 @@ public abstract class Controller {
             }
         });
         pause.play();
-    }
-
-    protected Scene addSceneTimer(Scene scene) {
-        this.setTimer();
-
-        return scene;
     }
 
     protected String getEncryptedText(String key, TextField field) {

@@ -185,8 +185,6 @@ public class AccountController extends Controller {
         Scene newScene = new Scene(box, currentScene.getWidth(), currentScene.getHeight());
 
         stage.setScene(newScene);
-
-        this.setTimer();
     }
 
     @FXML
@@ -253,8 +251,6 @@ public class AccountController extends Controller {
         Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
 
         stage.setScene(newScene);
-
-        this.setTimer();
     }
 
     @FXML
@@ -334,11 +330,7 @@ public class AccountController extends Controller {
         Stage newStage = new Stage();
         newStage.initOwner(stage);
         VBox modal = FXMLLoader.load(getClass().getResource("/generate-password.fxml"));
-        newStage.setScene(
-                this.addSceneTimer(
-                        new Scene(modal, 300, 350)
-                )
-        );
+        newStage.setScene(new Scene(modal, 300, 350));
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.show();
     }
@@ -363,11 +355,7 @@ public class AccountController extends Controller {
         Stage newStage = new Stage();
         newStage.initOwner(stage);
         VBox modal = FXMLLoader.load(getClass().getResource("/account-notes.fxml"));
-        newStage.setScene(
-                this.addSceneTimer(
-                        new Scene(modal, 600, 400)
-                )
-        );
+        newStage.setScene(new Scene(modal, 600, 400));
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.show();
 
@@ -391,11 +379,7 @@ public class AccountController extends Controller {
         newStage.initOwner(stage);
 
         VBox modal = FXMLLoader.load(getClass().getResource("/edit-account-notes.fxml"));
-        newStage.setScene(
-            this.addSceneTimer(
-                    new Scene(modal, 600, 400)
-            )
-        );
+        newStage.setScene(new Scene(modal, 600, 400));
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.show();
 
