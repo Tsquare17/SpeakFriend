@@ -10,11 +10,12 @@ class Account {
         Conn()
     }
 
-    fun create(userIdArg: Int, nameArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
+    fun create(userIdArg: Int, nameArg: String?, userArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
         transaction {
             AccountEntity.new {
                 userId = userIdArg
                 name = nameArg
+                user = userArg
                 pass = passArg
                 url = urlArg
                 notes = notesArg
@@ -22,10 +23,11 @@ class Account {
         }
     }
 
-    fun update(accountIdArg: Int, nameArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
+    fun update(accountIdArg: Int, nameArg: String?, userArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
         transaction {
             AccountEntity[accountIdArg].apply {
                 name = nameArg
+                user = userArg
                 pass = passArg
                 url = urlArg
                 notes = notesArg

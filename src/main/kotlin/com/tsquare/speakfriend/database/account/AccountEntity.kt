@@ -10,6 +10,7 @@ class AccountEntity(id: EntityID<Int>): Entity<Int>(id) {
 
     var userId by Accounts.userId
     var name by Accounts.name
+    var user by Accounts.user
     var pass by Accounts.pass
     var url by Accounts.url
     var notes by Accounts.notes

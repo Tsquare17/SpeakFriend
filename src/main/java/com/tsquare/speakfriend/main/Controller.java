@@ -1,5 +1,6 @@
 package com.tsquare.speakfriend.main;
 
+import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.settings.Options;
 import javafx.animation.PauseTransition;
@@ -62,37 +63,15 @@ public abstract class Controller {
         return "";
     }
 
-    public void setTimer() {
-        Scene scene = Main.getScene();
+    protected String getDecryptedText(String encrypted) {
+        Auth auth = new Auth();
+        String key = auth.getKey();
 
+        String decrypted = "";
         try {
-            String autoLogoutTime = Options.get("auto_logout_time");
+            decrypted = Crypt.decrypt(key, encrypted);
+        } catch (Exception ignore) {};
 
-            if(!autoLogoutTime.equals("Never") && !autoLogoutTime.equals("")) {
-                int autoLogoutSeconds = Integer.parseInt(autoLogoutTime) * 60 * 1000;
-
-                System.out.println(autoLogoutSeconds);
-
-                transition = new PauseTransition(new javafx.util.Duration(autoLogoutSeconds));
-                transition.setOnFinished(evt -> {
-                    try {
-                        Main.logout();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-
-                // Restart transition on user interaction.
-                scene.addEventFilter(InputEvent.ANY, evt -> {
-                    System.out.println(transition.getDuration());
-                    transition.playFromStart();
-                });
-                transition.play();
-            } else {
-                transition = new PauseTransition();
-            }
-        } catch (Exception e) {
-            transition = new PauseTransition();
-        }
+        return decrypted;
     }
 }
