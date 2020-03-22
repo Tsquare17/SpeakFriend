@@ -62,6 +62,7 @@ public class AccountController extends Controller {
     @FXML private Slider number_of_symbols;
     @FXML private TextField account_filter_field;
     @FXML private ImageView password_clipboard;
+    @FXML private ImageView show_password;
     @FXML private ImageView username_clipboard;
     @FXML private ImageView go_to_url;
     private int clickCount;
@@ -307,6 +308,7 @@ public class AccountController extends Controller {
         edit_notes_button.setDisable(false);
         edit_notes_button.setVisible(true);
         password_clipboard.setVisible(false);
+        show_password.setVisible(false);
         username_clipboard.setVisible(false);
         go_to_url.setVisible(false);
     }

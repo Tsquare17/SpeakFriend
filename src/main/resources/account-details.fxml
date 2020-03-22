@@ -70,7 +70,7 @@
                <children>
                   <PasswordField id="account_password_masked" fx:id="account_password_masked" editable="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <TextField fx:id="account_password" editable="false" focusTraversable="false" visible="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <ImageView fx:id="generate_password_icon" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#passwordModalView" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                  <ImageView fx:id="generate_password_icon" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#passwordModalView" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" visible="false" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
                      <image>
                         <Image url="@img/gear.png" />
                      </image></ImageView>
