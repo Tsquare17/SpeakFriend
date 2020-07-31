@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.settings;
 import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.database.settings.Setting;
 import com.tsquare.speakfriend.main.Controller;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Text;
@@ -23,10 +24,33 @@ public class SettingsController extends Controller {
     public void saveSettingsAction() {
         Setting setting = new Setting();
 
-        if(auto_logout_time.getValue().equals("Never")) {
-            setting.delete("auto_logout_time");
+        String duration;
+        switch (auto_logout_time.getValue()) {
+            case "5 minutes":
+                duration = "5";
+                break;
+            case "10 minutes":
+                duration = "10";
+                break;
+            case "30 minutes":
+                duration = "30";
+                break;
+            case "1 hour":
+                duration = "60";
+                break;
+            case "2 hours":
+                duration = "120";
+                break;
+            case "4 hours":
+                duration = "240";
+                break;
+            case "8 hours":
+                duration = "480";
+                break;
+            default:
+                duration = "0";
         }
-        // setting.update("auto_logout_time", "5");
+        setting.update("auto_logout_time", duration);
     }
 
     @FXML

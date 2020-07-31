@@ -2,17 +2,23 @@ package com.tsquare.speakfriend.user;
 
 import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.auth.Auth;
+import com.tsquare.speakfriend.database.settings.Setting;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.database.user.User;
+import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.settings.Options;
+
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class UserController extends Controller
 {
@@ -26,6 +32,15 @@ public class UserController extends Controller
     protected void loginAction() throws IOException {
         Auth auth = new Auth();
         if(auth.checkIn(username.getText().trim(), password.getText())) {
+            UserController.checkDb();
+
+            Setting setting = new Setting();
+            String durationSetting = Objects.requireNonNull(setting.getOption("auto_logout_time")).getValue();
+            if (!durationSetting.equals("0")) {
+                int duration = Integer.parseInt(durationSetting);
+                Duration delay = Duration.minutes(duration);
+                Main.transition = new PauseTransition(delay);
+            }
 
             AccountController accountController = new AccountController();
             accountController.listAccountsView();
@@ -109,11 +124,11 @@ public class UserController extends Controller
         this.newScene("sign-in");
     }
 
-    private void checkDb() {
+    private static void checkDb() {
         String dbVersion = Options.get("db_version");
         if (dbVersion.equals("")) {
             Options.put("db_version", "1");
-            Options.put("auto_logout_time", "30");
+            Options.put("auto_logout_time", "0");
         }
     }
 }

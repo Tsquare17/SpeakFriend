@@ -10,6 +10,7 @@ import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.utils.AccountPreviewComparator;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -184,7 +185,7 @@ public class AccountController extends Controller {
         });
 
         Scene newScene = new Scene(box, currentScene.getWidth(), currentScene.getHeight());
-
+        Main.setTimer(newScene);
         stage.setScene(newScene);
     }
 
@@ -250,7 +251,7 @@ public class AccountController extends Controller {
         accountNotesField.setText(accountNotes);
 
         Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
-
+        Main.setTimer(newScene);
         stage.setScene(newScene);
     }
 

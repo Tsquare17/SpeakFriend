@@ -2,6 +2,7 @@ package com.tsquare.speakfriend.main;
 
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
+
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +27,7 @@ public abstract class Controller {
         Scene currentScene = stage.getScene();
 
         Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
-
+        Main.setTimer(newScene);
         stage.setScene(newScene);
     }
 
