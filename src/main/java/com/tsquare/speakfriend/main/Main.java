@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.InputEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 // import org.scenicview.ScenicView;
 
@@ -89,6 +90,29 @@ public class Main extends Application {
                 transition.playFromStart();
             });
         }
+    }
+
+    public static void setNewTimer(int duration) {
+        if (transition != null) {
+            transition.stop();
+        }
+
+        Duration delay = Duration.minutes(duration);
+        Main.transition = new PauseTransition(delay);
+
+        transition.setOnFinished(evt -> {
+            try {
+                Main.logout();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Scene scene = Main.getScene();
+
+        scene.addEventFilter(InputEvent.ANY, evt -> {
+            transition.playFromStart();
+        });
     }
 
     public static void logout() throws IOException {

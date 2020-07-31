@@ -478,3 +478,7 @@
 .menu:openvertically {
     -fx-background-color: #000000;
 }
+
+.choice-box .label:selected {
+    -fx-text-fill: #000000;
+}
