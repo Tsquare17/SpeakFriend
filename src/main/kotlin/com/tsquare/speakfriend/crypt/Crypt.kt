@@ -13,16 +13,19 @@ import javax.crypto.spec.SecretKeySpec
 
 object Crypt
 {
+    val iterations: Int = 2000
+
     @JvmStatic
+    @JvmOverloads
     @Throws(NoSuchAlgorithmException::class, InvalidAlgorithmParameterException::class,
             InvalidKeyException::class, InvalidKeySpecException::class,
             NoSuchPaddingException::class, BadPaddingException::class, IllegalBlockSizeException::class)
-    fun encrypt(key: String, subject: String): String {
+    fun encrypt(key: String, subject: String, iterations: Int = 0): String {
         val secureRandom = SecureRandom()
         val iv = ByteArray(12)
         secureRandom.nextBytes(iv)
 
-        val secretKey = generateSecretKey(key, iv)
+        val secretKey = generateSecretKey(key, iv, iterations)
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         val parameterSpec = GCMParameterSpec(128, iv)
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, parameterSpec)
@@ -38,10 +41,11 @@ object Crypt
     }
 
     @JvmStatic
+    @JvmOverloads
     @Throws(NoSuchAlgorithmException::class, InvalidAlgorithmParameterException::class,
             InvalidKeyException::class, InvalidKeySpecException::class,
             NoSuchPaddingException::class, BadPaddingException::class, IllegalBlockSizeException::class)
-    fun decrypt(key: String, subject: String?): String {
+    fun decrypt(key: String, subject: String?, iterations: Int = 0): String {
         if(subject === null) {
             return "";
         }
@@ -51,19 +55,25 @@ object Crypt
         val iv = ByteArray(ivSize)
         byteBuffer[iv]
 
-        val secretKey = generateSecretKey(key, iv)
+        val secretKey = generateSecretKey(key, iv, iterations)
         val cipherBytes = ByteArray(byteBuffer.remaining())
         byteBuffer[cipherBytes]
 
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         val parameterSpec = GCMParameterSpec(128, iv)
         cipher.init(Cipher.DECRYPT_MODE, secretKey, parameterSpec)
+
         return String(cipher.doFinal(cipherBytes))
     }
 
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
-    fun generateSecretKey(password: String, iv: ByteArray?): SecretKey? {
-        val spec: KeySpec = PBEKeySpec(password.toCharArray(), iv, 65536, 128)
+    fun generateSecretKey(password: String, iv: ByteArray?, iterations: Int = 0): SecretKey? {
+        val spec: KeySpec = if (iterations != 0) {
+            PBEKeySpec(password.toCharArray(), iv, iterations, 128)
+        } else {
+            PBEKeySpec(password.toCharArray(), iv, this.iterations, 128)
+        }
+
         val secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
         val key = secretKeyFactory.generateSecret(spec).encoded
         return SecretKeySpec(key, "AES")

@@ -2,22 +2,17 @@ package com.tsquare.speakfriend.settings;
 
 import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.database.settings.Setting;
-import com.tsquare.speakfriend.database.settings.SettingsEntity;
 import com.tsquare.speakfriend.main.Controller;
 
 import com.tsquare.speakfriend.main.Main;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class SettingsController extends Controller {
     @FXML ChoiceBox<String> auto_logout_time;
-    @FXML Text notice_text;
-
 
     @FXML
     public void initialize() {

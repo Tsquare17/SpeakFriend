@@ -2,40 +2,78 @@ package com.tsquare.speakfriend.user;
 
 import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.auth.Auth;
-import com.tsquare.speakfriend.database.settings.Setting;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.database.user.User;
 import com.tsquare.speakfriend.main.Main;
-import com.tsquare.speakfriend.settings.Options;
 
+import com.tsquare.speakfriend.settings.Options;
+import com.tsquare.speakfriend.update.UpdateController;
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
+import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class UserController extends Controller
 {
+    @FXML private GridPane login_grid;
     @FXML private TextField username;
     @FXML private TextField password;
     @FXML private TextField confirm_password;
+    @FXML private Label login_title;
     @FXML private Text notice_text;
+    @FXML private ImageView update_loader;
     private int clickCount;
+
+    @FXML
+    public void initialize() {
+        update_loader.setManaged(false);
+        update_loader.setVisible(false);
+
+        RotateTransition rotate = new RotateTransition(Duration.millis(1600), update_loader);
+        rotate.setByAngle(360);
+        rotate.setCycleCount(Animation.INDEFINITE);
+        rotate.setInterpolator(Interpolator.LINEAR);
+        rotate.play();
+    }
 
     @FXML
     protected void loginAction() throws IOException {
         Auth auth = new Auth();
         if(auth.checkIn(username.getText().trim(), password.getText())) {
-            UserController.checkDb();
+            boolean requiresUpdate = UpdateController.checkUpdate();
+            if (requiresUpdate) {
+                login_grid.setVisible(false);
+                login_grid.setManaged(false);
 
-            Setting setting = new Setting();
-            String durationSetting = Objects.requireNonNull(setting.getOption("auto_logout_time")).getValue();
+                login_title.setVisible(false);
+                login_title.setManaged(false);
+
+                notice_text.setStyle("-fx-text-fill: yellowgreen");
+                notice_text.setText("Updating Database");
+
+                update_loader.setVisible(true);
+                update_loader.setManaged(true);
+
+                UpdateController updateController = new UpdateController();
+                updateController.update();
+
+                return;
+            }
+
+            String durationSetting = Options.get("auto_logout_time");
             if (!durationSetting.equals("0")) {
                 int duration = Integer.parseInt(durationSetting);
                 Duration delay = Duration.minutes(duration);
@@ -122,13 +160,5 @@ public class UserController extends Controller
     @FXML
     protected void entryView() throws IOException {
         this.newScene("sign-in");
-    }
-
-    private static void checkDb() {
-        String dbVersion = Options.get("db_version");
-        if (dbVersion.equals("")) {
-            Options.put("db_version", "1");
-            Options.put("auto_logout_time", "0");
-        }
     }
 }

@@ -479,6 +479,15 @@
     -fx-background-color: #000000;
 }
 
-.choice-box .label:selected {
+.choice-box {
+    -fx-cursor: hand;
+}
+
+.choice-box > .label {
     -fx-text-fill: #000000;
+}
+
+.menu,
+.menu-item {
+    -fx-cursor: hand;
 }
