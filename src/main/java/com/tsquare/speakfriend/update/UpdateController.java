@@ -26,8 +26,6 @@ public class UpdateController {
                 if (dbVersion.equals("")) {
                     Options.put("db_version", "100");
                     Options.put("auto_logout_time", "0");
-
-                    return null;
                 }
 
                 int version = Integer.parseInt(dbVersion);
