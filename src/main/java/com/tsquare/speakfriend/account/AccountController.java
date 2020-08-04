@@ -66,6 +66,7 @@ public class AccountController extends Controller {
     @FXML private ImageView show_password;
     @FXML private ImageView username_clipboard;
     @FXML private ImageView go_to_url;
+    @FXML private ScrollPane account_list_scrollpane;
     private int clickCount;
 
     @FXML
@@ -114,8 +115,7 @@ public class AccountController extends Controller {
 
         VBox accountListContainerContainer = (VBox) scene.lookup("#accountListContainer");
 
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setFitToHeight(true);
+        ScrollPane scrollPane = (ScrollPane) scene.lookup("#account_list_scrollpane");
         scrollPane.setFitToWidth(true);
 
         VBox accountsVBox = new VBox();
@@ -168,7 +168,6 @@ public class AccountController extends Controller {
 
         accountsVBox.setId("account_list");
         scrollPane.setContent(accountsVBox);
-        accountListAnchor.getChildren().add(scrollPane);
 
         VBox box = FXMLLoader.load(getClass().getResource("/container.fxml"));
         box.getChildren().add(scene);
