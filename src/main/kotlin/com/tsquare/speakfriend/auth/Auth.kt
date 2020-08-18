@@ -36,4 +36,8 @@ class Auth {
     fun getKey(): String {
         return CurrentUser.userKey
     }
+
+    fun getVersion(): String {
+        return CurrentUser.version
+    }
 }
