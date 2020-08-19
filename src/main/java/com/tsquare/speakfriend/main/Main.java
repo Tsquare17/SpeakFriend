@@ -1,5 +1,7 @@
 package com.tsquare.speakfriend.main;
 
+import com.tsquare.speakfriend.api.Api;
+import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.database.schema.Schema;
 
