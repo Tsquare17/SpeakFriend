@@ -1,7 +1,5 @@
 package com.tsquare.speakfriend.main;
 
-import com.tsquare.speakfriend.api.Api;
-import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.database.schema.Schema;
 
@@ -22,6 +20,8 @@ import java.io.IOException;
 
 public class Main extends Application {
     private static Stage stage;
+
+    public static String version = "1.0.0";
 
     public static PauseTransition transition = null;
 
@@ -62,21 +62,21 @@ public class Main extends Application {
         schema.up();
     }
 
-    public static void startTimer(Scene scene) {
-        transition.setOnFinished(evt -> {
-            try {
-                Main.logout();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        scene.addEventFilter(InputEvent.ANY, evt -> {
-            transition.playFromStart();
-        });
-
-        transition.play();
-    }
+//    public static void startTimer(Scene scene) {
+//        transition.setOnFinished(evt -> {
+//            try {
+//                Main.logout();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//
+//        scene.addEventFilter(InputEvent.ANY, evt -> {
+//            transition.playFromStart();
+//        });
+//
+//        transition.play();
+//    }
 
     public static void setTimer(Scene scene) {
         if (transition != null) {

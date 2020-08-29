@@ -2,6 +2,7 @@ package com.tsquare.speakfriend.user;
 
 import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.auth.Auth;
+import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.database.user.User;
 import com.tsquare.speakfriend.main.Main;
@@ -25,6 +26,8 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 public class UserController extends Controller
 {
@@ -100,14 +103,16 @@ public class UserController extends Controller
     }
 
     @FXML
-    protected void registerSubmitAction() {
+    protected void registerSubmitAction() throws InvalidKeySpecException, NoSuchAlgorithmException {
         if(username.getText().isEmpty() || password.getText().isEmpty() || confirm_password.getText().isEmpty()) {
             notice_text.setText("You must fill out all fields.");
         } else if(!password.getText().equals(confirm_password.getText())) {
             notice_text.setText("The password you entered doesn't match the confirmation.");
         } else {
             User user = new User();
-            boolean success = user.create(username.getText().trim(), password.getText());
+            String hashedPass = Crypt.generatePassword(password.getText());
+            assert hashedPass != null;
+            boolean success = user.create(username.getText().trim(), hashedPass);
 
             if(!success) {
                 notice_text.setText("A user with that name already exists.");
@@ -122,7 +127,7 @@ public class UserController extends Controller
     }
 
     @FXML
-    protected void registerEnterKeyAction(KeyEvent event) {
+    protected void registerEnterKeyAction(KeyEvent event) throws InvalidKeySpecException, NoSuchAlgorithmException {
         if(event.getCode().equals(KeyCode.ENTER)) {
             this.registerSubmitAction();
         }

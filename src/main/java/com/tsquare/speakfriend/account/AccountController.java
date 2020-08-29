@@ -94,7 +94,7 @@ public class AccountController extends Controller {
 
     @FXML
     public void createAccountView() throws IOException {
-        this.newScene("create-account");
+        this.newContainerScene("create-account");
     }
 
     @FXML
@@ -249,7 +249,10 @@ public class AccountController extends Controller {
         accountUrlField.setText(accountUrl);
         accountNotesField.setText(accountNotes);
 
-        Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
+        VBox box = FXMLLoader.load(getClass().getResource("/container.fxml"));
+        box.getChildren().add(scene);
+
+        Scene newScene = new Scene(box, currentScene.getWidth(), currentScene.getHeight());
         Main.setTimer(newScene);
         stage.setScene(newScene);
     }

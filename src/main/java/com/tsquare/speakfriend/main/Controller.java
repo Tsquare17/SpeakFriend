@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -27,6 +28,21 @@ public abstract class Controller {
         Scene currentScene = stage.getScene();
 
         Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
+        Main.setTimer(newScene);
+        stage.setScene(newScene);
+    }
+
+    public void newContainerScene(String resource) throws IOException {
+        URL file = Nav.class.getResource("/" + resource + ".fxml");
+
+        Parent scene       = FXMLLoader.load(file);
+        Stage stage        = Main.getStage();
+        Scene currentScene = stage.getScene();
+
+        VBox box = FXMLLoader.load(getClass().getResource("/container.fxml"));
+        box.getChildren().add(scene);
+
+        Scene newScene = new Scene(box, currentScene.getWidth(), currentScene.getHeight());
         Main.setTimer(newScene);
         stage.setScene(newScene);
     }

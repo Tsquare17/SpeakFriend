@@ -1,14 +1,10 @@
 package com.tsquare.speakfriend.http
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.tsquare.speakfriend.api.ApiResponse
 import com.tsquare.speakfriend.auth.CurrentUser
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
-import java.util.*
-
 
 class Http {
     private val client: HttpClient = HttpClient.newHttpClient()
@@ -38,10 +34,6 @@ class Http {
                 .build()
 
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-
-        print(response)
-
-        val test = "";
 
         return response
     }

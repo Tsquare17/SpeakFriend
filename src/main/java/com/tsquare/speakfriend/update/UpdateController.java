@@ -30,7 +30,7 @@ public class UpdateController {
                 }
 
                 int version = Integer.parseInt(dbVersion);
-                if (version <= 100) {
+                if (version < 100) {
                     UpdateController.changeEncryptionIterations(65536,2000);
                     Options.put("db_version", "101");
                     dbVersion = "101";
@@ -66,7 +66,7 @@ public class UpdateController {
 
         int version = Integer.parseInt(dbVersion);
 
-        return version < 101;
+        return version < 110;
     }
 
     private static void changeEncryptionIterations(int iterationsBefore, int iterationsAfter) {

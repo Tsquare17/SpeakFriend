@@ -8,8 +8,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Nav extends Controller {
-
-
     @FXML
     public void quitAction(ActionEvent event) {
         Stage stage = Main.getStage();
@@ -18,7 +16,7 @@ public class Nav extends Controller {
 
     @FXML
     public void deleteUserView(ActionEvent event) throws IOException {
-        this.newScene("delete-user");
+        this.newContainerScene("delete-user");
     }
 
     @FXML
@@ -30,6 +28,11 @@ public class Nav extends Controller {
 
     @FXML
     public void editSettingsView() throws IOException {
-        this.newScene("settings");
+        this.newContainerScene("settings");
+    }
+
+    @FXML
+    public void helpAboutView() throws IOException {
+        this.newContainerScene("about");
     }
 }
