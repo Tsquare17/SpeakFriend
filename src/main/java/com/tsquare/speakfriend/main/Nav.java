@@ -35,4 +35,9 @@ public class Nav extends Controller {
     public void helpAboutView() throws IOException {
         this.newContainerScene("about");
     }
+
+    @FXML
+    public void helpRegisterView() throws IOException {
+        this.newContainerScene("cloud-register");
+    }
 }

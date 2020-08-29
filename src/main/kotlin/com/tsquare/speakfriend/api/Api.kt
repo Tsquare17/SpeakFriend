@@ -1,55 +1,27 @@
 package com.tsquare.speakfriend.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.tsquare.speakfriend.http.Http
-import java.net.http.HttpResponse
-import java.util.HashMap
+import java.net.URLEncoder
 
 class Api {
-    fun register(email: String, password: String): ApiResponse {
-        val values: HashMap<String?, String?> = getUserPassHashMap(email, password)
-
-        val objectMapper = ObjectMapper()
-        val requestBody: String = objectMapper
-                .writeValueAsString(values)
+    fun register(name: String, email: String, password: String, confirm_password: String): ApiResponse {
+        var parameters = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8")
+        parameters += "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8")
+        parameters += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8")
+        parameters += "&" + URLEncoder.encode("password_confirmation", "UTF-8") + "=" +
+                URLEncoder.encode(confirm_password, "UTF-8")
 
         val http = Http()
 
-        val response = http.post("register", requestBody)
-
-        return setApiResponseBody(response)
+        return http.sendPost("register", parameters)
     }
 
     fun login(email: String, password: String): ApiResponse {
-        val values: HashMap<String?, String?> = getUserPassHashMap(email, password)
-
-        val objectMapper = ObjectMapper()
-        val requestBody: String = objectMapper
-                .writeValueAsString(values)
+        var parameters = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8")
+        parameters += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8")
 
         val http = Http()
 
-        val response = http.post("login", requestBody)
-
-        return setApiResponseBody(response)
-    }
-
-    private fun setApiResponseBody(response: HttpResponse<String>?): ApiResponse {
-        if (response != null) {
-            ApiResponse.responseBody = response.body()
-            ApiResponse.responseHeaders = response.headers()
-            ApiResponse.statusCode = response.statusCode()
-        }
-
-        return ApiResponse
-    }
-
-    private fun getUserPassHashMap(email: String, password: String): HashMap<String?, String?> {
-        return object : HashMap<String?, String?>() {
-            init {
-                put("email", email)
-                put("password", password)
-            }
-        }
+        return http.sendPost("register", parameters)
     }
 }
