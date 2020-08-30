@@ -31,21 +31,6 @@ public class RegisterController extends Controller {
     protected void registerSubmitAction() {
         submit_button.setDisable(true);
 
-        if(
-            name.getText().isEmpty()
-            || email.getText().isEmpty()
-            || password.getText().isEmpty()
-            || confirm_password.getText().isEmpty()
-        ) {
-            notice_text.setText("You must fill out all fields.");
-            submit_button.setDisable(false);
-            return;
-        } else if (!password.getText().equals(confirm_password.getText())) {
-            submit_button.setDisable(false);
-            notice_text.setText("The password you entered doesn't match the confirmation.");
-            return;
-        }
-
         Api api = new Api();
         ApiResponse response = api.register(name.getText(), email.getText(), password.getText(), confirm_password.getText());
 
@@ -61,15 +46,12 @@ public class RegisterController extends Controller {
 
             StringBuilder errorText = new StringBuilder();
 
-            for (int i = 0; i < ApiResponse.errors.size(); i++) {
-                Set errorKeys = ApiResponse.errors.keySet();
-                Iterator iterator = errorKeys.iterator();
-                while (iterator.hasNext()) {
-                    String key = iterator.next().toString();
-                    JSONArray errorArray = (JSONArray) ApiResponse.errors.get(key);
-                    for (int k = 0; k < errorArray.size(); k++) {
-                        errorText.append(errorArray.get(k));
-                    }
+            Set errorKeys = ApiResponse.errors.keySet();
+            for (Object errorKey : errorKeys) {
+                String key = errorKey.toString();
+                JSONArray errorArray = (JSONArray) ApiResponse.errors.get(key);
+                for (int k = 0; k < errorArray.size(); k++) {
+                    errorText.append(errorArray.get(k)).append(System.lineSeparator());
                 }
             }
 
