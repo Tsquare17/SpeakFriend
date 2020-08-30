@@ -56,7 +56,7 @@
                </font>
             </Label>
              <PasswordField fx:id="confirm_password" layoutX="166.0" layoutY="127.0" onKeyPressed="#registerEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#registerSubmitAction" text="Submit" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Button fx:id="submit_button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#registerSubmitAction" text="Submit" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <Button accessibleText="Back" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goBack" style="-fx-background-color: red; -fx-text-fill: white;" text="Back" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="4" />
          </children>
       </GridPane>

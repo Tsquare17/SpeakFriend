@@ -62,6 +62,21 @@ public abstract class Controller {
         pause.play();
     }
 
+    @FXML
+    public void transitionContainerScene(String newScene, int duration) {
+        PauseTransition pause = new PauseTransition(
+                Duration.seconds(duration)
+        );
+        pause.setOnFinished(e -> {
+            try {
+                this.newContainerScene(newScene);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+        pause.play();
+    }
+
     protected String getEncryptedText(String key, TextField field) {
         if(!field.getText().isEmpty()) {
             try {

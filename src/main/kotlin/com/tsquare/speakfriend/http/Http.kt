@@ -1,17 +1,15 @@
 package com.tsquare.speakfriend.http
 
-import com.tsquare.speakfriend.api.Api
 import com.tsquare.speakfriend.api.ApiResponse
 import com.tsquare.speakfriend.auth.CurrentUser
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import org.json.simple.JSONArray
+import org.json.simple.JSONObject
+import org.json.simple.parser.JSONParser
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
-import java.net.URI
 import java.net.URL
 import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
+
 
 class Http {
     private val client: HttpClient = HttpClient.newHttpClient()
@@ -19,37 +17,25 @@ class Http {
     private val base = "http://speakfriend-api.local/api"
 
     fun sendGet(endpoint: String, parameters:String): ApiResponse {
-        val url = URL(endpoint)
+        val location = "$base/$endpoint"
+        val url = URL(location)
 
-        with(url.openConnection() as HttpURLConnection) {
-            requestMethod = "GET"  // optional default is GET
-
-            ApiResponse.statusCode = responseCode
-            ApiResponse.responseMessage = responseMessage
-
-            inputStream.bufferedReader().use {
-                val response = StringBuffer()
-
-                it.lines().forEach { line ->
-                    response.append(line)
-                }
-
-                ApiResponse.responseBody = response.toString()
-
-                return ApiResponse
-            }
-        }
+        return sendRequest(url, "GET", parameters)
     }
 
     fun sendPost(endpoint: String, parameters:String): ApiResponse {
         val location = "$base/$endpoint"
         val url = URL(location)
+
+        return sendRequest(url, "POST", parameters)
+    }
+
+    private fun sendRequest(url: URL, method: String, parameters: String): ApiResponse {
         val connection = url.openConnection()
         connection.doOutput = true
         with(connection as HttpURLConnection) {
 
-            // optional default is GET
-            requestMethod = "POST"
+            requestMethod = method
 
             val wr = OutputStreamWriter(outputStream);
             wr.write(parameters);
@@ -58,7 +44,21 @@ class Http {
             ApiResponse.statusCode = responseCode
             ApiResponse.responseMessage = responseMessage
 
-            inputStream.bufferedReader().use {
+            if (responseCode == 200) {
+                inputStream.bufferedReader().use {
+                    val response = StringBuffer()
+
+                    it.lines().forEach { line ->
+                        response.append(line)
+                    }
+
+                    ApiResponse.responseBody = response.toString()
+
+                    return ApiResponse
+                }
+            }
+
+            errorStream.bufferedReader().use {
                 val response = StringBuffer()
 
                 it.lines().forEach { line ->
@@ -66,6 +66,12 @@ class Http {
                 }
 
                 ApiResponse.responseBody = response.toString()
+
+                val parser = JSONParser()
+
+                val requestObject = parser.parse(response.toString()) as JSONObject
+
+                ApiResponse.errors = requestObject.get("errors") as JSONObject
 
                 return ApiResponse
             }
