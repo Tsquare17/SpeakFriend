@@ -6,5 +6,6 @@ object CurrentUser
     var userName: String = ""
     var userKey: String = ""
     var version: Int = 0
-    var apiKey: String = ""
+    var apiEncryptionKey: String = ""
+    var apiToken: String = ""
 }

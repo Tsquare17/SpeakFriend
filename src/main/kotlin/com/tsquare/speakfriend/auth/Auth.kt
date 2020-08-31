@@ -32,7 +32,8 @@ class Auth {
         CurrentUser.userName = ""
         CurrentUser.userKey = ""
         CurrentUser.version = 0
-        CurrentUser.apiKey = ""
+        CurrentUser.apiEncryptionKey = ""
+        CurrentUser.apiToken = ""
     }
 
     fun getId(): Int {
@@ -52,6 +53,10 @@ class Auth {
     }
 
     fun getApiKey(): String {
-        return CurrentUser.apiKey
+        return CurrentUser.apiEncryptionKey
+    }
+
+    fun getApiToken(): String {
+        return CurrentUser.apiToken
     }
 }
