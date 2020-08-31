@@ -22,18 +22,19 @@ public class UpdateController {
         Task<Void> task = new Task<>() {
             @Override
             public Void call() {
-                String dbVersion = Options.get("db_version");
-                if (dbVersion.equals("")) {
+                Auth auth = new Auth();
+
+                int dbVersion = auth.getVersion();
+                if (dbVersion == 0) {
                     Options.put("db_version", "100");
                     Options.put("auto_logout_time", "0");
-                    dbVersion = "100";
+                    dbVersion = 100;
                 }
 
-                int version = Integer.parseInt(dbVersion);
-                if (version < 100) {
+                if (dbVersion < 100) {
                     UpdateController.changeEncryptionIterations(65536,2000);
                     Options.put("db_version", "101");
-                    dbVersion = "101";
+                    dbVersion = 101;
                 }
 
                 String durationSetting = Options.get("auto_logout_time");
@@ -66,7 +67,7 @@ public class UpdateController {
 
         int version = Integer.parseInt(dbVersion);
 
-        return version < 110;
+        return version < 101;
     }
 
     private static void changeEncryptionIterations(int iterationsBefore, int iterationsAfter) {

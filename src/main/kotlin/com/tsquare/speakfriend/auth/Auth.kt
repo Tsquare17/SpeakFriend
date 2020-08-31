@@ -1,7 +1,8 @@
 package com.tsquare.speakfriend.auth
 
-import com.tsquare.speakfriend.database.user.User
 import com.tsquare.speakfriend.crypt.Crypt
+import com.tsquare.speakfriend.database.user.User
+import com.tsquare.speakfriend.settings.Options
 
 class Auth {
     fun checkIn(user: String, pass: String): Boolean {
@@ -16,6 +17,13 @@ class Auth {
         CurrentUser.userName = match.name
         CurrentUser.userKey = Crypt.generateKey(match.pass, pass).toString()
 
+        val dbVersion = Options.get("db_version")
+        if (dbVersion == "") {
+            CurrentUser.version = 0
+        } else {
+            CurrentUser.version = dbVersion.toInt()
+        }
+
         return true
     }
 
@@ -23,6 +31,8 @@ class Auth {
         CurrentUser.userId = 0
         CurrentUser.userName = ""
         CurrentUser.userKey = ""
+        CurrentUser.version = 0
+        CurrentUser.apiKey = ""
     }
 
     fun getId(): Int {
@@ -37,7 +47,11 @@ class Auth {
         return CurrentUser.userKey
     }
 
-    fun getVersion(): String {
+    fun getVersion(): Int {
         return CurrentUser.version
+    }
+
+    fun getApiKey(): String {
+        return CurrentUser.apiKey
     }
 }
