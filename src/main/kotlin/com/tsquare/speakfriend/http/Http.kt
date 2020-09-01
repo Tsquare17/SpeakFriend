@@ -1,29 +1,30 @@
 package com.tsquare.speakfriend.http
 
 import com.tsquare.speakfriend.api.ApiResponse
-import com.tsquare.speakfriend.auth.CurrentUser
-import org.json.simple.JSONArray
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
-import java.net.http.HttpClient
-
 
 class Http {
-    private val client: HttpClient = HttpClient.newHttpClient()
-    val version = if (CurrentUser.version != "") CurrentUser.version else "v1"
     private val base = "http://speakfriend-api.local/api"
 
-    fun sendGet(endpoint: String, parameters:String): ApiResponse {
+    fun get(endpoint: String): ApiResponse {
+        val location = "$base/$endpoint"
+        val url = URL(location)
+
+        return sendRequest(url, "GET", "")
+    }
+
+    fun get(endpoint: String, parameters:String): ApiResponse {
         val location = "$base/$endpoint"
         val url = URL(location)
 
         return sendRequest(url, "GET", parameters)
     }
 
-    fun sendPost(endpoint: String, parameters:String): ApiResponse {
+    fun post(endpoint: String, parameters:String): ApiResponse {
         val location = "$base/$endpoint"
         val url = URL(location)
 

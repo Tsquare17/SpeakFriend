@@ -13,7 +13,7 @@ class Api {
 
         val http = Http()
 
-        return http.sendPost("register", parameters)
+        return http.post("register", parameters)
     }
 
     fun login(email: String, password: String): ApiResponse {
@@ -22,6 +22,24 @@ class Api {
 
         val http = Http()
 
-        return http.sendPost("register", parameters)
+        return http.post("register", parameters)
+    }
+
+    fun logout(): ApiResponse {
+        val http = Http()
+
+        return http.get("logout");
+    }
+
+    fun getAccounts(): ApiResponse {
+        val http = Http()
+
+        val url = getVersion() + "accounts"
+
+        return http.get(url);
+    }
+
+    private fun getVersion(): String {
+        return "v1"
     }
 }
