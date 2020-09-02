@@ -1,5 +1,6 @@
 package com.tsquare.speakfriend.cloud;
 
+import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.api.Api;
 import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.main.Controller;
@@ -12,11 +13,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class RegisterController extends Controller {
@@ -68,6 +66,7 @@ public class RegisterController extends Controller {
 
     @FXML
     protected void goBack() throws IOException {
-        this.newContainerScene("account-list");
+        AccountController accountController = new AccountController();
+        accountController.listAccountsView();
     }
 }
