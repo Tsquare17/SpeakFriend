@@ -37,7 +37,6 @@ public abstract class Controller {
 
     @FXML
     public void newScene(String nextScene) throws IOException {
-        Main.previousStage = Main.getStage();
         Main.previousScene = Main.getScene();
 
         String resource = "/" + nextScene + ".fxml";
@@ -53,7 +52,6 @@ public abstract class Controller {
     }
 
     public void newContainerScene(String resource) throws IOException {
-        Main.previousStage = Main.getStage();
         Main.previousScene = Main.getScene();
 
         URL file = Nav.class.getResource("/" + resource + ".fxml");
@@ -72,7 +70,6 @@ public abstract class Controller {
 
     @FXML
     public void transitionScene(String newScene, int duration) {
-        Main.previousStage = Main.getStage();
         Main.previousScene = Main.getScene();
 
         PauseTransition pause = new PauseTransition(
@@ -90,7 +87,6 @@ public abstract class Controller {
 
     @FXML
     public void transitionContainerScene(String newScene, int duration) {
-        Main.previousStage = Main.getStage();
         Main.previousScene = Main.getScene();
 
         PauseTransition pause = new PauseTransition(
@@ -112,7 +108,6 @@ public abstract class Controller {
     }
 
     public void transitionToAccounts() {
-        Main.previousStage = Main.getStage();
         Main.previousScene = Main.getScene();
 
         PauseTransition pause = new PauseTransition(
