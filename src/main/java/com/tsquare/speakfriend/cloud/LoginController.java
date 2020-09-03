@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.cloud;
 import com.tsquare.speakfriend.api.Api;
 import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
+import com.tsquare.speakfriend.main.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -13,7 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class LoginController {
+public class LoginController extends Controller {
     @FXML TextField email;
     @FXML PasswordField password;
     @FXML Text notice_text;
@@ -51,7 +52,9 @@ public class LoginController {
 
             auth.setApiToken(token);
 
-            String test = auth.getApiToken();
+            notice_text.setText("Login successful");
+
+            goBackAction(2);
 
             return;
         }
@@ -61,6 +64,10 @@ public class LoginController {
 
     @FXML
     public void goBackAction() {
+        goBack();
+    }
 
+    public void goBackAction(Integer delay) {
+        goBack(delay);
     }
 }

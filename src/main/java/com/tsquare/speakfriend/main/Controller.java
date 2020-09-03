@@ -19,8 +19,27 @@ import java.net.URL;
 
 public abstract class Controller {
 
+    public void goBack() {
+        Scene newScene = Main.previousScene;
+        Main.setTimer(newScene);
+        Main.getStage().setScene(newScene);
+    }
+
+    public void goBack(Integer delay) {
+        PauseTransition pause = new PauseTransition(
+                Duration.seconds(delay)
+        );
+        pause.setOnFinished(e -> {
+            goBack();
+        });
+        pause.play();
+    }
+
     @FXML
     public void newScene(String nextScene) throws IOException {
+        Main.previousStage = Main.getStage();
+        Main.previousScene = Main.getScene();
+
         String resource = "/" + nextScene + ".fxml";
         URL file = Controller.class.getResource(resource);
 
@@ -34,6 +53,9 @@ public abstract class Controller {
     }
 
     public void newContainerScene(String resource) throws IOException {
+        Main.previousStage = Main.getStage();
+        Main.previousScene = Main.getScene();
+
         URL file = Nav.class.getResource("/" + resource + ".fxml");
 
         Parent scene       = FXMLLoader.load(file);
@@ -50,6 +72,9 @@ public abstract class Controller {
 
     @FXML
     public void transitionScene(String newScene, int duration) {
+        Main.previousStage = Main.getStage();
+        Main.previousScene = Main.getScene();
+
         PauseTransition pause = new PauseTransition(
                 Duration.seconds(duration)
         );
@@ -65,6 +90,9 @@ public abstract class Controller {
 
     @FXML
     public void transitionContainerScene(String newScene, int duration) {
+        Main.previousStage = Main.getStage();
+        Main.previousScene = Main.getScene();
+
         PauseTransition pause = new PauseTransition(
                 Duration.seconds(duration)
         );
@@ -84,6 +112,9 @@ public abstract class Controller {
     }
 
     public void transitionToAccounts() {
+        Main.previousStage = Main.getStage();
+        Main.previousScene = Main.getScene();
+
         PauseTransition pause = new PauseTransition(
                 Duration.seconds(2)
         );

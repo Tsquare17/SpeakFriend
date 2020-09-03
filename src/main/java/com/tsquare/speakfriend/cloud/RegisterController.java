@@ -56,7 +56,7 @@ public class RegisterController extends Controller {
     }
 
     @FXML
-    protected void goBack() throws IOException {
+    protected void backToAccounts() throws IOException {
         AccountController accountController = new AccountController();
         accountController.listAccountsView();
     }

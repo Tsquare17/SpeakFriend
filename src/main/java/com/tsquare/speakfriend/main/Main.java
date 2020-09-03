@@ -23,7 +23,11 @@ public class Main extends Application {
 
     public static String version = "1.0.0";
 
-    public static PauseTransition transition = null;
+    public static PauseTransition transition;
+
+    public static Stage previousStage;
+
+    public static Scene previousScene;
 
     public static Stage getStage() {
         return stage;
