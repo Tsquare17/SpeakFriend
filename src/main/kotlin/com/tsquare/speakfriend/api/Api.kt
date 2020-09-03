@@ -22,7 +22,9 @@ class Api {
 
         val http = Http()
 
-        return http.post("login", parameters)
+        var login = http.post("login", parameters)
+
+        return login
     }
 
     fun logout(): ApiResponse {

@@ -40,4 +40,16 @@ public class Nav extends Controller {
     public void helpRegisterView() throws IOException {
         this.newContainerScene("cloud-register");
     }
+
+    @FXML
+    public void backupView() throws IOException {
+        Auth auth = new Auth();
+
+        if (auth.getApiToken().equals("")) {
+            this.transitionContainerScene("cloud-login");
+            return;
+        }
+
+        this.transitionContainerScene("backup");
+    }
 }

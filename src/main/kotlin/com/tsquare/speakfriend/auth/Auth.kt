@@ -44,6 +44,10 @@ class Auth {
         return CurrentUser.userName
     }
 
+    fun getEmail(): String {
+        return Options.get("email")
+    }
+
     fun getKey(): String {
         return CurrentUser.userKey
     }
@@ -54,6 +58,10 @@ class Auth {
 
     fun getApiKey(): String {
         return CurrentUser.apiEncryptionKey
+    }
+
+    fun setApiToken(token: String) {
+        CurrentUser.apiToken = token
     }
 
     fun getApiToken(): String {

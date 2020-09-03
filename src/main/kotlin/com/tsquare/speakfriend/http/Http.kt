@@ -28,7 +28,10 @@ class Http {
         val location = "$base/$endpoint"
         val url = URL(location)
 
-        return sendRequest(url, "POST", parameters)
+        val request = sendRequest(url, "POST", parameters)
+
+
+        return request
     }
 
     private fun sendRequest(url: URL, method: String, parameters: String): ApiResponse {
@@ -72,7 +75,9 @@ class Http {
 
                 val requestObject = parser.parse(response.toString()) as JSONObject
 
-                ApiResponse.errors = requestObject.get("errors") as JSONObject
+                val errors = requestObject.get("errors") as JSONObject
+
+                ApiResponse.setApiErrors(errors)
 
                 return ApiResponse
             }

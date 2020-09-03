@@ -36,22 +36,13 @@ public class RegisterController extends Controller {
             notice_text.setFill(Color.rgb(255,255,255));
             notice_text.setText("Successfully created account.");
 
-            this.transitionContainerScene("sign-in", 2);
+            this.transitionToAccounts();
         } else {
             notice_text.setFill(Color.rgb(255,50,50));
             notice_text.setText("An unknown error occurred.");
             submit_button.setDisable(false);
 
-            StringBuilder errorText = new StringBuilder();
-
-            Set errorKeys = ApiResponse.errors.keySet();
-            for (Object errorKey : errorKeys) {
-                String key = errorKey.toString();
-                JSONArray errorArray = (JSONArray) ApiResponse.errors.get(key);
-                for (int k = 0; k < errorArray.size(); k++) {
-                    errorText.append(errorArray.get(k)).append(System.lineSeparator());
-                }
-            }
+            StringBuilder errorText = ApiResponse.errors;
 
             notice_text.setText(errorText.toString());
         }

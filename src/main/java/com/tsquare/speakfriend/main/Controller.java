@@ -1,5 +1,6 @@
 package com.tsquare.speakfriend.main;
 
+import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 
@@ -70,6 +71,26 @@ public abstract class Controller {
         pause.setOnFinished(e -> {
             try {
                 this.newContainerScene(newScene);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+        pause.play();
+    }
+
+    @FXML
+    public void transitionContainerScene(String newScene) {
+        transitionContainerScene(newScene, 0);
+    }
+
+    public void transitionToAccounts() {
+        PauseTransition pause = new PauseTransition(
+                Duration.seconds(2)
+        );
+        pause.setOnFinished(e -> {
+            try {
+                AccountController accountController = new AccountController();
+                accountController.listAccountsView();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

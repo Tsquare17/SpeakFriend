@@ -1,5 +1,9 @@
 package com.tsquare.speakfriend.cloud;
 
+import com.tsquare.speakfriend.api.Api;
+import com.tsquare.speakfriend.api.ApiResponse;
+import com.tsquare.speakfriend.auth.Auth;
+import com.tsquare.speakfriend.auth.CurrentUser;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 
@@ -11,6 +15,14 @@ public class BackupController {
 
     @FXML
     public void initialize() {
+        Auth auth = new Auth();
+        Api api = new Api();
 
+        if (auth.getApiToken().equals("")) {
+
+        }
+
+        ApiResponse response = api.getAccounts();
+        String test = "";
     }
 }
