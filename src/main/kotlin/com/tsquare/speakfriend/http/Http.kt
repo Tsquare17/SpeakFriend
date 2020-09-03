@@ -37,24 +37,20 @@ class Http {
     }
 
     private fun sendRequest(url: URL, method: String, parameters: String): ApiResponse {
-        var params = parameters
         val auth = Auth()
-        if (auth.getApiToken().isNotEmpty()) {
-            if (params.isNotEmpty()) {
-                params += "&" + URLEncoder.encode("access_token", "UTF-8") + "=" + URLEncoder.encode(auth.getApiToken(), "UTF-8")
-            } else {
-                params = URLEncoder.encode("access_token", "UTF-8") + "=" + URLEncoder.encode(auth.getApiToken(), "UTF-8");
-            }
-        }
 
         val connection = url.openConnection()
+        if (auth.getApiToken().isNotEmpty()) {
+            connection.setRequestProperty("Authorization", "Bearer " + auth.getApiToken());
+        }
+
         connection.doOutput = true
         with(connection as HttpURLConnection) {
 
             requestMethod = method
 
             val wr = OutputStreamWriter(outputStream);
-            wr.write(params);
+            wr.write(parameters);
             wr.flush();
 
             ApiResponse.statusCode = responseCode
