@@ -48,6 +48,13 @@ public class LoginController extends Controller {
 
             JSONObject requestObject = (JSONObject) parser.parse(body);
 
+            try {
+                if (requestObject.get("message").equals("Invalid Credentials")) {
+                    notice_text.setText("Invalid credentials");
+                    return;
+                }
+            } catch (Exception ignored) {}
+
             String token = (String) requestObject.get("access_token");
 
             auth.setApiToken(token);

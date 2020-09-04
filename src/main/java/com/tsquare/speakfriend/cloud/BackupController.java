@@ -16,11 +16,8 @@ public class BackupController {
         Auth auth = new Auth();
         Api api = new Api();
 
-        if (auth.getApiToken().equals("")) {
-            return;
-        }
-
         ApiResponse response = api.getAccounts();
+        String body = response.getResponseBody();
         String test = "";
     }
 }
