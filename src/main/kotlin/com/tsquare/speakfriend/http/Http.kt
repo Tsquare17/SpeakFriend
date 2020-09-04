@@ -1,11 +1,13 @@
 package com.tsquare.speakfriend.http
 
 import com.tsquare.speakfriend.api.ApiResponse
+import com.tsquare.speakfriend.auth.Auth
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.URLEncoder
 
 class Http {
     private val base = "http://speakfriend-api.local/api"
@@ -28,11 +30,20 @@ class Http {
         val location = "$base/$endpoint"
         val url = URL(location)
 
-        return sendRequest(url, "POST", parameters)
+        val request = sendRequest(url, "POST", parameters)
+
+
+        return request
     }
 
     private fun sendRequest(url: URL, method: String, parameters: String): ApiResponse {
+        val auth = Auth()
+
         val connection = url.openConnection()
+        if (auth.getApiToken().isNotEmpty()) {
+            connection.setRequestProperty("Authorization", "Bearer " + auth.getApiToken());
+        }
+
         connection.doOutput = true
         with(connection as HttpURLConnection) {
 
@@ -72,7 +83,9 @@ class Http {
 
                 val requestObject = parser.parse(response.toString()) as JSONObject
 
-                ApiResponse.errors = requestObject.get("errors") as JSONObject
+                val errors = requestObject.get("errors") as JSONObject
+
+                ApiResponse.setApiErrors(errors)
 
                 return ApiResponse
             }
