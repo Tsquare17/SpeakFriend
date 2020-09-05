@@ -56,19 +56,20 @@ public class UserController extends Controller
     protected void loginAction() throws IOException {
         Auth auth = new Auth();
         if(auth.checkIn(username.getText().trim(), password.getText())) {
+            login_grid.setVisible(false);
+            login_grid.setManaged(false);
+
+            login_title.setVisible(false);
+            login_title.setManaged(false);
+
+            notice_text.setStyle("-fx-text-fill: yellowgreen");
+
+            update_loader.setVisible(true);
+            update_loader.setManaged(true);
+
             boolean requiresUpdate = UpdateController.checkUpdate();
             if (requiresUpdate) {
-                login_grid.setVisible(false);
-                login_grid.setManaged(false);
-
-                login_title.setVisible(false);
-                login_title.setManaged(false);
-
-                notice_text.setStyle("-fx-text-fill: yellowgreen");
                 notice_text.setText("Updating Database");
-
-                update_loader.setVisible(true);
-                update_loader.setManaged(true);
 
                 UpdateController updateController = new UpdateController();
                 updateController.update();
@@ -83,8 +84,10 @@ public class UserController extends Controller
                 Main.transition = new PauseTransition(delay);
             }
 
+            notice_text.setText("Decrypting Accounts...");
+
             AccountController accountController = new AccountController();
-            accountController.listAccountsView();
+            accountController.decryptAccounts();
         } else {
             notice_text.setText("The user or password entered was incorrect.");
         }

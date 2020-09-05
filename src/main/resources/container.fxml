@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.main.Nav">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.main.Nav">
     <children>
         <MenuBar>
             <menus>
@@ -20,10 +22,15 @@
                     <MenuItem fx:id="menu_item_delete_user" mnemonicParsing="false" onAction="#deleteUserView" text="Delete User" />
                 </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="View">
+               <items>
+                  <MenuItem fx:id="menu_item_edit_settings1" mnemonicParsing="false" onAction="#viewAccountsView" text="Accounts" />
+               </items>
+            </Menu>
             <Menu fx:id="menu_cloud" mnemonicParsing="false" text="Cloud">
                 <items>
-                    <MenuItem fx:id="menu_item_cloud_register" id="menuItemCloudRegister" mnemonicParsing="false" onAction="#cloudRegisterView" text="Register" />
-                    <MenuItem fx:id="menu_item_cloud_login" id="menuItemCloudLogin" mnemonicParsing="false" onAction="#cloudLoginView" text="Login" />
+                    <MenuItem id="menuItemCloudRegister" fx:id="menu_item_cloud_register" mnemonicParsing="false" onAction="#cloudRegisterView" text="Register" />
+                    <MenuItem id="menuItemCloudLogin" fx:id="menu_item_cloud_login" mnemonicParsing="false" onAction="#cloudLoginView" text="Login" />
                     <MenuItem fx:id="menu_item_cloud_backup" mnemonicParsing="false" onAction="#cloudBackupView" text="Backup" />
                 </items>
             </Menu>

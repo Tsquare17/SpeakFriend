@@ -75,7 +75,7 @@ public class LoginController extends Controller {
     }
 
     @FXML
-    public void goBackAction() throws IOException {
-        transitionToAccounts();
+    public void goBackAction() {
+        toAccounts();
     }
 }

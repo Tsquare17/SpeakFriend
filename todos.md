@@ -6,3 +6,4 @@
 - Use CurrentUser.apiKey based on pass, to encrypt accounts to be backed up, and to decrypt accounts on import. Require this the first time an interaction with the API is required, and store in CurrentUser.apiPass.
 - Fix going back to account list from Cloud scene, missing accounts.
 - Build the ApiResponse.errors in Api instead of in the controller.
+- Separate AccountController into controllers for each scene.

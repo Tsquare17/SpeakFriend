@@ -1,6 +1,7 @@
 package com.tsquare.speakfriend.main;
 
 import com.tsquare.speakfriend.account.AccountController;
+import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 
@@ -13,9 +14,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public abstract class Controller {
     @FXML private URL location;
@@ -122,14 +128,18 @@ public abstract class Controller {
                 Duration.seconds(2)
         );
         pause.setOnFinished(e -> {
-            try {
-                AccountController accountController = new AccountController();
-                accountController.listAccountsView();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            toAccounts();
         });
         pause.play();
+    }
+
+    public void toAccounts() {
+        try {
+            AccountController accountController = new AccountController();
+            accountController.listAccountsView();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     protected String getEncryptedText(String key, TextField field) {
@@ -151,5 +161,12 @@ public abstract class Controller {
         } catch (Exception ignore) {}
 
         return decrypted;
+    }
+
+    protected JSONObject parse(ApiResponse response) throws ParseException {
+        String body = response.getResponseBody();
+        JSONParser parser = new JSONParser();
+
+        return (JSONObject) parser.parse(body);
     }
 }

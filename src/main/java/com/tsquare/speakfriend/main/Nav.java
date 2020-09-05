@@ -39,38 +39,43 @@ public class Nav extends Controller {
 
     @FXML
     public void deleteUserView(ActionEvent event) throws IOException {
-        this.newContainerScene("delete-user");
+        newContainerScene("delete-user");
     }
 
     @FXML
     public void logoutAction(ActionEvent event) throws IOException {
         Auth auth = new Auth();
         auth.checkOut();
-        this.newScene("sign-in");
+        newScene("sign-in");
     }
 
     @FXML
     public void editSettingsView() throws IOException {
-        this.newContainerScene("settings");
+        newContainerScene("settings");
     }
 
     @FXML
     public void helpAboutView() throws IOException {
-        this.newContainerScene("about");
+        newContainerScene("about");
     }
 
     @FXML
     public void cloudRegisterView() throws IOException {
-        this.newContainerScene("cloud-register");
+        newContainerScene("cloud-register");
     }
 
     @FXML
     public void cloudLoginView() throws IOException {
-        this.newContainerScene("cloud-login");
+        newContainerScene("cloud-login");
     }
 
     @FXML
     public void cloudBackupView() throws IOException {
-        this.transitionContainerScene("backup");
+        transitionContainerScene("backup");
+    }
+
+    @FXML
+    public void viewAccountsView() {
+        toAccounts();
     }
 }

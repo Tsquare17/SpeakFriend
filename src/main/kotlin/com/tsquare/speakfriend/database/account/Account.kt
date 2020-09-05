@@ -4,6 +4,7 @@ import com.tsquare.speakfriend.database.tables.Accounts
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import com.tsquare.speakfriend.database.connection.Conn
+import com.tsquare.speakfriend.state.State
 
 class Account {
     init {
@@ -11,6 +12,7 @@ class Account {
     }
 
     fun create(userIdArg: Int, nameArg: String?, userArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
+        State.isDirtyAccounts = 1
         transaction {
             AccountEntity.new {
                 userId = userIdArg
@@ -24,6 +26,7 @@ class Account {
     }
 
     fun update(accountIdArg: Int, nameArg: String?, userArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
+        State.isDirtyAccounts = 1
         transaction {
             AccountEntity[accountIdArg].apply {
                 name = nameArg
@@ -36,6 +39,7 @@ class Account {
     }
 
     fun delete(accountIdArg: Int) {
+        State.isDirtyAccounts = 1
         transaction {
             AccountEntity[accountIdArg].delete()
         }

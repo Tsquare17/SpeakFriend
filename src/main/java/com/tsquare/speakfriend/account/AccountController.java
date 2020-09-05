@@ -9,9 +9,9 @@ import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
-import com.tsquare.speakfriend.utils.AccountPreviewComparator;
 
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -32,6 +32,8 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -66,7 +68,6 @@ public class AccountController extends Controller {
     @FXML private ImageView show_password;
     @FXML private ImageView username_clipboard;
     @FXML private ImageView go_to_url;
-    @FXML private ScrollPane account_list_scrollpane;
     private int clickCount;
 
     @FXML
@@ -97,11 +98,23 @@ public class AccountController extends Controller {
         this.newContainerScene("create-account");
     }
 
+    public void decryptAccounts() {
+        Task<Void> task = new Task<>() {
+            @Override
+            public Void call() {
+                AccountList.get();
+                return null;
+            }
+        };
+
+        task.setOnSucceeded(taskFinishEvent -> {
+            toAccounts();
+        });
+        new Thread(task).start();
+    }
+
     @FXML
     public void listAccountsView() throws IOException {
-        Auth auth  = new Auth();
-        int userId     = auth.getId();
-        String key = auth.getKey();
 
         URL file = Controller.class.getResource("/account-list.fxml");
 
@@ -121,24 +134,7 @@ public class AccountController extends Controller {
         VBox accountsVBox = new VBox();
         accountsVBox.setFillWidth(true);
 
-        // Get all accounts for the current user.
-        List<AccountEntity> accounts = AccountList.get(userId);
-
-        // Collect list of decrypted account previews.
-        List<AccountPreview> decryptedList = new ArrayList<>();
-        for (AccountEntity account: accounts) {
-            int accountId = account.getId().getValue();
-            String accountName = "";
-            try {
-                accountName = Crypt.decrypt(key, account.getName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            decryptedList.add(new AccountPreview(accountId, accountName));
-        }
-
-        // Sort the list of accounts by name.
-        decryptedList.sort(new AccountPreviewComparator<>());
+        List<AccountPreview> decryptedList = AccountList.get();
 
         int count = 0;
         for(AccountPreview item: decryptedList) {
@@ -147,14 +143,17 @@ public class AccountController extends Controller {
             accountBox.setId(item.getName().replace(" ", "$:$").toLowerCase());
             accountBox.setPadding(new Insets(20, 30, 20, 30));
             accountBox.setCursor(Cursor.HAND);
+
+            Color accountColor = Color.rgb(47, 52, 57);
             if (count % 2 != 0) {
-                Color darkGrey = Color.rgb(43, 46, 52);
-                accountBox.setBackground(
-                        new Background(
-                                new BackgroundFill(darkGrey, CornerRadii.EMPTY, Insets.EMPTY)
-                        )
-                );
+                accountColor = Color.rgb(43, 46, 52);
             }
+
+            accountBox.setBackground(
+                    new Background(
+                            new BackgroundFill(accountColor, CornerRadii.EMPTY, Insets.EMPTY)
+                    )
+            );
             accountBox.setOnMouseClicked(e -> {
                 try {
                     this.showAccountDetails(item.getId());
@@ -179,9 +178,7 @@ public class AccountController extends Controller {
             accountListContainerContainer.setPrefHeight(stage.getHeight() - 30);
             accountListAnchor.setPrefHeight(stage.getHeight() - 60);
         });
-        stage.widthProperty().addListener(e -> {
-            scrollPane.setPrefWidth(stage.getWidth());
-        });
+        stage.widthProperty().addListener(e -> scrollPane.setPrefWidth(stage.getWidth()));
 
         Scene newScene = new Scene(box, currentScene.getWidth(), currentScene.getHeight());
         Main.setTimer(newScene);
@@ -207,14 +204,17 @@ public class AccountController extends Controller {
             if (item.getId().replace("$:$", " ").toLowerCase().startsWith(filter)) {
                 item.setVisible(true);
                 item.setManaged(true);
+
+                Color accountColor = Color.rgb(47, 52, 57);
                 if (count % 2 != 0) {
-                    Color darkGrey = Color.rgb(43, 46, 52);
-                    ((HBox) item).setBackground(
-                            new Background(
-                                    new BackgroundFill(darkGrey, CornerRadii.EMPTY, Insets.EMPTY)
-                            )
-                    );
+                    accountColor = Color.rgb(43, 46, 52);
                 }
+
+                ((HBox) item).setBackground(
+                        new Background(
+                                new BackgroundFill(accountColor, CornerRadii.EMPTY, Insets.EMPTY)
+                        )
+                );
                 count++;
             } else {
                 item.setVisible(false);
@@ -298,7 +298,7 @@ public class AccountController extends Controller {
             encryptedPass = Crypt.encrypt(key, accountPass);
             encryptedUrl = Crypt.encrypt(key, accountUrl);
             encryptedNotes = Crypt.encrypt(key, accountNotes);
-        } catch (Exception ignored) {};
+        } catch (Exception ignored) {}
 
         account.update(accountId, encryptedName, encryptedUser, encryptedPass, encryptedUrl, encryptedNotes);
 
@@ -365,7 +365,7 @@ public class AccountController extends Controller {
         try {
             assert accountEntity != null;
             accountNotes = Crypt.decrypt(key, accountEntity.getNotes());
-        } catch (Exception ignore) {};
+        } catch (Exception ignore) {}
 
         Stage newStage = new Stage();
         newStage.initOwner(stage);
@@ -472,5 +472,14 @@ public class AccountController extends Controller {
             account_password.setVisible(true);
             account_password_masked.setVisible(false);
         }
+    }
+
+    public List<Account> getAccountsFromJson(JSONArray accountsArray) {
+        List<Account> list = new ArrayList<>();
+        for (Object accountObject: accountsArray) {
+            JSONObject account = (JSONObject) accountObject;
+        }
+
+        return list;
     }
 }
