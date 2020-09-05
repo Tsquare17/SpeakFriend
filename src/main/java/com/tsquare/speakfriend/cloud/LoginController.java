@@ -4,6 +4,7 @@ import com.tsquare.speakfriend.api.Api;
 import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.main.Controller;
+import com.tsquare.speakfriend.state.State;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -13,6 +14,8 @@ import javafx.scene.text.Text;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 
 public class LoginController extends Controller {
     @FXML TextField email;
@@ -61,7 +64,9 @@ public class LoginController extends Controller {
 
             notice_text.setText("Login successful");
 
-            goBackAction(2);
+            State.setCloudAuthed(1);
+
+            transitionToAccounts();
 
             return;
         }
@@ -70,11 +75,7 @@ public class LoginController extends Controller {
     }
 
     @FXML
-    public void goBackAction() {
-        goBack();
-    }
-
-    public void goBackAction(Integer delay) {
-        goBack(delay);
+    public void goBackAction() throws IOException {
+        transitionToAccounts();
     }
 }

@@ -5,32 +5,37 @@
 <?import javafx.scene.layout.*?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.main.Nav">
-   <children>
-      <MenuBar>
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-                <MenuItem mnemonicParsing="false" onAction="#logoutAction" text="Log out" />
-                <MenuItem mnemonicParsing="false" onAction="#quitAction" text="Quit" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-                  <MenuItem mnemonicParsing="false" onAction="#backupView" text="Backup" />
-                <MenuItem mnemonicParsing="false" onAction="#editSettingsView" text="Edit Settings" />
-                <MenuItem mnemonicParsing="false" onAction="#deleteUserView" text="Delete User" />
-            </items>
-          </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#helpRegisterView" text="Register" />
-                  <MenuItem mnemonicParsing="false" onAction="#helpAboutView" text="About" />
-               </items>
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem fx:id="menu_item_logout" mnemonicParsing="false" onAction="#logoutAction" text="Log out" />
+                        <MenuItem fx:id="menu_item_quit" mnemonicParsing="false" onAction="#quitAction" text="Quit" />
+                    </items>
+                </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+                <items>
+                    <MenuItem fx:id="menu_item_edit_settings" mnemonicParsing="false" onAction="#editSettingsView" text="Edit Settings" />
+                    <MenuItem fx:id="menu_item_delete_user" mnemonicParsing="false" onAction="#deleteUserView" text="Delete User" />
+                </items>
             </Menu>
-        </menus>
-      </MenuBar>
-   </children>
-   <padding>
-      <Insets bottom="40.0" />
-   </padding>
+            <Menu fx:id="menu_cloud" mnemonicParsing="false" text="Cloud">
+                <items>
+                    <MenuItem fx:id="menu_item_cloud_register" id="menuItemCloudRegister" mnemonicParsing="false" onAction="#cloudRegisterView" text="Register" />
+                    <MenuItem fx:id="menu_item_cloud_login" id="menuItemCloudLogin" mnemonicParsing="false" onAction="#cloudLoginView" text="Login" />
+                    <MenuItem fx:id="menu_item_cloud_backup" mnemonicParsing="false" onAction="#cloudBackupView" text="Backup" />
+                </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+                <items>
+                    <MenuItem fx:id="menu_item_about" mnemonicParsing="false" onAction="#helpAboutView" text="About" />
+                </items>
+            </Menu>
+            </menus>
+        </MenuBar>
+    </children>
+    <padding>
+        <Insets bottom="40.0" />
+    </padding>
 </VBox>

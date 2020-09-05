@@ -18,11 +18,19 @@ import java.io.IOException;
 import java.net.URL;
 
 public abstract class Controller {
+    @FXML private URL location;
 
-    public void goBack() {
-        Scene newScene = Main.previousScene;
+    public void goBack() throws IOException {
+        Parent scene = FXMLLoader.load(Main.previousUrl);
+
+        Main.previousUrl = location;
+
+        Stage stage = Main.getStage();
+        Scene currentScene = stage.getScene();
+
+        Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
         Main.setTimer(newScene);
-        Main.getStage().setScene(newScene);
+        stage.setScene(newScene);
     }
 
     public void goBack(Integer delay) {
@@ -30,14 +38,18 @@ public abstract class Controller {
                 Duration.seconds(delay)
         );
         pause.setOnFinished(e -> {
-            goBack();
+            try {
+                goBack();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         });
         pause.play();
     }
 
     @FXML
     public void newScene(String nextScene) throws IOException {
-        Main.previousScene = Main.getScene();
+        Main.previousUrl = location;
 
         String resource = "/" + nextScene + ".fxml";
         URL file = Controller.class.getResource(resource);
@@ -52,7 +64,7 @@ public abstract class Controller {
     }
 
     public void newContainerScene(String resource) throws IOException {
-        Main.previousScene = Main.getScene();
+        Main.previousUrl = location;
 
         URL file = Nav.class.getResource("/" + resource + ".fxml");
 
@@ -70,8 +82,6 @@ public abstract class Controller {
 
     @FXML
     public void transitionScene(String newScene, int duration) {
-        Main.previousScene = Main.getScene();
-
         PauseTransition pause = new PauseTransition(
                 Duration.seconds(duration)
         );
@@ -87,8 +97,6 @@ public abstract class Controller {
 
     @FXML
     public void transitionContainerScene(String newScene, int duration) {
-        Main.previousScene = Main.getScene();
-
         PauseTransition pause = new PauseTransition(
                 Duration.seconds(duration)
         );
@@ -108,7 +116,7 @@ public abstract class Controller {
     }
 
     public void transitionToAccounts() {
-        Main.previousScene = Main.getScene();
+        Main.previousUrl = location;
 
         PauseTransition pause = new PauseTransition(
                 Duration.seconds(2)
@@ -140,7 +148,7 @@ public abstract class Controller {
         String decrypted = "";
         try {
             decrypted = Crypt.decrypt(key, encrypted);
-        } catch (Exception ignore) {};
+        } catch (Exception ignore) {}
 
         return decrypted;
     }

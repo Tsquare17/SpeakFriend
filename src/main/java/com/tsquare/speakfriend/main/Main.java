@@ -17,6 +17,7 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class Main extends Application {
     private static Stage stage;
@@ -25,9 +26,7 @@ public class Main extends Application {
 
     public static PauseTransition transition;
 
-    public static Stage previousStage;
-
-    public static Scene previousScene;
+    public static URL previousUrl;
 
     public static Stage getStage() {
         return stage;
@@ -65,22 +64,6 @@ public class Main extends Application {
         Schema schema = new Schema();
         schema.up();
     }
-
-//    public static void startTimer(Scene scene) {
-//        transition.setOnFinished(evt -> {
-//            try {
-//                Main.logout();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//
-//        scene.addEventFilter(InputEvent.ANY, evt -> {
-//            transition.playFromStart();
-//        });
-//
-//        transition.play();
-//    }
 
     public static void setTimer(Scene scene) {
         if (transition != null) {

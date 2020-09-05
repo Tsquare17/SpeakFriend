@@ -4,6 +4,7 @@ import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.api.Api;
 import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.main.Controller;
+import com.tsquare.speakfriend.settings.Options;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -12,10 +13,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import org.json.simple.JSONArray;
 
 import java.io.IOException;
-import java.util.Set;
 
 public class RegisterController extends Controller {
     @FXML TextField name;
@@ -35,6 +34,8 @@ public class RegisterController extends Controller {
         if (response.getResponseMessage().equals("OK")) {
             notice_text.setFill(Color.rgb(255,255,255));
             notice_text.setText("Successfully created account.");
+
+            Options.put("email", email.getText());
 
             this.transitionToAccounts();
         } else {

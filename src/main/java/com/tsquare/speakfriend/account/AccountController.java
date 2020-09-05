@@ -202,10 +202,20 @@ public class AccountController extends Controller {
 
         VBox vBox = (VBox) scene.lookup("#account_list");
         ObservableList<Node> listView = vBox.getChildren();
+        int count = 0;
         for (Node item: listView) {
             if (item.getId().replace("$:$", " ").toLowerCase().startsWith(filter)) {
                 item.setVisible(true);
                 item.setManaged(true);
+                if (count % 2 != 0) {
+                    Color darkGrey = Color.rgb(43, 46, 52);
+                    ((HBox) item).setBackground(
+                            new Background(
+                                    new BackgroundFill(darkGrey, CornerRadii.EMPTY, Insets.EMPTY)
+                            )
+                    );
+                }
+                count++;
             } else {
                 item.setVisible(false);
                 item.setManaged(false);
