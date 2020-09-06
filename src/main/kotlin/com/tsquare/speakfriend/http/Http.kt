@@ -9,6 +9,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
 
+
 class Http {
     private val base = "http://speakfriend-api.local/api"
 
@@ -19,21 +20,25 @@ class Http {
         return sendRequest(url, "GET", "")
     }
 
-    fun get(endpoint: String, parameters:String): ApiResponse {
+    fun get(endpoint: String, parameters: String): ApiResponse {
         val location = "$base/$endpoint"
         val url = URL(location)
 
         return sendRequest(url, "GET", parameters)
     }
 
-    fun post(endpoint: String, parameters:String): ApiResponse {
+    fun post(endpoint: String, parameters: String): ApiResponse {
         val location = "$base/$endpoint"
         val url = URL(location)
 
-        val request = sendRequest(url, "POST", parameters)
+        return sendRequest(url, "POST", parameters)
+    }
 
+    fun sendJson(endpoint: String, parameters: String): ApiResponse {
+        val location = "$base/$endpoint?XDEBUG_SESSION_START=PHPSTORM"
+        val url = URL(location)
 
-        return request
+        return sendRequest(url, "JSON", parameters)
     }
 
     private fun sendRequest(url: URL, method: String, parameters: String): ApiResponse {
@@ -45,9 +50,17 @@ class Http {
         }
 
         connection.doOutput = true
+
+        var httpMethod = method
+        if (method == "JSON") {
+            httpMethod = "POST"
+            connection.setRequestProperty("Content-Type", "application/json; utf-8")
+            connection.setRequestProperty("Accept", "application/json")
+        }
+
         with(connection as HttpURLConnection) {
 
-            requestMethod = method
+            requestMethod = httpMethod
 
             val wr = OutputStreamWriter(outputStream);
             wr.write(parameters);

@@ -1,9 +1,6 @@
 package com.tsquare.speakfriend.cloud;
 
 import com.tsquare.speakfriend.account.preview.AccountPreview;
-import com.tsquare.speakfriend.crypt.Crypt;
-import com.tsquare.speakfriend.database.account.Account;
-import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.api.Api;
 import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
@@ -11,12 +8,8 @@ import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
-import com.tsquare.speakfriend.utils.AccountPreviewComparator;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
@@ -25,8 +18,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -45,6 +36,7 @@ public class BackupController extends Controller {
         String key = auth.getKey();
 
         account_list_scrollpane.setFitToWidth(true);
+        account_list_scrollpane.setFitToHeight(true);
 
         VBox accountsVBox = new VBox();
         accountsVBox.setFillWidth(true);
@@ -54,7 +46,7 @@ public class BackupController extends Controller {
         selectAll.setSelected(true);
 
         // Collect list of decrypted account previews.
-        List<AccountPreview> decryptedList = AccountList.get();
+        List<AccountPreview> decryptedList = AccountList.getPreviews();
 
         int count = 0;
         List<HBox> accountBoxes = new ArrayList<>();
@@ -132,5 +124,22 @@ public class BackupController extends Controller {
 
     public void showAccountDiff(int id) throws IOException {
 
+    }
+
+    public void backupAction() {
+        Auth auth = new Auth();
+        ArrayList<List<String>> decryptedList = AccountList.getDecryptedAccounts();
+
+        Api api = new Api();
+
+        ArrayList<List<String>> encryptedList = AccountList.lock(decryptedList, auth.getApiKey());
+
+        ApiResponse response = api.sendBackups(encryptedList);
+
+        if (response.getResponseMessage().equals("OK")) {
+            notice_text.setText("Accounts successfully backed up");
+        } else {
+            notice_text.setText(response.getErrors().toString());
+        }
     }
 }

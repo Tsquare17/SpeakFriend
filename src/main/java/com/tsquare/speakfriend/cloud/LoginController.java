@@ -61,6 +61,7 @@ public class LoginController extends Controller {
             String token = (String) requestObject.get("access_token");
 
             auth.setApiToken(token);
+            auth.setApiKey(password.getText());
 
             notice_text.setText("Login successful");
 

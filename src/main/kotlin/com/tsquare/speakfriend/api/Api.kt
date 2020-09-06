@@ -1,6 +1,8 @@
 package com.tsquare.speakfriend.api;
 
 import com.tsquare.speakfriend.http.Http
+import org.json.simple.JSONArray
+import org.json.simple.JSONObject
 import java.net.URLEncoder
 
 class Api {
@@ -22,9 +24,7 @@ class Api {
 
         val http = Http()
 
-        var login = http.post("login", parameters)
-
-        return login
+        return http.post("login", parameters)
     }
 
     fun logout(): ApiResponse {
@@ -39,6 +39,16 @@ class Api {
         val url = getVersion() + "/accounts"
 
         return http.get(url);
+    }
+
+    fun sendBackups(list: ArrayList<MutableList<String>>): ApiResponse {
+        val http = Http()
+
+        val url = getVersion() + "/backup"
+
+        val accountsJson = "{\"accounts\": " + JSONArray.toJSONString(list) + "}"
+
+        return http.sendJson(url, accountsJson)
     }
 
     private fun getVersion(): String {

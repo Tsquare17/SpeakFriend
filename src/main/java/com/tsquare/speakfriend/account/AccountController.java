@@ -102,7 +102,7 @@ public class AccountController extends Controller {
         Task<Void> task = new Task<>() {
             @Override
             public Void call() {
-                AccountList.get();
+                AccountList.getPreviews();
                 return null;
             }
         };
@@ -134,7 +134,7 @@ public class AccountController extends Controller {
         VBox accountsVBox = new VBox();
         accountsVBox.setFillWidth(true);
 
-        List<AccountPreview> decryptedList = AccountList.get();
+        List<AccountPreview> decryptedList = AccountList.getPreviews();
 
         int count = 0;
         for(AccountPreview item: decryptedList) {

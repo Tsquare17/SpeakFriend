@@ -13,7 +13,7 @@ import javax.crypto.spec.SecretKeySpec
 
 object Crypt
 {
-    val iterations: Int = 2000
+    private const val iterations: Int = 2000
 
     @JvmStatic
     @JvmOverloads

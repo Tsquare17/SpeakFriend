@@ -67,4 +67,9 @@ class Auth {
     fun getApiToken(): String {
         return CurrentUser.apiToken
     }
+
+    fun setApiKey(key: String) {
+        val hash = Crypt.generatePassword(key)
+        CurrentUser.apiEncryptionKey = hash?.let { Crypt.generateKey(it, key).toString() }.toString()
+    }
 }

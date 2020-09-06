@@ -37,6 +37,8 @@ public class UpdateController {
                     Statement statement = conn.createStatement();
                     statement.executeUpdate(sqlString);
                     statement.close();
+
+                    SystemSettings.put("version", "100");
                 }
                 int systemVersion = Integer.parseInt(systemVersionString);
 
@@ -81,9 +83,15 @@ public class UpdateController {
             return true;
         }
 
-        int version = Integer.parseInt(dbVersion);
+        String systemVersion = SystemSettings.get("version");
+        if (systemVersion.equals("")) {
+            return true;
+        }
 
-        return version < 120;
+        int version = Integer.parseInt(dbVersion);
+        int sysVersion = Integer.parseInt(systemVersion);
+
+        return version < 101 || sysVersion < 100;
     }
 
     private static void changeEncryptionIterations(int iterationsBefore, int iterationsAfter) {
