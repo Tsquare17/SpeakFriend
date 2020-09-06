@@ -9,11 +9,16 @@ import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.settings.Options;
 
+import com.tsquare.speakfriend.settings.SystemSettings;
+import com.tsquare.speakfriend.update.database.SQLiteDatabaseConnection;
 import javafx.animation.PauseTransition;
 import javafx.concurrent.Task;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class UpdateController {
@@ -21,8 +26,19 @@ public class UpdateController {
     public void update() {
         Task<Void> task = new Task<>() {
             @Override
-            public Void call() {
+            public Void call() throws SQLException {
                 Auth auth = new Auth();
+
+                String systemVersionString = SystemSettings.get("version");
+                if (systemVersionString.equals("")) {
+                    SQLiteDatabaseConnection driver = new SQLiteDatabaseConnection();
+                    Connection conn = driver.connect();
+                    String sqlString = "ALTER TABLE Accounts ADD COLUMN cloud_id INTEGER";
+                    Statement statement = conn.createStatement();
+                    statement.executeUpdate(sqlString);
+                    statement.close();
+                }
+                int systemVersion = Integer.parseInt(systemVersionString);
 
                 int dbVersion = auth.getVersion();
                 if (dbVersion == 0) {
@@ -67,7 +83,7 @@ public class UpdateController {
 
         int version = Integer.parseInt(dbVersion);
 
-        return version < 101;
+        return version < 120;
     }
 
     private static void changeEncryptionIterations(int iterationsBefore, int iterationsAfter) {

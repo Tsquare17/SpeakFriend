@@ -12,4 +12,5 @@ object Accounts : IntIdTable()
     val pass   = Accounts.varchar("pass", 255).nullable()
     val url    = Accounts.varchar("url", 255).nullable()
     val notes  = Accounts.text("notes").nullable()
+    val cloudId = Accounts.integer("cloud_id").nullable()
 }

@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.main;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.database.schema.Schema;
 
+import com.tsquare.speakfriend.settings.Options;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,7 @@ import javafx.scene.input.InputEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import org.scenicview.ScenicView;
+// import org.scenicview.ScenicView;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-        ScenicView.show(scene);
+        // ScenicView.show(scene);
     }
 
     public static void main(String[] args) {

@@ -71,6 +71,8 @@ public class UserController extends Controller
             if (requiresUpdate) {
                 notice_text.setText("Updating Database");
 
+                int dbVersion = auth.getVersion();
+
                 UpdateController updateController = new UpdateController();
                 updateController.update();
 
