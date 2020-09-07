@@ -20,6 +20,11 @@ class AccountList {
         }
 
         @JvmStatic
+        fun getByIds(accountIds : List<Int>): List<AccountEntity> {
+            return Account().getByIds(accountIds);
+        }
+
+        @JvmStatic
         fun getPreviews(): MutableList<AccountPreview> {
             if (State.isDirtyAccounts == 0) {
                 return previewList
@@ -51,9 +56,21 @@ class AccountList {
 
         @JvmStatic
         fun getDecryptedAccounts(): ArrayList<MutableList<String>> {
+            val list = ArrayList<Int>()
+
+            return getDecryptedAccounts(list)
+        }
+
+        @JvmStatic
+        fun getDecryptedAccounts(list: List<Int>): ArrayList<MutableList<String>> {
             val auth = Auth()
-            val accounts = get(auth.getId())
+            val accounts: List<AccountEntity>
             val key = auth.getKey()
+            if (list.isEmpty()) {
+                accounts = get(auth.getId())
+            } else {
+                accounts = getByIds(list)
+            }
 
             // Need to make like associative array to send JSON to API.
             for (account in accounts) {
@@ -104,8 +121,12 @@ class AccountList {
             val list = ArrayList<MutableList<String>>()
             for (account in accounts) {
                 val accountFields: MutableList<String> = ArrayList()
-                for (field in account) {
-                    accountFields.add(encrypt(key, field))
+                for ((i, field) in account.withIndex()) {
+                    if (i == 0 || i == 6) {
+                        accountFields.add(field)
+                    } else {
+                        accountFields.add(encrypt(key, field))
+                    }
                 };
                 list.add(accountFields)
             }

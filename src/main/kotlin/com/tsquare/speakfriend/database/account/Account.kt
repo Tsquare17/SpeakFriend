@@ -38,6 +38,15 @@ class Account {
         }
     }
 
+    fun update(accountIdArg: Int, cloudIdArg: Int) {
+        State.isDirtyAccounts = 1
+        transaction {
+            AccountEntity[accountIdArg].apply {
+                cloudId = cloudIdArg
+            }
+        }
+    }
+
     fun delete(accountIdArg: Int) {
         State.isDirtyAccounts = 1
         transaction {
@@ -58,6 +67,16 @@ class Account {
     fun getById(id: Int): AccountEntity? {
         return transaction {
             AccountEntity.findById(id)
+        }
+    }
+
+    fun getByIds(ids: List<Int>): List<AccountEntity> {
+        return transaction {
+            AccountEntity.find {
+                Accounts.id inList ids
+            }.orderBy(
+                    Accounts.name.lowerCase() to SortOrder.ASC
+            ).toList()
         }
     }
 }

@@ -71,7 +71,7 @@ public class Nav extends Controller {
 
     @FXML
     public void cloudBackupView() throws IOException {
-        transitionContainerScene("backup");
+        newContainerScene("backup");
     }
 
     @FXML

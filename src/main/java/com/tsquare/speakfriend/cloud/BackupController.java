@@ -4,6 +4,7 @@ import com.tsquare.speakfriend.account.preview.AccountPreview;
 import com.tsquare.speakfriend.api.Api;
 import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
+import com.tsquare.speakfriend.database.account.Account;
 import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
@@ -18,6 +19,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -25,24 +29,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BackupController extends Controller {
+    @FXML VBox account_list_container;
     @FXML AnchorPane account_anchor;
     @FXML ScrollPane account_list_scrollpane;
     @FXML Text notice_text;
 
     @FXML
-    public void initialize() throws ParseException {
-        Auth auth = new Auth();
-        Api api = new Api();
-        String key = auth.getKey();
-
+    public void initialize() {
         account_list_scrollpane.setFitToWidth(true);
         account_list_scrollpane.setFitToHeight(true);
+
+        Stage stage = Main.getStage();
+        // Bind the scroll pane's size to the parent anchor pane's size.
+        stage.heightProperty().addListener(e -> {
+            account_list_container.setPrefHeight(stage.getHeight() - 30);
+            account_anchor.setPrefHeight(stage.getHeight() - 60);
+        });
+        stage.widthProperty().addListener(e -> account_list_scrollpane.setPrefWidth(stage.getWidth()));
 
         VBox accountsVBox = new VBox();
         accountsVBox.setFillWidth(true);
 
         CheckBox selectAll = new CheckBox("Toggle All");
-        selectAll.setPadding(new Insets(0, 0, 0, 60));
+        selectAll.setPadding(new Insets(0, 0, 0, 30));
         selectAll.setSelected(true);
 
         // Collect list of decrypted account previews.
@@ -126,22 +135,48 @@ public class BackupController extends Controller {
 
     }
 
-    public void backupAction() {
+    public void backupAction() throws ParseException {
         Auth auth = new Auth();
-        ArrayList<List<String>> decryptedList = AccountList.getDecryptedAccounts();
+
+        List<AccountPreview> accountPreviews = AccountList.getPreviews();
+        List<Integer> selectedAccounts = new ArrayList<>();
+        for (AccountPreview accountPreview : accountPreviews) {
+            String checkboxId = "#checkbox_" + accountPreview.getId();
+            CheckBox checkBox = (CheckBox) account_list_scrollpane.lookup(checkboxId);
+
+            if (checkBox != null && checkBox.isSelected()) {
+                int accountId = accountPreview.getId();
+                selectedAccounts.add(accountId);
+            }
+        }
+
+        ArrayList<List<String>> decryptedList = AccountList.getDecryptedAccounts(selectedAccounts);
 
         Api api = new Api();
 
         ArrayList<List<String>> encryptedList = AccountList.lock(decryptedList, auth.getApiKey());
 
-        // go through and map
-
         ApiResponse response = api.sendBackups(encryptedList);
 
         if (response.getResponseMessage().equals("OK")) {
             notice_text.setText("Accounts successfully backed up");
-        } else {
-            notice_text.setText(response.getErrors().toString());
+
+            JSONObject requestObject = parse(response);
+
+            JSONArray accountsArray = (JSONArray) requestObject.get("accounts");
+
+            for (Object o : accountsArray) {
+                JSONObject newBackup = (JSONObject) o;
+                String id = (String) newBackup.get("account_id");
+                String cloudId = (String) newBackup.get("cloud_id");
+
+                Account account = new Account();
+                account.update(Integer.parseInt(id), Integer.parseInt(cloudId));
+            }
+
+            return;
         }
+
+        notice_text.setText(response.getErrors().toString());
     }
 }

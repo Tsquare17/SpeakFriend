@@ -80,6 +80,8 @@ public class LoginController extends Controller {
 
             if (remember_email.isSelected()) {
                 Options.put("email", email.getText());
+            } else {
+                Options.put("email", "");
             }
 
             State.setCloudAuthed(1);
