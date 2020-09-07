@@ -29,8 +29,8 @@ public class UpdateController {
             public Void call() throws SQLException {
                 Auth auth = new Auth();
 
-                String systemVersionString = SystemSettings.get("version");
-                if (systemVersionString.equals("")) {
+                int systemVersion = Main.getVersion(true);
+                if (systemVersion == 0) {
                     SQLiteDatabaseConnection driver = new SQLiteDatabaseConnection();
                     Connection conn = driver.connect();
                     String sqlString = "ALTER TABLE Accounts ADD COLUMN cloud_id INTEGER";
@@ -39,8 +39,8 @@ public class UpdateController {
                     statement.close();
 
                     SystemSettings.put("version", "100");
+                    systemVersion = 100;
                 }
-                int systemVersion = Integer.parseInt(systemVersionString);
 
                 int dbVersion = auth.getVersion();
                 if (dbVersion == 0) {

@@ -42,7 +42,7 @@ public class BackupController extends Controller {
         accountsVBox.setFillWidth(true);
 
         CheckBox selectAll = new CheckBox("Toggle All");
-        selectAll.setPadding(new Insets(0, 0, 0, 30));
+        selectAll.setPadding(new Insets(0, 0, 0, 60));
         selectAll.setSelected(true);
 
         // Collect list of decrypted account previews.
@@ -133,6 +133,8 @@ public class BackupController extends Controller {
         Api api = new Api();
 
         ArrayList<List<String>> encryptedList = AccountList.lock(decryptedList, auth.getApiKey());
+
+        // go through and map
 
         ApiResponse response = api.sendBackups(encryptedList);
 

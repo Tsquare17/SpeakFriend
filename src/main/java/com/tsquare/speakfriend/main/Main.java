@@ -4,6 +4,7 @@ import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.database.schema.Schema;
 
 import com.tsquare.speakfriend.settings.Options;
+import com.tsquare.speakfriend.settings.SystemSettings;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -116,5 +117,30 @@ public class Main extends Application {
 
         Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
         stage.setScene(newScene);
+    }
+
+    public static String getSemanticVersion() {
+        String systemVersionString = SystemSettings.get("version");
+        if (systemVersionString.equals("")) {
+            return "0.1.0";
+        }
+        char[] chars = systemVersionString.toCharArray();
+
+        return chars[0] + "." + chars[1] + "." + chars[2];
+    }
+
+    public static String getVersion() {
+        String systemVersionString = SystemSettings.get("version");
+        if (systemVersionString.equals("")) {
+            return "0";
+        }
+
+        return systemVersionString;
+    }
+
+    public static int getVersion(Boolean returnsIntOverload) {
+        String version = getVersion();
+
+        return Integer.parseInt(version);
     }
 }
