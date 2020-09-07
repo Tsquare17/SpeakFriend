@@ -111,24 +111,6 @@ public class BackupController extends Controller {
         });
 
         accountsVBox.getChildren().add(0, selectAll);
-
-
-//        ApiResponse response = api.getAccounts();
-//
-//        if (response.getResponseMessage().equals("OK")) {
-//
-//            JSONObject requestObject = parse(response);
-//
-//            JSONArray accountsArray = (JSONArray) requestObject.get("accounts");
-//
-//            AccountController accountController = new AccountController();
-//            List<Account> accountsList = accountController.getAccountsFromJson(accountsArray);
-//
-//            String test = "";
-//            return;
-//        }
-//
-//        notice_text.setText(response.getErrors().toString());
     }
 
     public void showAccountDiff(int id) throws IOException {

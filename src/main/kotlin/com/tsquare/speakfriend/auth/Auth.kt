@@ -53,6 +53,12 @@ class Auth {
     }
 
     fun getVersion(): Int {
+        val dbVersion = Options.get("db_version")
+        if (dbVersion == "") {
+            CurrentUser.version = 0
+        } else {
+            CurrentUser.version = dbVersion.toInt()
+        }
         return CurrentUser.version
     }
 
@@ -64,12 +70,21 @@ class Auth {
         CurrentUser.apiToken = token
     }
 
+    fun setApiPass(pass: String) {
+        CurrentUser.apiPass = pass
+    }
+
     fun getApiToken(): String {
         return CurrentUser.apiToken
     }
 
-    fun setApiKey(key: String) {
-        val hash = Crypt.generatePassword(key)
-        CurrentUser.apiEncryptionKey = hash?.let { Crypt.generateKey(it, key).toString() }.toString()
+    fun setApiKey(hash: String, pass: String) {
+        CurrentUser.apiEncryptionKey = Crypt.generateKey(hash, pass).toString()
+    }
+
+    fun createApiKey(pass: String) {
+        val hash = Crypt.generatePassword(pass).toString();
+        CurrentUser.apiHash = hash
+        CurrentUser.apiEncryptionKey = Crypt.generateKey(hash, pass).toString()
     }
 }

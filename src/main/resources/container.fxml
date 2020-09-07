@@ -32,6 +32,7 @@
                     <MenuItem id="menuItemCloudRegister" fx:id="menu_item_cloud_register" mnemonicParsing="false" onAction="#cloudRegisterView" text="Register" />
                     <MenuItem id="menuItemCloudLogin" fx:id="menu_item_cloud_login" mnemonicParsing="false" onAction="#cloudLoginView" text="Login" />
                     <MenuItem fx:id="menu_item_cloud_backup" mnemonicParsing="false" onAction="#cloudBackupView" text="Backup" />
+                  <MenuItem fx:id="menu_item_cloud_import" mnemonicParsing="false" onAction="#cloudImportView" text="Import" />
                 </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">

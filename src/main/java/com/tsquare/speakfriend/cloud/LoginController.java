@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -72,9 +73,17 @@ public class LoginController extends Controller {
             } catch (Exception ignored) {}
 
             String token = (String) requestObject.get("access_token");
+            JSONObject userJson = (JSONObject) requestObject.get("user");
+            String backupKey = (String) userJson.get("backup_key");
 
             auth.setApiToken(token);
-            auth.setApiKey(password.getText());
+            auth.setApiPass(password.getText());
+
+            if (backupKey != null && ! backupKey.equals("")) {
+                auth.setApiKey(backupKey, password.getText());
+            } else {
+                auth.createApiKey(password.getText());
+            }
 
             notice_text.setText("Login successful");
 

@@ -13,6 +13,7 @@ class AccountList {
     companion object {
         private var previewList: MutableList<AccountPreview> = ArrayList()
         private var accountList: ArrayList<MutableList<String>> = ArrayList()
+        private var stagedImportList: List<MutableList<String>> = ArrayList()
 
         @JvmStatic
         fun get(userId: Int): List<AccountEntity> {
@@ -21,7 +22,17 @@ class AccountList {
 
         @JvmStatic
         fun getByIds(accountIds : List<Int>): List<AccountEntity> {
-            return Account().getByIds(accountIds);
+            return Account().getByIds(accountIds)
+        }
+
+        @JvmStatic
+        fun getById(accountId : Int): AccountEntity? {
+            return Account().getById(accountId)
+        }
+
+        @JvmStatic
+        fun getByCloudId(accountId : Int): AccountEntity? {
+            return Account().getByCloudId(accountId)
         }
 
         @JvmStatic
@@ -29,6 +40,8 @@ class AccountList {
             if (State.isDirtyAccounts == 0) {
                 return previewList
             }
+
+            previewList = ArrayList()
 
             val auth = Auth()
             val accounts = get(auth.getId())
@@ -125,13 +138,23 @@ class AccountList {
                     if (i == 0 || i == 6) {
                         accountFields.add(field)
                     } else {
-                        accountFields.add(encrypt(key, field))
+                        accountFields.add(encrypt(key, field, 2000))
                     }
                 };
                 list.add(accountFields)
             }
 
             return list
+        }
+
+        @JvmStatic
+        fun stageImports(accounts: List<MutableList<String>>) {
+            stagedImportList = accounts
+        }
+
+        @JvmStatic
+        fun getStagedImports(): List<MutableList<String>> {
+            return stagedImportList
         }
     }
 }

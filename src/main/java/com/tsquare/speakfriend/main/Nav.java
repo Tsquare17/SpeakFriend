@@ -19,12 +19,14 @@ public class Nav extends Controller {
     @FXML MenuItem menu_item_cloud_register;
     @FXML MenuItem menu_item_cloud_login;
     @FXML MenuItem menu_item_cloud_backup;
+    @FXML MenuItem menu_item_cloud_import;
     @FXML MenuItem menu_item_about;
 
     @FXML
     public void initialize() {
         if (State.isCloudAuthed() == 0) {
             menu_item_cloud_backup.setVisible(false);
+            menu_item_cloud_import.setVisible(false);
         } else {
             menu_item_cloud_login.setVisible(false);
             menu_item_cloud_register.setVisible(false);
@@ -72,6 +74,11 @@ public class Nav extends Controller {
     @FXML
     public void cloudBackupView() throws IOException {
         newContainerScene("backup");
+    }
+
+    @FXML
+    public void cloudImportView() throws IOException {
+        newContainerScene("import");
     }
 
     @FXML

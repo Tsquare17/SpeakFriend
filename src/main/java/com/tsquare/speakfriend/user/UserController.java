@@ -42,14 +42,16 @@ public class UserController extends Controller
 
     @FXML
     public void initialize() {
-        update_loader.setManaged(false);
-        update_loader.setVisible(false);
+        if (update_loader != null) {
+            update_loader.setManaged(false);
+            update_loader.setVisible(false);
 
-        RotateTransition rotate = new RotateTransition(Duration.millis(1600), update_loader);
-        rotate.setByAngle(360);
-        rotate.setCycleCount(Animation.INDEFINITE);
-        rotate.setInterpolator(Interpolator.LINEAR);
-        rotate.play();
+            RotateTransition rotate = new RotateTransition(Duration.millis(1600), update_loader);
+            rotate.setByAngle(360);
+            rotate.setCycleCount(Animation.INDEFINITE);
+            rotate.setInterpolator(Interpolator.LINEAR);
+            rotate.play();
+        }
     }
 
     @FXML

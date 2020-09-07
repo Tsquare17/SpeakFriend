@@ -15,7 +15,7 @@ import javafx.scene.input.InputEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import org.scenicview.ScenicView;
+// import org.scenicview.ScenicView;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-        ScenicView.show(scene);
+        // ScenicView.show(scene);
     }
 
     public static void main(String[] args) {

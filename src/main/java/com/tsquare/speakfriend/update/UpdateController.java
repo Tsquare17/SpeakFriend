@@ -29,14 +29,30 @@ public class UpdateController {
             public Void call() throws SQLException {
                 Auth auth = new Auth();
 
+                String firstRun = Options.get("first_run");
+                if (firstRun.equals("")) {
+                    Options.put("auto_logout_time", "0");
+                    Options.put("db_version", "101");
+                    Options.put("first_run", "false");
+                }
+
                 int systemVersion = Main.getVersion(true);
                 if (systemVersion == 0) {
                     SQLiteDatabaseConnection driver = new SQLiteDatabaseConnection();
                     Connection conn = driver.connect();
-                    String sqlString = "ALTER TABLE Accounts ADD COLUMN cloud_id INTEGER";
-                    Statement statement = conn.createStatement();
-                    statement.executeUpdate(sqlString);
-                    statement.close();
+
+                    // Check for cloud_id column
+                    String check = "SELECT COUNT(*) as CNT FROM pragma_table_info('Accounts') WHERE name='cloud_id'";
+                    Statement checkStatement = conn.createStatement();
+                    boolean columnExists = checkStatement.execute(check);
+                    checkStatement.close();
+
+                    if (!columnExists) {
+                        String sqlString = "ALTER TABLE Accounts ADD COLUMN cloud_id INTEGER";
+                        Statement statement = conn.createStatement();
+                        statement.executeUpdate(sqlString);
+                        statement.close();
+                    }
 
                     SystemSettings.put("version", "100");
                     systemVersion = 100;
@@ -49,7 +65,7 @@ public class UpdateController {
                     dbVersion = 100;
                 }
 
-                if (dbVersion < 100) {
+                if (dbVersion < 101) {
                     UpdateController.changeEncryptionIterations(65536,2000);
                     Options.put("db_version", "101");
                     dbVersion = 101;
