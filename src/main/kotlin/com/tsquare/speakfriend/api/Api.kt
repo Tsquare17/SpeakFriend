@@ -47,6 +47,22 @@ class Api {
         return http.get(url);
     }
 
+    fun getAccount(id: Int): ApiResponse {
+        val http = Http()
+
+        val url = getVersion() + "/account/" + id
+
+        return http.get(url)
+    }
+
+    fun deleteAccount(id: Int): ApiResponse {
+        val http = Http()
+
+        val url = getVersion() + "/account/" + id + "/delete"
+
+        return http.post(url, "")
+    }
+
     fun sendBackups(list: ArrayList<MutableList<String>>): ApiResponse {
         val http = Http()
 

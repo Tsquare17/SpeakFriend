@@ -3,7 +3,6 @@ package com.tsquare.speakfriend.main;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.database.schema.Schema;
 
-import com.tsquare.speakfriend.settings.Options;
 import com.tsquare.speakfriend.settings.SystemSettings;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;

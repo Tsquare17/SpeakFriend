@@ -78,7 +78,9 @@ public class Nav extends Controller {
 
     @FXML
     public void cloudImportView() throws IOException {
-        newContainerScene("import");
+        State.setLoadingMessage("Loading backed up accounts...");
+        newScene("loading");
+        loadingImports();
     }
 
     @FXML

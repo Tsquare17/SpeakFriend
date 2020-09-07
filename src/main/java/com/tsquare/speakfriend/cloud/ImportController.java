@@ -56,93 +56,44 @@ public class ImportController extends Controller {
         // Get the list from the api, decrypt it and show previews;
         Api api = new Api();
         ApiResponse response = api.getAccounts();
+        List<List<String>> accountList = AccountList.getStagedImports();
 
 
-        if (response.getResponseMessage().equals("OK")) {
+        int count = 0;
+        List<HBox> accountBoxes = new ArrayList<>();
+        List<String> accountIds = new ArrayList<>();
+        for (List<String> newAccount : accountList) {
 
-            JSONObject requestObject = parse(response);
+            String cloudId = newAccount.get(0);
+            String accountName = newAccount.get(1);
 
-            JSONArray accountsArray = (JSONArray) requestObject.get("accounts");
+            HBox accountBox = new HBox();
+            accountBox.getChildren().add(new Label(accountName));
+            accountBox.setId(accountName.replace(" ", "$:$").toLowerCase());
+            accountBox.setPadding(new Insets(20, 30, 20, 30));
+            accountBox.setCursor(Cursor.HAND);
 
-            List<List<String>> newAccounts = new ArrayList<>();
-            int count = 0;
-            List<HBox> accountBoxes = new ArrayList<>();
-            List<String> accountIds = new ArrayList<>();
-            for (Object o : accountsArray) {
-                List<String> newAccount = new ArrayList<>();
-                JSONObject newImport = (JSONObject) o;
+            Region spaceFiller = new Region();
+            HBox.setHgrow(spaceFiller, Priority.ALWAYS);
+            accountBox.getChildren().add(spaceFiller);
 
-                Long rawCloudId = (Long) newImport.get("id");
-                String cloudId = rawCloudId.toString();
-                String encryptedName = (String) newImport.get("account_name");
-                String encryptedUser = (String) newImport.get("account_user");
-                String encryptedPass = (String) newImport.get("account_pass");
-                String encryptedUrl = (String) newImport.get("account_url");
-                String encryptedNotes = (String) newImport.get("account_notes");
+            CheckBox checkBox = new CheckBox();
+            checkBox.setSelected(true);
+            String accountId = "checkbox_" + cloudId;
+            accountIds.add(accountId);
+            checkBox.setId(accountId);
+            accountBox.getChildren().add(checkBox);
 
-                Auth auth = new Auth();
-                String key = auth.getApiKey();
+            Color accountColor = Color.rgb(47, 52, 57);
+            if (count % 2 != 0) {
+                accountColor = Color.rgb(43, 46, 52);
+            }
 
-                String accountName = "";
-                String accountUser = "";
-                String accountPass = "";
-                String accountUrl = "";
-                String accountNotes = "";
-
-                try {
-                    accountName = Crypt.decrypt(key, encryptedName, 2000);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                try {
-                    accountUser = Crypt.decrypt(key, encryptedUser, 2000);
-                } catch (Exception ignored) {}
-                try {
-                    accountPass = Crypt.decrypt(key, encryptedPass, 2000);
-                } catch (Exception ignored) {}
-                try {
-                    accountUrl = Crypt.decrypt(key, encryptedUrl, 2000);
-                } catch (Exception ignored) {}
-                try {
-                    accountNotes = Crypt.decrypt(key, encryptedNotes, 2000);
-                } catch (Exception ignored) {}
-
-                newAccount.add(cloudId);
-                newAccount.add(accountName);
-                newAccount.add(accountUser);
-                newAccount.add(accountPass);
-                newAccount.add(accountUrl);
-                newAccount.add(accountNotes);
-
-                newAccounts.add(newAccount);
-
-                HBox accountBox = new HBox();
-                accountBox.getChildren().add(new Label(accountName));
-                accountBox.setId(accountName.replace(" ", "$:$").toLowerCase());
-                accountBox.setPadding(new Insets(20, 30, 20, 30));
-                accountBox.setCursor(Cursor.HAND);
-
-                Region spaceFiller = new Region();
-                HBox.setHgrow(spaceFiller, Priority.ALWAYS);
-                accountBox.getChildren().add(spaceFiller);
-
-                CheckBox checkBox = new CheckBox();
-                checkBox.setSelected(true);
-                String accountId = "checkbox_" + cloudId;
-                accountIds.add(accountId);
-                checkBox.setId(accountId);
-                accountBox.getChildren().add(checkBox);
-
-                Color accountColor = Color.rgb(47, 52, 57);
-                if (count % 2 != 0) {
-                    accountColor = Color.rgb(43, 46, 52);
-                }
-
-                accountBox.setBackground(
-                        new Background(
-                                new BackgroundFill(accountColor, CornerRadii.EMPTY, Insets.EMPTY)
-                        )
-                );
+            accountBox.setBackground(
+                    new Background(
+                            new BackgroundFill(accountColor, CornerRadii.EMPTY, Insets.EMPTY)
+                    )
+            );
 //            accountBox.setOnMouseClicked(e -> {
 //                try {
 //                    this.showAccountDiff(item.getId());
@@ -150,29 +101,24 @@ public class ImportController extends Controller {
 //                    ex.printStackTrace();
 //                }
 //            });
-                accountBoxes.add(accountBox);
-                count++;
-            }
-
-            AccountList.stageImports(newAccounts);
-
-            accountsVBox.getChildren().addAll(accountBoxes);
-            account_list_scrollpane.setContent(accountsVBox);
-
-            selectAll.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
-                Scene scene = Main.getScene();
-                for (String id: accountIds) {
-                    CheckBox checkBox = (CheckBox) scene.lookup("#" + id);
-                    checkBox.setSelected(newValue);
-                }
-            });
-
-            accountsVBox.getChildren().add(0, selectAll);
-
-            return;
+            accountBoxes.add(accountBox);
+            count++;
         }
 
-        notice_text.setText(response.getErrors().toString());
+        accountsVBox.getChildren().addAll(accountBoxes);
+        account_list_scrollpane.setContent(accountsVBox);
+
+        selectAll.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+            Scene scene = Main.getScene();
+            for (String id: accountIds) {
+                CheckBox checkBox = (CheckBox) scene.lookup("#" + id);
+                checkBox.setSelected(newValue);
+            }
+        });
+
+        accountsVBox.getChildren().add(0, selectAll);
+
+
     }
 
     @FXML

@@ -6,4 +6,7 @@ object State {
 
     @JvmStatic
     var isDirtyAccounts = 1
+
+    @JvmStatic
+    var loadingMessage = ""
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.geometry.Insets?>
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.main.Loader">
+    <children>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <Text fx:id="notice_text" fill="#ff6161" styleClass="update-loader" textAlignment="CENTER" textOrigin="CENTER">
+                    <effect>
+                        <Glow />
+                    </effect>
+                </Text>
+                <ImageView fx:id="update_loader" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@img/gear.png" />
+                    </image>
+                    <viewport>
+                        <Rectangle2D />
+                    </viewport>
+                    <HBox.margin>
+                        <Insets left="8.0" />
+                    </HBox.margin>
+                </ImageView>
+            </children>
+        </HBox>
+    </children>
+</VBox>

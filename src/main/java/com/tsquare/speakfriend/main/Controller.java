@@ -1,27 +1,38 @@
 package com.tsquare.speakfriend.main;
 
 import com.tsquare.speakfriend.account.AccountController;
+import com.tsquare.speakfriend.api.Api;
 import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 
+import com.tsquare.speakfriend.database.account.AccountList;
 import javafx.animation.PauseTransition;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Controller {
     @FXML private URL location;
@@ -168,5 +179,89 @@ public abstract class Controller {
         JSONParser parser = new JSONParser();
 
         return (JSONObject) parser.parse(body);
+    }
+
+    protected void loadingImports() {
+        Task<Void> task = new Task<>() {
+            @Override
+            public Void call() throws ParseException {
+                Api api = new Api();
+                ApiResponse response = api.getAccounts();
+
+                if (response.getResponseMessage().equals("OK")) {
+
+                    JSONObject requestObject = parse(response);
+
+                    JSONArray accountsArray = (JSONArray) requestObject.get("accounts");
+
+                    List<List<String>> newAccounts = new ArrayList<>();
+                    for (Object o : accountsArray) {
+                        List<String> newAccount = new ArrayList<>();
+                        JSONObject newImport = (JSONObject) o;
+
+                        Long rawCloudId = (Long) newImport.get("id");
+                        String cloudId = rawCloudId.toString();
+                        String encryptedName = (String) newImport.get("account_name");
+                        String encryptedUser = (String) newImport.get("account_user");
+                        String encryptedPass = (String) newImport.get("account_pass");
+                        String encryptedUrl = (String) newImport.get("account_url");
+                        String encryptedNotes = (String) newImport.get("account_notes");
+
+                        Auth auth = new Auth();
+                        String key = auth.getApiKey();
+
+                        String accountName = "";
+                        String accountUser = "";
+                        String accountPass = "";
+                        String accountUrl = "";
+                        String accountNotes = "";
+
+                        try {
+                            accountName = Crypt.decrypt(key, encryptedName, 2000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            accountUser = Crypt.decrypt(key, encryptedUser, 2000);
+                        } catch (Exception ignored) {
+                        }
+                        try {
+                            accountPass = Crypt.decrypt(key, encryptedPass, 2000);
+                        } catch (Exception ignored) {
+                        }
+                        try {
+                            accountUrl = Crypt.decrypt(key, encryptedUrl, 2000);
+                        } catch (Exception ignored) {
+                        }
+                        try {
+                            accountNotes = Crypt.decrypt(key, encryptedNotes, 2000);
+                        } catch (Exception ignored) {
+                        }
+
+                        newAccount.add(cloudId);
+                        newAccount.add(accountName);
+                        newAccount.add(accountUser);
+                        newAccount.add(accountPass);
+                        newAccount.add(accountUrl);
+                        newAccount.add(accountNotes);
+
+                        newAccounts.add(newAccount);
+                    }
+
+                    AccountList.stageImports(newAccounts);
+                }
+
+                return null;
+            }
+        };
+
+        task.setOnSucceeded(taskFinishEvent -> {
+            try {
+                newContainerScene("import");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        new Thread(task).start();
     }
 }

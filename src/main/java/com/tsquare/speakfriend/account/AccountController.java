@@ -1,6 +1,8 @@
 package com.tsquare.speakfriend.account;
 
 import com.tsquare.speakfriend.account.preview.AccountPreview;
+import com.tsquare.speakfriend.api.Api;
+import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.crypt.Password;
@@ -34,11 +36,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AccountController extends Controller {
     @FXML private Label account_id;
@@ -69,6 +73,7 @@ public class AccountController extends Controller {
     @FXML private ImageView username_clipboard;
     @FXML private ImageView go_to_url;
     private int clickCount;
+    private int deleteFromCloudId = 0;
 
     @FXML
     public void createAccountAction() {
@@ -327,15 +332,44 @@ public class AccountController extends Controller {
     }
 
     @FXML
-    public void deleteAccountAction() throws IOException {
+    public void deleteAccountAction() throws IOException, ParseException {
         if(this.clickCount < 1) {
             this.notice_text.setText("Click delete once more to permanently remove this account.");
             this.clickCount++;
             return;
         }
+
         int accountId = Integer.parseInt(account_id.getText());
+
+        if (this.deleteFromCloudId == 0) {
+            Api api = new Api();
+            ApiResponse response = api.getAccount(accountId);
+            if (response.getResponseMessage().equals("OK")) {
+                JSONObject requestObject = parse(response);
+                JSONArray accountArray = (JSONArray) requestObject.get("account");
+
+                if (accountArray != null) {
+                    this.deleteFromCloudId = accountId;
+                }
+            }
+        }
+
         Account account = new Account();
         account.delete(accountId);
+
+        if (this.deleteFromCloudId != 0) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete cloud backup?");
+            alert.setHeaderText("Cloud Backup");
+            alert.setContentText("Would you like to delete the cloud backup as well?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                Api api = new Api();
+                ApiResponse response = api.deleteAccount(this.deleteFromCloudId);
+            }
+        }
+
         this.listAccountsView();
     }
 
