@@ -22,6 +22,8 @@ import java.sql.Statement;
 import java.util.List;
 
 public class UpdateController {
+    private final String upToDateDbVersion = "101";
+    private final String upToDateSysVersion = "100";
 
     public void update() {
         Task<Void> task = new Task<>() {
@@ -29,10 +31,16 @@ public class UpdateController {
             public Void call() throws SQLException {
                 Auth auth = new Auth();
 
+                String firstSystemRun = SystemSettings.get("first_run");
+                if (firstSystemRun.equals("")) {
+                    SystemSettings.put("version", upToDateSysVersion);
+                    SystemSettings.put("first_run", "false");
+                }
+
                 String firstRun = Options.get("first_run");
                 if (firstRun.equals("")) {
                     Options.put("auto_logout_time", "0");
-                    Options.put("db_version", "101");
+                    Options.put("db_version", upToDateDbVersion);
                     Options.put("first_run", "false");
                 }
 

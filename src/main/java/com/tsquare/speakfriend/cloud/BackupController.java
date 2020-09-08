@@ -14,6 +14,7 @@ import com.tsquare.speakfriend.state.State;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
@@ -91,13 +92,6 @@ public class BackupController extends Controller {
                             new BackgroundFill(accountColor, CornerRadii.EMPTY, Insets.EMPTY)
                     )
             );
-            accountBox.setOnMouseClicked(e -> {
-                try {
-                    this.showAccountDiff(item.getId());
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            });
             accountBoxes.add(accountBox);
             count++;
         }
@@ -113,11 +107,10 @@ public class BackupController extends Controller {
             }
         });
 
-        accountsVBox.getChildren().add(0, selectAll);
-    }
-
-    public void showAccountDiff(int id) throws IOException {
-
+        HBox hBox = new HBox();
+        hBox.getChildren().add(selectAll);
+        account_list_container.getChildren().add(2, hBox);
+        account_list_container.setPrefHeight(Main.getStage().getHeight());
     }
 
     public void sendBackups() {

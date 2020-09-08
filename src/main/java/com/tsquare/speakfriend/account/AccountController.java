@@ -177,7 +177,9 @@ public class AccountController extends Controller {
         box.getChildren().add(scene);
 
         scrollPane.setPrefWidth(stage.getWidth());
-        scrollPane.setPrefHeight(stage.getHeight() - 60);
+        scrollPane.setPrefHeight(stage.getHeight());
+
+        accountListContainerContainer.setPrefHeight(stage.getHeight());
         // Bind the scroll pane's size to the parent anchor pane's size.
         stage.heightProperty().addListener(e -> {
             accountListContainerContainer.setPrefHeight(stage.getHeight() - 30);

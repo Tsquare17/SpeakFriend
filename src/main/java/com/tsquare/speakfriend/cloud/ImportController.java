@@ -11,6 +11,7 @@ import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
@@ -20,8 +21,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
@@ -94,13 +93,6 @@ public class ImportController extends Controller {
                             new BackgroundFill(accountColor, CornerRadii.EMPTY, Insets.EMPTY)
                     )
             );
-//            accountBox.setOnMouseClicked(e -> {
-//                try {
-//                    this.showAccountDiff(item.getId());
-//                } catch (IOException ex) {
-//                    ex.printStackTrace();
-//                }
-//            });
             accountBoxes.add(accountBox);
             count++;
         }
@@ -116,7 +108,10 @@ public class ImportController extends Controller {
             }
         });
 
-        accountsVBox.getChildren().add(0, selectAll);
+        HBox hBox = new HBox();
+        hBox.getChildren().add(selectAll);
+        account_list_container.getChildren().add(2, hBox);
+        account_list_container.setPrefHeight(Main.getStage().getHeight());
     }
 
     @FXML
