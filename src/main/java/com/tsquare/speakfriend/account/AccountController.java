@@ -340,16 +340,23 @@ public class AccountController extends Controller {
         }
 
         int accountId = Integer.parseInt(account_id.getText());
-
-        if (this.deleteFromCloudId == 0) {
+        Auth auth = new Auth();
+        if (!auth.getApiToken().equals("") && this.deleteFromCloudId == 0) {
             Api api = new Api();
-            ApiResponse response = api.getAccount(accountId);
+            Account account = new Account();
+            AccountEntity accountEntity = account.getById(accountId);
+            assert accountEntity != null;
+            int cloudId = 0;
+            try {
+                cloudId = accountEntity.getCloudId();
+            } catch (NullPointerException ignored) {}
+            ApiResponse response = api.getAccount(cloudId);
             if (response.getResponseMessage().equals("OK")) {
                 JSONObject requestObject = parse(response);
-                JSONArray accountArray = (JSONArray) requestObject.get("account");
+                JSONObject accountArray = (JSONObject) requestObject.get("account");
 
                 if (accountArray != null) {
-                    this.deleteFromCloudId = accountId;
+                    this.deleteFromCloudId = cloudId;
                 }
             }
         }
@@ -357,7 +364,7 @@ public class AccountController extends Controller {
         Account account = new Account();
         account.delete(accountId);
 
-        if (this.deleteFromCloudId != 0) {
+        if (!auth.getApiToken().equals("") && this.deleteFromCloudId != 0) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete cloud backup?");
             alert.setHeaderText("Cloud Backup");

@@ -28,7 +28,7 @@ class Http {
     }
 
     fun post(endpoint: String, parameters: String): ApiResponse {
-        val location = "$base/$endpoint"
+        val location = "$base/$endpoint?XDEBUG_SESSION_START=PHPSTORM"
         val url = URL(location)
 
         return sendRequest(url, "POST", parameters)

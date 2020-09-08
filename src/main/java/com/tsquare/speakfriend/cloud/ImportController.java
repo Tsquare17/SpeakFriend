@@ -117,8 +117,6 @@ public class ImportController extends Controller {
         });
 
         accountsVBox.getChildren().add(0, selectAll);
-
-
     }
 
     @FXML

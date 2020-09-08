@@ -50,17 +50,17 @@ class Api {
     fun getAccount(id: Int): ApiResponse {
         val http = Http()
 
-        val url = getVersion() + "/account/" + id
+        val url = getVersion() + "/accounts/" + id
 
-        return http.get(url)
+        return http.sendJson(url, "")
     }
 
     fun deleteAccount(id: Int): ApiResponse {
         val http = Http()
 
-        val url = getVersion() + "/account/" + id + "/delete"
+        val url = getVersion() + "/accounts/" + id + "/delete"
 
-        return http.post(url, "")
+        return http.sendJson(url, "")
     }
 
     fun sendBackups(list: ArrayList<MutableList<String>>): ApiResponse {

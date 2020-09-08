@@ -172,7 +172,7 @@ public class BackupController extends Controller {
         };
 
         task.setOnSucceeded(taskFinishEvent -> {
-            transitionContainerScene("account-list");
+            transitionToAccounts();
         });
         new Thread(task).start();
     }
