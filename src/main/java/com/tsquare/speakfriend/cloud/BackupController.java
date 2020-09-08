@@ -4,11 +4,14 @@ import com.tsquare.speakfriend.account.preview.AccountPreview;
 import com.tsquare.speakfriend.api.Api;
 import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
+import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
 import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
+import com.tsquare.speakfriend.state.State;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -117,48 +120,66 @@ public class BackupController extends Controller {
 
     }
 
-    public void backupAction() throws ParseException {
-        Auth auth = new Auth();
+    public void sendBackups() {
+        Task<Void> task = new Task<>() {
+            @Override
+            public Void call() throws ParseException {
+                Auth auth = new Auth();
 
-        List<AccountPreview> accountPreviews = AccountList.getPreviews();
-        List<Integer> selectedAccounts = new ArrayList<>();
-        for (AccountPreview accountPreview : accountPreviews) {
-            String checkboxId = "#checkbox_" + accountPreview.getId();
-            CheckBox checkBox = (CheckBox) account_list_scrollpane.lookup(checkboxId);
+                List<AccountPreview> accountPreviews = AccountList.getPreviews();
+                List<Integer> selectedAccounts = new ArrayList<>();
+                for (AccountPreview accountPreview : accountPreviews) {
+                    String checkboxId = "#checkbox_" + accountPreview.getId();
+                    CheckBox checkBox = (CheckBox) account_list_scrollpane.lookup(checkboxId);
 
-            if (checkBox != null && checkBox.isSelected()) {
-                int accountId = accountPreview.getId();
-                selectedAccounts.add(accountId);
+                    if (checkBox != null && checkBox.isSelected()) {
+                        int accountId = accountPreview.getId();
+                        selectedAccounts.add(accountId);
+                    }
+                }
+
+                ArrayList<List<String>> decryptedList = AccountList.getDecryptedAccounts(selectedAccounts);
+
+                Api api = new Api();
+
+                ArrayList<List<String>> encryptedList = AccountList.lock(decryptedList, auth.getApiKey());
+
+                ApiResponse response = api.sendBackups(encryptedList);
+
+                if (response.getResponseMessage().equals("OK")) {
+                    notice_text.setText("Accounts successfully backed up");
+
+                    JSONObject requestObject = parse(response);
+
+                    JSONArray accountsArray = (JSONArray) requestObject.get("accounts");
+
+                    for (Object o : accountsArray) {
+                        JSONObject newBackup = (JSONObject) o;
+                        String id = (String) newBackup.get("account_id");
+                        String cloudId = (String) newBackup.get("cloud_id");
+
+                        Account account = new Account();
+                        account.update(Integer.parseInt(id), Integer.parseInt(cloudId));
+                    }
+
+                    return null;
+                }
+
+                notice_text.setText(response.getErrors().toString());
+
+                return null;
             }
-        }
+        };
 
-        ArrayList<List<String>> decryptedList = AccountList.getDecryptedAccounts(selectedAccounts);
+        task.setOnSucceeded(taskFinishEvent -> {
+            transitionContainerScene("account-list");
+        });
+        new Thread(task).start();
+    }
 
-        Api api = new Api();
-
-        ArrayList<List<String>> encryptedList = AccountList.lock(decryptedList, auth.getApiKey());
-
-        ApiResponse response = api.sendBackups(encryptedList);
-
-        if (response.getResponseMessage().equals("OK")) {
-            notice_text.setText("Accounts successfully backed up");
-
-            JSONObject requestObject = parse(response);
-
-            JSONArray accountsArray = (JSONArray) requestObject.get("accounts");
-
-            for (Object o : accountsArray) {
-                JSONObject newBackup = (JSONObject) o;
-                String id = (String) newBackup.get("account_id");
-                String cloudId = (String) newBackup.get("cloud_id");
-
-                Account account = new Account();
-                account.update(Integer.parseInt(id), Integer.parseInt(cloudId));
-            }
-
-            return;
-        }
-
-        notice_text.setText(response.getErrors().toString());
+    public void backupAction() throws IOException {
+        State.setLoadingMessage("Backing up accounts...");
+        newScene("loading");
+        sendBackups();
     }
 }

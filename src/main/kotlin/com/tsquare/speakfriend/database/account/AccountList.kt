@@ -156,5 +156,12 @@ class AccountList {
         fun getStagedImports(): List<MutableList<String>> {
             return stagedImportList
         }
+
+        @JvmStatic
+        fun clear() {
+            previewList = ArrayList()
+            accountList = ArrayList()
+            stagedImportList = ArrayList()
+        }
     }
 }

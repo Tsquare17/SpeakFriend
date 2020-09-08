@@ -1,8 +1,10 @@
 package com.tsquare.speakfriend.auth
 
 import com.tsquare.speakfriend.crypt.Crypt
+import com.tsquare.speakfriend.database.account.AccountList
 import com.tsquare.speakfriend.database.user.User
 import com.tsquare.speakfriend.settings.Options
+import com.tsquare.speakfriend.state.State
 
 class Auth {
     fun checkIn(user: String, pass: String): Boolean {
@@ -34,6 +36,10 @@ class Auth {
         CurrentUser.version = 0
         CurrentUser.apiEncryptionKey = ""
         CurrentUser.apiToken = ""
+
+        AccountList.clear();
+        State.isCloudAuthed = 0
+        State.isDirtyAccounts = 0
     }
 
     fun getId(): Int {
