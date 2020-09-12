@@ -148,7 +148,7 @@ public class BackupController extends Controller {
 
                     for (Object o : accountsArray) {
                         JSONObject newBackup = (JSONObject) o;
-                        String id = (String) newBackup.get("account_id");
+                        String id = (String) newBackup.get("id");
                         String cloudId = (String) newBackup.get("cloud_id");
 
                         Account account = new Account();

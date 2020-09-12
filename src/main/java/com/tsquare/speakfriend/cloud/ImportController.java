@@ -1,7 +1,5 @@
 package com.tsquare.speakfriend.cloud;
 
-import com.tsquare.speakfriend.api.Api;
-import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
@@ -11,7 +9,6 @@ import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
@@ -21,7 +18,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +29,7 @@ public class ImportController extends Controller {
     @FXML Text notice_text;
 
     @FXML
-    public void initialize() throws ParseException {
+    public void initialize() {
         account_list_scrollpane.setFitToWidth(true);
         account_list_scrollpane.setFitToHeight(true);
 
@@ -52,11 +48,7 @@ public class ImportController extends Controller {
         selectAll.setPadding(new Insets(0, 0, 0, 30));
         selectAll.setSelected(true);
 
-        // Get the list from the api, decrypt it and show previews;
-        Api api = new Api();
-        ApiResponse response = api.getAccounts();
         List<List<String>> accountList = AccountList.getStagedImports();
-
 
         int count = 0;
         List<HBox> accountBoxes = new ArrayList<>();
@@ -112,6 +104,10 @@ public class ImportController extends Controller {
         hBox.getChildren().add(selectAll);
         account_list_container.getChildren().add(2, hBox);
         account_list_container.setPrefHeight(Main.getStage().getHeight());
+
+        if (accountList.size() == 0) {
+            notice_text.setText("No accounts to import");
+        }
     }
 
     @FXML

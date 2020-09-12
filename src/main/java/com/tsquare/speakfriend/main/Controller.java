@@ -201,11 +201,11 @@ public abstract class Controller {
 
                         Long rawCloudId = (Long) newImport.get("id");
                         String cloudId = rawCloudId.toString();
-                        String encryptedName = (String) newImport.get("account_name");
-                        String encryptedUser = (String) newImport.get("account_user");
-                        String encryptedPass = (String) newImport.get("account_pass");
-                        String encryptedUrl = (String) newImport.get("account_url");
-                        String encryptedNotes = (String) newImport.get("account_notes");
+                        String encryptedName = (String) newImport.get("name");
+                        String encryptedUser = (String) newImport.get("user");
+                        String encryptedPass = (String) newImport.get("pass");
+                        String encryptedUrl = (String) newImport.get("url");
+                        String encryptedNotes = (String) newImport.get("notes");
 
                         Auth auth = new Auth();
                         String key = auth.getApiKey();

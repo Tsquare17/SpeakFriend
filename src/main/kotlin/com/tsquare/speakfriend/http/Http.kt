@@ -7,11 +7,10 @@ import org.json.simple.parser.JSONParser
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
-import java.net.URLEncoder
 
 
 class Http {
-    private val base = "http://speakfriend-api.local/api"
+    private val base = "http://speakfriend-api2.local/api"
 
     fun get(endpoint: String): ApiResponse {
         val location = "$base/$endpoint"
@@ -49,8 +48,6 @@ class Http {
             connection.setRequestProperty("Authorization", "Bearer " + auth.getApiToken());
         }
 
-        connection.doOutput = true
-
         var httpMethod = method
         if (method == "JSON") {
             httpMethod = "POST"
@@ -58,13 +55,19 @@ class Http {
             connection.setRequestProperty("Accept", "application/json")
         }
 
+        if (httpMethod == "POST") {
+            connection.doOutput = true
+        }
+
         with(connection as HttpURLConnection) {
 
             requestMethod = httpMethod
 
-            val wr = OutputStreamWriter(outputStream);
-            wr.write(parameters);
-            wr.flush();
+            if (requestMethod != "GET") {
+                val wr = OutputStreamWriter(outputStream);
+                wr.write(parameters);
+                wr.flush();
+            }
 
             ApiResponse.statusCode = responseCode
             ApiResponse.responseMessage = responseMessage
