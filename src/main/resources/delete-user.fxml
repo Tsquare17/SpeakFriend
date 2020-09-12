@@ -43,7 +43,6 @@
                 <PasswordField fx:id="confirm_password" layoutX="166.0" layoutY="127.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#deleteUserAction" style="-fx-background-color: red;" text="Delete User" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                 <Button accessibleText="Back" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#toAccounts" text="Back" textAlignment="CENTER" GridPane.rowIndex="2" />
-            <Label fx:id="noticeText" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             </children>
         </GridPane>
         <Text fx:id="notice_text" fill="#ff6161" textAlignment="CENTER" textOrigin="CENTER">

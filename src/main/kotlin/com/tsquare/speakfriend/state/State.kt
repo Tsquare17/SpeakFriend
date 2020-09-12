@@ -9,4 +9,7 @@ object State {
 
     @JvmStatic
     var loadingMessage = ""
+
+    @JvmStatic
+    var selectedAccountId = 0
 }

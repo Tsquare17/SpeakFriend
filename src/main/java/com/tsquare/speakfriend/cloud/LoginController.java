@@ -4,6 +4,7 @@ import com.tsquare.speakfriend.api.Api;
 import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.main.Controller;
+import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.settings.Options;
 import com.tsquare.speakfriend.state.State;
 import javafx.application.Platform;
@@ -13,13 +14,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class LoginController extends Controller {
+    @FXML VBox login_container;
     @FXML TextField email;
     @FXML PasswordField password;
     @FXML Text notice_text;
@@ -34,6 +36,7 @@ public class LoginController extends Controller {
 
             Platform.runLater(() -> password.requestFocus());
         }
+        login_container.setMinHeight(Main.getMinimumHeight());
     }
 
     @FXML

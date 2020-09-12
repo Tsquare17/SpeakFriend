@@ -1,12 +1,12 @@
 package com.tsquare.speakfriend.update;
 
-import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
 import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Main;
+import com.tsquare.speakfriend.main.Nav;
 import com.tsquare.speakfriend.settings.Options;
 
 import com.tsquare.speakfriend.settings.SystemSettings;
@@ -15,7 +15,6 @@ import javafx.animation.PauseTransition;
 import javafx.concurrent.Task;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -91,12 +90,8 @@ public class UpdateController {
         };
 
         task.setOnSucceeded(taskFinishEvent -> {
-            AccountController accountController = new AccountController();
-            try {
-                accountController.listAccountsView();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Nav nav = new Nav();
+            nav.toAccounts();
         });
         new Thread(task).start();
     }

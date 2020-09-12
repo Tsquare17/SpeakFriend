@@ -14,7 +14,7 @@ import javafx.scene.input.InputEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-// import org.scenicview.ScenicView;
+import org.scenicview.ScenicView;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,12 +29,18 @@ public class Main extends Application {
 
     public static URL previousUrl;
 
+    public static int minimumHeight = 470;
+
     public static Stage getStage() {
         return stage;
     }
 
     public static Scene getScene() {
         return stage.getScene();
+    }
+
+    public static int getMinimumHeight() {
+        return minimumHeight;
     }
 
     @Override
@@ -45,11 +51,11 @@ public class Main extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/icon.png")));
         Parent root = FXMLLoader.load(getClass().getResource("/sign-in.fxml"));
         stage.setTitle("Speak Friend");
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 600, 440);
         stage.setScene(scene);
         stage.show();
 
-        // ScenicView.show(scene);
+        ScenicView.show(scene);
     }
 
     public static void main(String[] args) {

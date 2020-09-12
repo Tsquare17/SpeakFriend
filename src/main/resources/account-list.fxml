@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="accountListContainer" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.AccountController">
+<VBox fx:id="account_list_container" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.AccountListController">
    <padding>
       <Insets top="20.0" />
    </padding>
@@ -38,11 +38,11 @@
             <Insets bottom="20.0" />
          </padding>
       </GridPane>
-      <AnchorPane id="accountAnchor" VBox.vgrow="ALWAYS">
+      <AnchorPane fx:id="account_anchor" id="accountAnchor" VBox.vgrow="ALWAYS">
          <children>
             <ScrollPane fx:id="account_list_scrollpane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                <VBox fx:id="account_list"/>
               </content>
             </ScrollPane>
          </children></AnchorPane>

@@ -146,8 +146,7 @@ public abstract class Controller {
 
     public void toAccounts() {
         try {
-            AccountController accountController = new AccountController();
-            accountController.listAccountsView();
+            newContainerScene("account-list");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
