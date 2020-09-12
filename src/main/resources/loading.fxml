@@ -9,7 +9,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.geometry.Insets?>
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.main.Loader">
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.utils.Loader">
     <children>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
             <children>

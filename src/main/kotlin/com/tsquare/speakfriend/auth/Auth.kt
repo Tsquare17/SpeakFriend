@@ -39,7 +39,7 @@ class Auth {
 
         AccountList.clear();
         State.isCloudAuthed = 0
-        State.isDirtyAccounts = 0
+        State.isDirtyAccounts = 1
     }
 
     fun getId(): Int {

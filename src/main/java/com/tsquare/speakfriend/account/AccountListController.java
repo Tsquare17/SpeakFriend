@@ -31,7 +31,7 @@ public class AccountListController extends Controller {
     @FXML private VBox account_list;
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() {
         account_anchor.setPadding(new Insets(30, 0, 0, 0));
         account_list_scrollpane.setFitToWidth(true);
         account_list.setFillWidth(true);

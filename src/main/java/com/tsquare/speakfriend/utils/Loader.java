@@ -1,4 +1,4 @@
-package com.tsquare.speakfriend.main;
+package com.tsquare.speakfriend.utils;
 
 import com.tsquare.speakfriend.state.State;
 import javafx.animation.Animation;

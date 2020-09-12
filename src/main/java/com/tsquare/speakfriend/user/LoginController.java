@@ -5,6 +5,7 @@ import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.settings.Options;
+import com.tsquare.speakfriend.state.State;
 import com.tsquare.speakfriend.update.UpdateController;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
@@ -65,8 +66,8 @@ public class LoginController extends Controller {
 
             boolean requiresUpdate = UpdateController.checkUpdate();
             if (requiresUpdate) {
-                notice_text.setText("Updating Database");
-
+                State.setLoadingMessage("Updating Database");
+                newScene("loading");
                 UpdateController updateController = new UpdateController();
                 updateController.update();
 
@@ -80,7 +81,8 @@ public class LoginController extends Controller {
                 Main.transition = new PauseTransition(delay);
             }
 
-            notice_text.setText("Decrypting Accounts...");
+            State.setLoadingMessage("Decrypting Accounts...");
+            newScene("loading");
 
             Task<Void> task = new Task<>() {
                 @Override
