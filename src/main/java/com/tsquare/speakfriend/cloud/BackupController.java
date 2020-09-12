@@ -98,6 +98,8 @@ public class BackupController extends Controller {
 
         accountsVBox.getChildren().addAll(accountBoxes);
         account_list_scrollpane.setContent(accountsVBox);
+        account_list_scrollpane.setPrefWidth(stage.getWidth());
+        account_list_scrollpane.setPrefHeight(stage.getHeight());
 
         selectAll.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
             Scene scene = Main.getScene();
