@@ -4,7 +4,6 @@ import com.tsquare.speakfriend.auth.CurrentUser
 import com.tsquare.speakfriend.crypt.Crypt
 import com.tsquare.speakfriend.http.Http
 import org.json.simple.JSONArray
-import org.json.simple.JSONObject
 import java.net.URLEncoder
 
 class Api {

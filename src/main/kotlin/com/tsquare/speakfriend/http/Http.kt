@@ -10,7 +10,7 @@ import java.net.URL
 
 
 class Http {
-    private val base = "http://speakfriend-api2.local/api"
+    private val base = "http://speakfriend-api.local/api"
 
     fun get(endpoint: String): ApiResponse {
         val location = "$base/$endpoint"
