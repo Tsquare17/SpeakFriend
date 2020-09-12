@@ -79,12 +79,13 @@ class AccountList {
             val auth = Auth()
             val accounts: List<AccountEntity>
             val key = auth.getKey()
-            if (list.isEmpty()) {
-                accounts = get(auth.getId())
+            accounts = if (list.isEmpty()) {
+                get(auth.getId())
             } else {
-                accounts = getByIds(list)
+                getByIds(list)
             }
 
+            accountList = ArrayList()
             // Need to make like associative array to send JSON to API.
             for (account in accounts) {
                 val accountId = account.id.value

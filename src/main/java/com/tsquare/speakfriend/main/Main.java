@@ -51,7 +51,7 @@ public class Main extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/icon.png")));
         Parent root = FXMLLoader.load(getClass().getResource("/sign-in.fxml"));
         stage.setTitle("Speak Friend");
-        Scene scene = new Scene(root, 600, 440);
+        Scene scene = new Scene(root, 600, getMinimumHeight());
         stage.setScene(scene);
         stage.show();
 
