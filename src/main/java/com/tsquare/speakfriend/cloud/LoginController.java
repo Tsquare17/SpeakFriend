@@ -82,9 +82,12 @@ public class LoginController extends Controller {
             auth.setApiToken(token);
             auth.setApiPass(password.getText());
 
+            // TODO: Instead we need to store key in state salt maybe, if it exists, and then
             if (backupKey != null && ! backupKey.equals("")) {
+                // go to an enter master key scene.
                 auth.setApiKey(backupKey, password.getText());
             } else {
+                // go to a create master key scene.
                 auth.createApiKey(password.getText());
             }
 
