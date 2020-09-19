@@ -86,11 +86,13 @@ class Auth {
 
     fun setApiKey(hash: String, pass: String) {
         CurrentUser.apiEncryptionKey = Crypt.generateKey(hash, pass).toString()
+        State.isCloudKeySet = 1
     }
 
     fun createApiKey(pass: String) {
         val hash = Crypt.generatePassword(pass).toString();
         CurrentUser.apiHash = hash
         CurrentUser.apiEncryptionKey = Crypt.generateKey(hash, pass).toString()
+        State.isCloudKeySet = 1
     }
 }

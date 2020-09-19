@@ -1,6 +1,7 @@
 package com.tsquare.speakfriend.main;
 
 import com.tsquare.speakfriend.auth.Auth;
+import com.tsquare.speakfriend.settings.Options;
 import com.tsquare.speakfriend.state.State;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -73,14 +74,26 @@ public class Nav extends Controller {
 
     @FXML
     public void cloudBackupView() throws IOException {
-        newContainerScene("backup");
+        if (Options.get("master_key").isEmpty()) {
+            newContainerScene("cloud-create-master-key");
+        } else if (State.isCloudKeySet() == 0) {
+            newContainerScene("cloud-enter-master-key");
+        } else {
+            newContainerScene("backup");
+        }
     }
 
     @FXML
     public void cloudImportView() throws IOException {
-        State.setLoadingMessage("Loading backed up accounts...");
-        newScene("loading");
-        loadingImports();
+        if (Options.get("master_key").isEmpty()) {
+            newContainerScene("cloud-create-master-key");
+        } else if (State.isCloudKeySet() == 0) {
+            newContainerScene("cloud-enter-master-key");
+        } else {
+            State.setLoadingMessage("Loading backed up accounts...");
+            newScene("loading");
+            loadingImports();
+        }
     }
 
     @FXML

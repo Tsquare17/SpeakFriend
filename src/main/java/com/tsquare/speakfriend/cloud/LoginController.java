@@ -80,18 +80,18 @@ public class LoginController extends Controller {
             String backupKey = (String) userJson.get("backup_key");
 
             auth.setApiToken(token);
-            auth.setApiPass(password.getText());
+            // auth.setApiPass(password.getText());
 
             // TODO: Instead we need to store key in state salt maybe, if it exists, and then
-            if (backupKey != null && ! backupKey.equals("")) {
-                // go to an enter master key scene.
-                auth.setApiKey(backupKey, password.getText());
-            } else {
-                // go to a create master key scene.
-                auth.createApiKey(password.getText());
-            }
+//            if (backupKey != null && ! backupKey.equals("")) {
+//                // go to an enter master key scene.
+//                auth.setApiKey(backupKey, password.getText());
+//            } else {
+//                // go to a create master key scene.
+//                auth.createApiKey(password.getText());
+//            }
 
-            notice_text.setText("Login successful");
+            // notice_text.setText("Login successful");
 
             if (remember_email.isSelected()) {
                 Options.put("email", email.getText());
@@ -101,7 +101,19 @@ public class LoginController extends Controller {
 
             State.setCloudAuthed(1);
 
-            transitionToAccounts();
+            String masterKey = Options.get("master_key");
+            // If there is not master_key and no backup_key from API
+            if (masterKey.isEmpty() && backupKey.isEmpty()) {
+                transitionContainerScene("cloud-create-master-key");
+                return;
+            }
+
+            // If the API returned a backup_key but it's not yet stored locally
+            if (!backupKey.isEmpty() && masterKey.isEmpty()) {
+                Options.put("master_key", backupKey);
+            }
+
+            transitionContainerScene("cloud-enter-master-key");
 
             return;
         }

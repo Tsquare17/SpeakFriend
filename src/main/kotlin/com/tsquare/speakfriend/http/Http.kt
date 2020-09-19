@@ -99,9 +99,10 @@ class Http {
 
                 val requestObject = parser.parse(response.toString()) as JSONObject
 
-                val errors = requestObject.get("errors") as JSONObject
-
-                ApiResponse.setApiErrors(errors)
+                try {
+                    val errors = requestObject.get("errors") as JSONObject
+                    ApiResponse.setApiErrors(errors)
+                } catch (e: Exception) {}
 
                 return ApiResponse
             }

@@ -1,8 +1,10 @@
 package com.tsquare.speakfriend.api;
 
+import com.tsquare.speakfriend.auth.Auth
 import com.tsquare.speakfriend.auth.CurrentUser
 import com.tsquare.speakfriend.crypt.Crypt
 import com.tsquare.speakfriend.http.Http
+import com.tsquare.speakfriend.settings.Options
 import org.json.simple.JSONArray
 import java.net.URLEncoder
 
@@ -36,6 +38,24 @@ class Api {
         val http = Http()
 
         return http.get("logout");
+    }
+
+    fun createMasterKey(masterKey: String): ApiResponse {
+        val hash = Crypt.generatePassword(masterKey).toString()
+
+        Options.put("master_key", hash)
+        val auth = Auth()
+        auth.setApiPass(masterKey)
+        auth.setApiKey(hash, masterKey)
+
+        val parameters = URLEncoder.encode("master_key", "UTF-8") + "=" +
+                URLEncoder.encode(hash, "UTF-8")
+
+        val http = Http()
+
+        val url = "create-key"
+
+        return http.post(url, parameters);
     }
 
     fun getAccounts(): ApiResponse {
