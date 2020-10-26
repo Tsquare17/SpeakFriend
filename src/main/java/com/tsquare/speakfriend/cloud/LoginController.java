@@ -8,17 +8,22 @@ import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.settings.Options;
 import com.tsquare.speakfriend.state.State;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 
 public class LoginController extends Controller {
     @FXML VBox login_container;
@@ -71,6 +76,40 @@ public class LoginController extends Controller {
             try {
                 if (requestObject.get("message").equals("Invalid Credentials")) {
                     notice_text.setText("Invalid credentials");
+                    return;
+                }
+            } catch (Exception ignored) {}
+
+            try {
+                if (requestObject.get("verified").equals("false")) {
+                    String token = (String) requestObject.get("access_token");
+                    auth.setApiToken(token);
+
+                    String message = (String) requestObject.get("message");
+                    message += " Click to resend verification.";
+                    notice_text.setText(message);
+                    notice_text.setCursor(Cursor.HAND);
+                    notice_text.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            ApiResponse verificationResponse = api.resendVerification();
+                            if (verificationResponse.getResponseMessage().equals("OK")) {
+                                String verificationBody = verificationResponse.getResponseBody();
+                                JSONParser verificationParser = new JSONParser();
+
+                                JSONObject verificationRequestObject = null;
+                                try {
+                                    verificationRequestObject = (JSONObject) verificationParser.parse(verificationBody);
+                                } catch (ParseException parseException) {
+                                    parseException.printStackTrace();
+                                }
+                                if (verificationRequestObject.get("status").equals("success")) {
+                                    notice_text.setText((String) verificationRequestObject.get("message"));
+                                    notice_text.removeEventHandler(MouseEvent.MOUSE_PRESSED, this);
+                                }
+                            }
+                        }
+                    });
                     return;
                 }
             } catch (Exception ignored) {}

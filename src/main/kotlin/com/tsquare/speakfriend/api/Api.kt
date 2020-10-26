@@ -37,7 +37,13 @@ class Api {
     fun logout(): ApiResponse {
         val http = Http()
 
-        return http.get("logout");
+        return http.get("logout")
+    }
+
+    fun resendVerification(): ApiResponse {
+        val http = Http()
+
+        return http.get("resend-verification")
     }
 
     fun createMasterKey(masterKey: String): ApiResponse {
@@ -55,7 +61,7 @@ class Api {
 
         val url = "create-key"
 
-        return http.post(url, parameters);
+        return http.post(url, parameters)
     }
 
     fun getAccounts(): ApiResponse {
@@ -63,7 +69,7 @@ class Api {
 
         val url = getVersion() + "/accounts"
 
-        return http.get(url);
+        return http.get(url)
     }
 
     fun getAccount(id: Int): ApiResponse {

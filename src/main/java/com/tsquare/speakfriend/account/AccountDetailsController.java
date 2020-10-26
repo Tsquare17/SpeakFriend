@@ -67,7 +67,13 @@ public class AccountDetailsController extends AccountController {
         account_password.setText(accountPass);
         account_password_masked.setText(accountPass);
         account_url.setText(accountUrl);
-        account_notes.setText(accountNotes);
+
+        if (accountNotes.isEmpty()) {
+            view_notes_button.setManaged(false);
+            view_notes_button.setVisible(false);
+        } else {
+            account_notes.setText(accountNotes);
+        }
 
         account_container.setMinHeight(Main.getMinimumHeight());
     }
