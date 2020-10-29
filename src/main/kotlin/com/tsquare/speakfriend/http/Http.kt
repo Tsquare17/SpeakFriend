@@ -13,14 +13,14 @@ class Http {
     private val base = "http://speakfriend-api.local/api"
 
     fun get(endpoint: String): ApiResponse {
-        val location = "$base/$endpoint"
+        val location = "$base/$endpoint?XDEBUG_SESSION_START=PHPSTORM"
         val url = URL(location)
 
         return sendRequest(url, "GET", "")
     }
 
     fun get(endpoint: String, parameters: String): ApiResponse {
-        val location = "$base/$endpoint"
+        val location = "$base/$endpoint?XDEBUG_SESSION_START=PHPSTORM"
         val url = URL(location)
 
         return sendRequest(url, "GET", parameters)

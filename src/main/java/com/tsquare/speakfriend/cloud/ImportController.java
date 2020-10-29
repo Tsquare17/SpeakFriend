@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -27,6 +28,7 @@ public class ImportController extends Controller {
     @FXML AnchorPane account_anchor;
     @FXML ScrollPane account_list_scrollpane;
     @FXML Text notice_text;
+    @FXML Button import_button;
 
     @FXML
     public void initialize() {
@@ -107,6 +109,8 @@ public class ImportController extends Controller {
 
         if (accountList.size() == 0) {
             notice_text.setText("No accounts to import");
+            import_button.setManaged(false);
+            import_button.setVisible(false);
         }
     }
 

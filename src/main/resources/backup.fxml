@@ -35,7 +35,7 @@
             </padding>
          <children>
             <Button cancelButton="true" mnemonicParsing="false" onAction="#toAccounts" style="-fx-background-color: red; -fx-text-fill: white;" text="Cancel" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#backupAction" text="Backup" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" fx:id="backup_button" onAction="#backupAction" text="Backup" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>
         </GridPane>
         <AnchorPane fx:id="account_anchor" VBox.vgrow="ALWAYS">
