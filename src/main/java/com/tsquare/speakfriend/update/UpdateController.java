@@ -79,7 +79,7 @@ public class UpdateController {
                 }
 
                 String durationSetting = Options.get("auto_logout_time");
-                if (!durationSetting.equals("0")) {
+                if (!durationSetting.equals("0") && !durationSetting.isEmpty()) {
                     int duration = Integer.parseInt(durationSetting);
                     Duration delay = Duration.minutes(duration);
                     Main.transition = new PauseTransition(delay);
