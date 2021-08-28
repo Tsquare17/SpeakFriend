@@ -7,3 +7,6 @@
 - Fix going back to account list from Cloud scene, missing accounts.
 - Build the ApiResponse.errors in Api instead of in the controller.
 - Separate AccountController into controllers for each scene.
+
+- Save the position of account list, and return to it when going back.
+- If you've changed something in an account and then press back, prompt confirmation.
