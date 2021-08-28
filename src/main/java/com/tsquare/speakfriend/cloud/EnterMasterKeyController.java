@@ -22,7 +22,7 @@ public class EnterMasterKeyController extends Controller {
         }
 
         String match = Options.get("master_key");
-        if (Crypt.match(match, master_key.getText())) {
+        if (Crypt.match(master_key.getText(), match)) {
             notice_text.setText("Master key accepted");
             Auth auth = new Auth();
             auth.setApiKey(match, master_key.getText());

@@ -1,5 +1,6 @@
 package com.tsquare.speakfriend.cloud;
 
+import com.tsquare.speakfriend.account.preview.AccountPreview;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -27,6 +29,7 @@ public class ImportController extends Controller {
     @FXML AnchorPane account_anchor;
     @FXML ScrollPane account_list_scrollpane;
     @FXML Text notice_text;
+    @FXML Button import_button;
 
     @FXML
     public void initialize() {
@@ -107,6 +110,10 @@ public class ImportController extends Controller {
 
         if (accountList.size() == 0) {
             notice_text.setText("No accounts to import");
+            import_button.setManaged(false);
+            import_button.setVisible(false);
+            selectAll.setManaged(false);
+            selectAll.setVisible(false);
         }
     }
 
@@ -115,9 +122,14 @@ public class ImportController extends Controller {
         Auth auth = new Auth();
         String key = auth.getKey();
 
-        List<List<String>> accountList = AccountList.getStagedImports();
-        for (List<String> account : accountList) {
-            int cloudId = Integer.parseInt(account.get(0));
+        // TODO: Only get accounts that were selected... make a call to actually import the accounts... smfh
+        // List<List<String>> accountList = AccountList.getStagedImports();
+        List<AccountPreview> accountPreviews = AccountList.getPreviews();
+        List<Integer> selectedAccounts = new ArrayList<>();
+        for (AccountPreview accountPreview : accountPreviews) {
+            String checkboxId = "#checkbox_" + accountPreview.getId();
+            CheckBox checkBox = (CheckBox) account_list_scrollpane.lookup(checkboxId);
+            int cloudId = Integer.parseInt(checkBox.getText());
 
             Account importAccount = new Account();
             AccountEntity existing = importAccount.getByCloudId(cloudId);
@@ -166,5 +178,6 @@ public class ImportController extends Controller {
         }
 
         notice_text.setText("Accounts imported");
+        transitionContainerScene("account-list", 2);
     }
 }

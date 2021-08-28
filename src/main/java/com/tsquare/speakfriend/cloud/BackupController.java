@@ -4,9 +4,7 @@ import com.tsquare.speakfriend.account.preview.AccountPreview;
 import com.tsquare.speakfriend.api.Api;
 import com.tsquare.speakfriend.api.ApiResponse;
 import com.tsquare.speakfriend.auth.Auth;
-import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
-import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
@@ -14,9 +12,9 @@ import com.tsquare.speakfriend.state.State;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -37,6 +35,7 @@ public class BackupController extends Controller {
     @FXML AnchorPane account_anchor;
     @FXML ScrollPane account_list_scrollpane;
     @FXML Text notice_text;
+    @FXML Button backup_button;
 
     @FXML
     public void initialize() {
@@ -60,6 +59,11 @@ public class BackupController extends Controller {
 
         // Collect list of decrypted account previews.
         List<AccountPreview> decryptedList = AccountList.getPreviews();
+
+        if (decryptedList.size() == 0) {
+            backup_button.setManaged(false);
+            backup_button.setVisible(false);
+        }
 
         int count = 0;
         List<HBox> accountBoxes = new ArrayList<>();

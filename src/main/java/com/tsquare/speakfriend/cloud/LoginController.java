@@ -67,6 +67,7 @@ public class LoginController extends Controller {
 
         ApiResponse response = api.login(email.getText(), password.getText());
 
+        notice_text.setOnMouseClicked(null);
         if (response.getResponseMessage().equals("OK")) {
             String body = response.getResponseBody();
             JSONParser parser = new JSONParser();
@@ -116,6 +117,7 @@ public class LoginController extends Controller {
 
             String token = (String) requestObject.get("access_token");
             JSONObject userJson = (JSONObject) requestObject.get("user");
+
             String backupKey = (String) userJson.get("backup_key");
 
             auth.setApiToken(token);
