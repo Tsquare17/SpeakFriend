@@ -154,5 +154,19 @@ class AccountList {
             accountList = ArrayList()
             stagedImportList = ArrayList()
         }
+
+        @JvmStatic
+        fun count(): Int {
+            if (State.isDirtyAccounts == 0) {
+                return previewList.count()
+            }
+
+            previewList = ArrayList()
+
+            val auth = Auth()
+            val accounts = get(auth.getId())
+
+            return accounts.count()
+        }
     }
 }

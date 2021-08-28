@@ -1,5 +1,6 @@
 package com.tsquare.speakfriend.help;
 
+import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.settings.Options;
@@ -10,6 +11,7 @@ public class AboutController extends Controller {
     @FXML Label system_version;
     @FXML Label db_version;
     @FXML Label java_version;
+    @FXML Label accounts_count;
 
     @FXML
     public void initialize() {
@@ -20,5 +22,7 @@ public class AboutController extends Controller {
         db_version.setText(dbVersion);
 
         java_version.setText(System.getProperty("java.version"));
+
+        accounts_count.setText(String.valueOf(AccountList.count()));
     }
 }

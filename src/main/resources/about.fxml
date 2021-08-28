@@ -31,12 +31,14 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <children>
-                <Label text="System Version" GridPane.rowIndex="1" />
+                <Label text="System Version:" GridPane.rowIndex="1" />
                 <Label fx:id="system_version" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label text="DB Version" GridPane.rowIndex="2" />
+                <Label text="DB Version:" GridPane.rowIndex="2" />
                 <Label fx:id="db_version" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Label text="Java Version" GridPane.rowIndex="3" />
+                <Label text="Java Version:" GridPane.rowIndex="3" />
                 <Label fx:id="java_version" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label text="Accounts:" GridPane.rowIndex="4" />
+                <Label fx:id="accounts_count" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             </children>
         </GridPane>
         <Text fx:id="notice_text" fill="#ff6161" textAlignment="CENTER" textOrigin="CENTER">
