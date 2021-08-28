@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.database.settings
 import com.tsquare.speakfriend.auth.CurrentUser
 import com.tsquare.speakfriend.database.connection.Conn
 import com.tsquare.speakfriend.database.tables.Settings
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.lang.Exception
 
@@ -54,8 +55,8 @@ class Setting {
 
         return transaction {
             SettingsEntity.find {
-                Settings.userId eq userId
-                Settings.option eq optionArg
+                Settings.userId eq userId and
+                        (Settings.option eq optionArg)
             }.firstOrNull()
         }
     }

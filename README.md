@@ -4,7 +4,7 @@ A simple account / password management system.
 
 Speak Friend secures account information using AES/GCM authenticated encryption.
 
-![Alt text](screenshot.png?raw=true "Optional Title")
+![Alt text](screenshot.png?raw=true)
 
 ## Building
 

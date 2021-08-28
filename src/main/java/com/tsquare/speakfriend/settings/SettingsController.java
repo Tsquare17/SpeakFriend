@@ -1,14 +1,10 @@
 package com.tsquare.speakfriend.settings;
 
-import com.tsquare.speakfriend.account.AccountController;
 import com.tsquare.speakfriend.database.settings.Setting;
 import com.tsquare.speakfriend.main.Controller;
-
 import com.tsquare.speakfriend.main.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
-
-import java.io.IOException;
 import java.util.Objects;
 
 public class SettingsController extends Controller {
@@ -88,8 +84,7 @@ public class SettingsController extends Controller {
     }
 
     @FXML
-    public void accountListView() throws IOException {
-        AccountController accountController = new AccountController();
-        accountController.listAccountsView();
+    public void accountListView() {
+        toAccounts();
     }
 }

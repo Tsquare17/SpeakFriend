@@ -9,8 +9,9 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <main.class>com.tsquare.speakfriend.main.Entrance</main.class>
+        <main.class>com.tsquare.speakfriend.main.Loader</main.class>
         <java.major.version>11</java.major.version>
+        <javafx.version>16</javafx.version>
         <maven.compiler.source>${java.major.version}</maven.compiler.source>
         <maven.compiler.target>${java.major.version}</maven.compiler.target>
         <kotlin.version>1.3.60</kotlin.version>
@@ -116,28 +117,28 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>${java.major.version}</version>
+            <version>${javafx.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>${java.major.version}</version>
+            <version>${javafx.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>${java.major.version}</version>
+            <version>${javafx.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-media</artifactId>
-            <version>${java.major.version}</version>
+            <version>${javafx.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib -->
@@ -174,6 +175,13 @@
             <artifactId>slf4j-jdk14</artifactId>
             <version>1.7.29</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 

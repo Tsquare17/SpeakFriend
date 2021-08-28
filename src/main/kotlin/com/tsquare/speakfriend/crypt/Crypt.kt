@@ -13,13 +13,13 @@ import javax.crypto.spec.SecretKeySpec
 
 object Crypt
 {
-    val iterations: Int = 2000
+    private const val iterations: Int = 2000
 
     @JvmStatic
     @JvmOverloads
     @Throws(NoSuchAlgorithmException::class, InvalidAlgorithmParameterException::class,
-            InvalidKeyException::class, InvalidKeySpecException::class,
-            NoSuchPaddingException::class, BadPaddingException::class, IllegalBlockSizeException::class)
+        InvalidKeyException::class, InvalidKeySpecException::class,
+        NoSuchPaddingException::class, BadPaddingException::class, IllegalBlockSizeException::class)
     fun encrypt(key: String, subject: String, iterations: Int = 0): String {
         val secureRandom = SecureRandom()
         val iv = ByteArray(12)
@@ -43,8 +43,8 @@ object Crypt
     @JvmStatic
     @JvmOverloads
     @Throws(NoSuchAlgorithmException::class, InvalidAlgorithmParameterException::class,
-            InvalidKeyException::class, InvalidKeySpecException::class,
-            NoSuchPaddingException::class, BadPaddingException::class, IllegalBlockSizeException::class)
+        InvalidKeyException::class, InvalidKeySpecException::class,
+        NoSuchPaddingException::class, BadPaddingException::class, IllegalBlockSizeException::class)
     fun decrypt(key: String, subject: String?, iterations: Int = 0): String {
         if(subject === null) {
             return "";

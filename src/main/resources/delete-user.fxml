@@ -9,11 +9,11 @@
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.user.UserController">
     <children>
         <Label alignment="CENTER" contentDisplay="CENTER" text="Delete User" textAlignment="CENTER" textFill="#e1e1e1" />
-      <Label text="This will delete the current user and all associated accounts.">
-         <VBox.margin>
-            <Insets top="30.0" />
-         </VBox.margin>
-      </Label>
+        <Label text="This will delete the current user and all associated accounts.">
+            <VBox.margin>
+                <Insets top="30.0" />
+            </VBox.margin>
+        </Label>
         <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" vgap="10.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="126.0" />
@@ -23,7 +23,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -42,8 +42,7 @@
                 </Label>
                 <PasswordField fx:id="confirm_password" layoutX="166.0" layoutY="127.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#deleteUserAction" style="-fx-background-color: red;" text="Delete User" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                <Button accessibleText="Back" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#accountListView" text="Back" textAlignment="CENTER" GridPane.rowIndex="2" />
-            <Label fx:id="noticeText" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                <Button accessibleText="Back" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#toAccounts" text="Back" textAlignment="CENTER" GridPane.rowIndex="2" />
             </children>
         </GridPane>
         <Text fx:id="notice_text" fill="#ff6161" textAlignment="CENTER" textOrigin="CENTER">

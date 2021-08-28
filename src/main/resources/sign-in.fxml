@@ -8,85 +8,85 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.user.UserController">
-<children>
-    <Label fx:id="login_title" alignment="TOP_CENTER" contentDisplay="CENTER" text="Speak friend and enter." textAlignment="CENTER" textFill="#e1e1e1">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets></Label>
-    <GridPane fx:id="login_grid" alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" vgap="10.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="126.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="10.0" prefWidth="244.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-        </rowConstraints>
-        <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-        </padding>
-        <children>
+<VBox fx:id="login_container" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.user.LoginController">
+    <children>
+        <Label fx:id="login_title" alignment="TOP_CENTER" contentDisplay="CENTER" text="Speak friend and enter." textAlignment="CENTER" textFill="#e1e1e1">
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets></Label>
+        <GridPane fx:id="login_grid" alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" vgap="10.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="126.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="10.0" prefWidth="244.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <children>
 
-            <Label accessibleText="User" text="User:" textFill="#e1e1e1" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <font>
-                    <Font name="Fira Code Medium" size="13.0" />
-                </font>
-            </Label>
+                <Label accessibleText="User" text="User:" textFill="#e1e1e1" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <font>
+                        <Font name="Fira Code Medium" size="13.0" />
+                    </font>
+                </Label>
 
-            <TextField fx:id="username" onKeyPressed="#loginEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="username" onKeyPressed="#loginEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Label accessibleText="Password" text="Pass:" textFill="#e1e1e1" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                <font>
-                    <Font name="Fira Code Medium" size="13.0" />
-                </font>
-            </Label>
+                <Label accessibleText="Password" text="Pass:" textFill="#e1e1e1" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <font>
+                        <Font name="Fira Code Medium" size="13.0" />
+                    </font>
+                </Label>
 
-            <PasswordField fx:id="password" onKeyPressed="#loginEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-             <Button onKeyPressed="#loginEnterKeyAction" onMouseClicked="#loginAction" text="Sign In" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
+                <PasswordField fx:id="password" onKeyPressed="#loginEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Button onKeyPressed="#loginEnterKeyAction" onMouseClicked="#loginAction" text="Sign In" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
 
-            <HBox alignment="bottom_left" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                <Hyperlink onAction="#registerView" text="Create New User" />
-            </HBox>
+                <HBox alignment="bottom_left" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                    <Hyperlink onAction="#registerView" text="Create New User" />
+                </HBox>
 
-        </children>
-         <cursor>
-            <Cursor fx:constant="DEFAULT" />
-         </cursor>
-    </GridPane>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-         <children>
-          <Text fx:id="notice_text" fill="#ff6161" styleClass="update-loader" textAlignment="CENTER" textOrigin="CENTER">
-              <effect>
-                  <Glow />
-              </effect>
-          </Text>
-            <ImageView fx:id="update_loader" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/gear.png" />
-               </image>
-               <viewport>
-                  <Rectangle2D />
-               </viewport>
-               <HBox.margin>
-                  <Insets left="8.0" />
-               </HBox.margin>
-            </ImageView>
-         </children>
-      </HBox>
-</children>
-<padding>
-    <Insets bottom="40.0" top="20.0" />
-</padding>
+            </children>
+            <cursor>
+                <Cursor fx:constant="DEFAULT" />
+            </cursor>
+        </GridPane>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <Text fx:id="notice_text" fill="#ff6161" styleClass="update-loader" textAlignment="CENTER" textOrigin="CENTER">
+                    <effect>
+                        <Glow />
+                    </effect>
+                </Text>
+                <ImageView fx:id="update_loader" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@img/gear.png" />
+                    </image>
+                    <viewport>
+                        <Rectangle2D />
+                    </viewport>
+                    <HBox.margin>
+                        <Insets left="8.0" />
+                    </HBox.margin>
+                </ImageView>
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="40.0" top="20.0" />
+    </padding>
 </VBox>

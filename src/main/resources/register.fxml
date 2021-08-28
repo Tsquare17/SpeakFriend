@@ -6,53 +6,53 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.user.UserController">
-  <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" text="Register" textAlignment="CENTER" textFill="#e1e1e1" />
-      <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" vgap="10.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="126.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="10.0" prefWidth="244.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-         <children>
-            <Label accessibleText="User Name" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="User:" textAlignment="RIGHT" textFill="#e1e1e1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-               <font>
-                  <Font name="Fira Code Medium" size="13.0" />
-               </font>
-            </Label>
-            <TextField fx:id="username" onKeyPressed="#registerEnterKeyAction" GridPane.columnIndex="1" />
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Pass:" textAlignment="CENTER" textFill="#e1e1e1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-               <font>
-                  <Font name="Fira Code Medium" size="13.0" />
-               </font>
-            </Label>
-            <PasswordField fx:id="password" onKeyPressed="#registerEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="136.0" text="Confirm Pass:" textAlignment="CENTER" textFill="#e1e1e1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
-               <font>
-                  <Font name="Fira Code Medium" size="13.0" />
-               </font>
-            </Label>
-             <PasswordField fx:id="confirm_password" layoutX="166.0" layoutY="127.0" onKeyPressed="#registerEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#registerSubmitAction" text="Submit" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-            <Button accessibleText="Back" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#entryView" style="-fx-background-color: red; -fx-text-fill: white;" text="Back" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="3" />
-         </children>
-      </GridPane>
-      <Text fx:id="notice_text" fill="#ff6161" textAlignment="CENTER" textOrigin="CENTER">
-         <effect>
-            <Glow />
-         </effect>
-      </Text>
-  </children>
-   <padding>
-      <Insets bottom="40.0" top="20.0" />
-   </padding>
+<VBox fx:id="register_container" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.user.RegisterController">
+    <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" text="Register" textAlignment="CENTER" textFill="#e1e1e1" />
+        <GridPane fx:id="register_gridpane" alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" vgap="10.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="126.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="10.0" prefWidth="244.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <children>
+                <Label accessibleText="User Name" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="User:" textAlignment="RIGHT" textFill="#e1e1e1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                    <font>
+                        <Font name="Fira Code Medium" size="13.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="username" onKeyPressed="#registerEnterKeyAction" GridPane.columnIndex="1" />
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Pass:" textAlignment="CENTER" textFill="#e1e1e1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <font>
+                        <Font name="Fira Code Medium" size="13.0" />
+                    </font>
+                </Label>
+                <PasswordField fx:id="password" onKeyPressed="#registerEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="136.0" text="Confirm Pass:" textAlignment="CENTER" textFill="#e1e1e1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                    <font>
+                        <Font name="Fira Code Medium" size="13.0" />
+                    </font>
+                </Label>
+                <PasswordField fx:id="confirm_password" layoutX="166.0" layoutY="127.0" onKeyPressed="#registerEnterKeyAction" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#registerSubmitAction" text="Submit" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                <Button accessibleText="Back" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#entryView" style="-fx-background-color: red; -fx-text-fill: white;" text="Back" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="3" />
+            </children>
+        </GridPane>
+        <Text fx:id="notice_text" fill="#ff6161" textAlignment="CENTER" textOrigin="CENTER">
+            <effect>
+                <Glow />
+            </effect>
+        </Text>
+    </children>
+    <padding>
+        <Insets bottom="40.0" top="20.0" />
+    </padding>
 </VBox>
