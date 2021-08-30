@@ -9,4 +9,7 @@ object State {
 
     @JvmStatic
     var selectedAccountId = 0
+
+    @JvmStatic
+    var exportFileString = ""
 }

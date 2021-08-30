@@ -13,20 +13,20 @@
                 <Menu mnemonicParsing="false" text="File">
                     <items>
                         <MenuItem fx:id="menu_item_logout" mnemonicParsing="false" onAction="#logoutAction" text="Log out" />
+                        <MenuItem fx:id="menu_item_export" mnemonicParsing="false" onAction="#exportView" text="Export" />
+                        <MenuItem fx:id="menu_item_import" mnemonicParsing="false" onAction="#importView" text="Import" />
                         <MenuItem fx:id="menu_item_quit" mnemonicParsing="false" onAction="#quitAction" text="Quit" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
                         <MenuItem fx:id="menu_item_edit_settings" mnemonicParsing="false" onAction="#editSettingsView" text="Settings" />
-<!--                        <MenuItem fx:id="menu_item_cloud_backup" mnemonicParsing="false" onAction="#cloudBackupView" text="Export" />-->
-<!--                        <MenuItem fx:id="menu_item_cloud_import" mnemonicParsing="false" onAction="#cloudImportView" text="Import" />-->
                         <MenuItem fx:id="menu_item_delete_user" mnemonicParsing="false" onAction="#deleteUserView" text="Delete User" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="View">
                     <items>
-                        <MenuItem fx:id="menu_item_edit_settings1" mnemonicParsing="false" onAction="#viewAccountsView" text="Accounts" />
+                        <MenuItem fx:id="menu_item_accounts" mnemonicParsing="false" onAction="#viewAccountsView" text="Accounts" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">

@@ -2,6 +2,7 @@ package com.tsquare.speakfriend.database.account
 
 import com.tsquare.speakfriend.account.preview.AccountPreview
 import com.tsquare.speakfriend.auth.Auth
+import com.tsquare.speakfriend.auth.CurrentUser
 import com.tsquare.speakfriend.crypt.Crypt.decrypt
 import com.tsquare.speakfriend.crypt.Crypt.encrypt
 import com.tsquare.speakfriend.state.State
@@ -28,6 +29,11 @@ class AccountList {
         @JvmStatic
         fun getById(accountId : Int): AccountEntity? {
             return Account().getById(accountId)
+        }
+
+        @JvmStatic
+        fun count(userId: Int): Int {
+            return get(userId).size
         }
 
         @JvmStatic
@@ -126,11 +132,25 @@ class AccountList {
             for (account in accounts) {
                 val accountFields: MutableList<String> = ArrayList()
                 for ((i, field) in account.withIndex()) {
-                    if (i == 0 || i == 6) {
+                    if (i == 0) {
                         accountFields.add(field)
                     } else {
                         accountFields.add(encrypt(key, field, 2000))
                     }
+                };
+                list.add(accountFields)
+            }
+
+            return list
+        }
+
+        @JvmStatic
+        fun unlock(accounts: MutableList<MutableList<String>>, key: String): MutableList<MutableList<String>> {
+            val list = ArrayList<MutableList<String>>()
+            for (account in accounts) {
+                val accountFields: MutableList<String> = ArrayList()
+                for ((i, field) in account.withIndex()) {
+                    accountFields.add(decrypt(key, field, 2000))
                 };
                 list.add(accountFields)
             }

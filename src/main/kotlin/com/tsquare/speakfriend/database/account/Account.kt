@@ -39,15 +39,6 @@ class Account {
         }
     }
 
-//    fun importOrUpdate(nameArg: String?, userArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
-//        val existing = null; // Probably check for account matching name, or name and user..
-//        if (existing != null) {
-//            update(existing.id.value, nameArg, userArg, passArg, urlArg, notesArg);
-//        } else {
-//            create(CurrentUser.userId, nameArg, userArg, passArg, urlArg, notesArg);
-//        }
-//    }
-
     fun delete(accountIdArg: Int) {
         State.isDirtyAccounts = 1
         transaction {
@@ -78,6 +69,15 @@ class Account {
             }.orderBy(
                 Accounts.name.lowerCase() to SortOrder.ASC
             ).toList()
+        }
+    }
+
+    fun getByName(name: String): AccountEntity? {
+        return transaction {
+            AccountEntity.find {
+                Accounts.userId eq CurrentUser.userId
+                Accounts.name eq name
+            }.first()
         }
     }
 }

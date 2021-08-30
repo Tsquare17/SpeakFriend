@@ -80,6 +80,14 @@ public class LoginController extends Controller {
                 Main.transition = new PauseTransition(delay);
             }
 
+            // Check if there are any accounts before displaying the loading messate.
+            // If not, just go right to the empty list.
+            if (AccountList.count(auth.getId()) == 0) {
+                toAccounts();
+
+                return;
+            }
+
             State.setLoadingMessage("Decrypting Accounts...");
             newScene("loading");
 

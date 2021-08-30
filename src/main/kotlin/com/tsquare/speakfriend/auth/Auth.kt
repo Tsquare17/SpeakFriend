@@ -18,6 +18,7 @@ class Auth {
         CurrentUser.userId = match.id.value
         CurrentUser.userName = match.name
         CurrentUser.userKey = Crypt.generateKey(match.pass, pass).toString()
+        CurrentUser.passHash = match.pass
 
         val dbVersion = Options.get("db_version")
         if (dbVersion == "") {
@@ -30,12 +31,8 @@ class Auth {
     }
 
     fun checkOut() {
-        CurrentUser.userId = 0
-        CurrentUser.userName = ""
-        CurrentUser.userKey = ""
-        CurrentUser.version = 0
-
-        AccountList.clear();
+        CurrentUser.clear()
+        AccountList.clear()
         State.isDirtyAccounts = 1
     }
 
@@ -49,6 +46,10 @@ class Auth {
 
     fun getKey(): String {
         return CurrentUser.userKey
+    }
+
+    fun getPassHash(): String {
+        return CurrentUser.passHash
     }
 
     fun getVersion(): Int {

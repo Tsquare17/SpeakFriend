@@ -18,17 +18,26 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class BackupController extends Controller {
+public class ExportController extends Controller {
     @FXML VBox account_list_container;
     @FXML AnchorPane account_anchor;
     @FXML ScrollPane account_list_scrollpane;
     @FXML Text notice_text;
-    @FXML Button backup_button;
+    @FXML Button export_button;
 
     @FXML
     public void initialize() {
@@ -54,8 +63,8 @@ public class BackupController extends Controller {
         List<AccountPreview> decryptedList = AccountList.getPreviews();
 
         if (decryptedList.size() == 0) {
-            backup_button.setManaged(false);
-            backup_button.setVisible(false);
+            export_button.setManaged(false);
+            export_button.setVisible(false);
         }
 
         int count = 0;
@@ -112,7 +121,7 @@ public class BackupController extends Controller {
         account_list_container.setPrefHeight(Main.getStage().getHeight());
     }
 
-    public void sendBackups() {
+    public void export() {
         Task<Void> task = new Task<>() {
             @Override
             public Void call() {
@@ -134,27 +143,51 @@ public class BackupController extends Controller {
 
                 ArrayList<List<String>> encryptedList = AccountList.lock(decryptedList, auth.getKey());
 
-                if (("OK").equals("OK")) {
-                    notice_text.setText("Accounts successfully backed up");
+                String hash = auth.getPassHash();
 
-                    return null;
-                }
+                String accounts = "{\"accounts\": " + JSONArray.toJSONString(encryptedList) + ", \"hash\": \"" + hash + "\"}";
 
-                notice_text.setText("An error occurred");
+                com.tsquare.speakfriend.state.State.setExportFileString(accounts);
 
                 return null;
             }
         };
 
         task.setOnSucceeded(taskFinishEvent -> {
-            transitionToAccounts();
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save as");
+
+            String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+
+            fileChooser.setInitialFileName("speakfriend-" + date + ".json");
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.json"));
+
+            File file = fileChooser.showSaveDialog(Main.getStage());
+
+            if (file != null) {
+                try {
+                    saveTextToFile(State.getExportFileString(), file);
+
+                    transitionToAccounts();
+                } catch (FileNotFoundException e) {
+                   notice_text.setText("There was a problem exporting your data.");
+                }
+            }
         });
         new Thread(task).start();
     }
 
-    public void backupAction() throws IOException {
-        State.setLoadingMessage("Backing up accounts...");
+    public void exportAction() throws IOException {
+        State.setLoadingMessage("Exporting accounts...");
         newScene("loading");
-        sendBackups();
+        export();
+    }
+
+    private void saveTextToFile(String content, File file) throws FileNotFoundException {
+        PrintWriter writer;
+        writer = new PrintWriter(file);
+        writer.println(content);
+        writer.close();
     }
 }
