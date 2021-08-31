@@ -21,9 +21,17 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -180,39 +188,51 @@ public class ImportController extends Controller {
     public void importAction() {
         Task<Void> task = new Task<>() {
             @Override
-            public Void call() {
+            public Void call()
+                throws InvalidAlgorithmParameterException, NoSuchPaddingException,
+                IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException,
+                InvalidKeyException
+            {
                 Auth auth = new Auth();
+                String key = auth.getKey();
 
                 List<List<String>> accountList = AccountList.getStagedImports();
-                ArrayList<List<String>> listAccounts = new ArrayList<>(accountList);
-                List<List<String>> lockedAccounts = AccountList.lock(listAccounts, auth.getKey(), -1);
-                for (List<String> account : lockedAccounts) {
+                for (List<String> account : accountList) {
                     String accountName = account.get(0);
                     String accountUser = account.get(1);
                     String accountPass = account.get(2);
                     String accountUrl = account.get(3);
                     String accountNotes = account.get(4);
 
+                    // Need to check the name with the previous encryption...
+                    // no, it was already decrypted. encrypting with the current method should match
+                    // but it's not...
+                    String encryptedName = Crypt.encrypt(key, accountName);
+                    String encryptedUser = Crypt.encrypt(key, accountUser);
+                    String encryptedPass = Crypt.encrypt(key, accountPass);
+                    String encryptedUrl = Crypt.encrypt(key, accountUrl);
+                    String encryptedNotes = Crypt.encrypt(key, accountNotes);
+
                     Account importAccount = new Account();
-                    AccountEntity existing = importAccount.getByName(accountName);
+                    AccountEntity existing = importAccount.getByName(encryptedName);
 
                     if (existing == null) {
                         importAccount.create(
                                 auth.getId(),
-                                accountName,
-                                accountUser,
-                                accountPass,
-                                accountUrl,
-                                accountNotes
+                                encryptedName,
+                                encryptedUser,
+                                encryptedPass,
+                                encryptedUrl,
+                                encryptedNotes
                         );
                     } else {
                         importAccount.update(
                                 existing.getId().getValue(),
-                                accountName,
-                                accountUser,
-                                accountPass,
-                                accountUrl,
-                                accountNotes
+                                encryptedName,
+                                encryptedUser,
+                                encryptedPass,
+                                encryptedUrl,
+                                encryptedNotes
                         );
                     }
                 }
