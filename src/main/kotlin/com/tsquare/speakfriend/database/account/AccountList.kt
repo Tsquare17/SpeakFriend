@@ -2,7 +2,6 @@ package com.tsquare.speakfriend.database.account
 
 import com.tsquare.speakfriend.account.preview.AccountPreview
 import com.tsquare.speakfriend.auth.Auth
-import com.tsquare.speakfriend.auth.CurrentUser
 import com.tsquare.speakfriend.crypt.Crypt.decrypt
 import com.tsquare.speakfriend.crypt.Crypt.encrypt
 import com.tsquare.speakfriend.state.State
