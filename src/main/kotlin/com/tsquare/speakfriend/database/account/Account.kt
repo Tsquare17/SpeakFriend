@@ -77,7 +77,7 @@ class Account {
             AccountEntity.find {
                 Accounts.userId eq CurrentUser.userId
                 Accounts.name eq name
-            }.first()
+            }.firstOrNull()
         }
     }
 }

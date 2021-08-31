@@ -145,6 +145,24 @@ class AccountList {
         }
 
         @JvmStatic
+        fun lock(accounts: ArrayList<MutableList<String>>, key: String, skipKey: Int = 0): ArrayList<MutableList<String>> {
+            val list = ArrayList<MutableList<String>>()
+            for (account in accounts) {
+                val accountFields: MutableList<String> = ArrayList()
+                for ((i, field) in account.withIndex()) {
+                    if (i == skipKey) {
+                        accountFields.add(field)
+                    } else {
+                        accountFields.add(encrypt(key, field, 2000))
+                    }
+                };
+                list.add(accountFields)
+            }
+
+            return list
+        }
+
+        @JvmStatic
         fun unlock(accounts: MutableList<MutableList<String>>, key: String): MutableList<MutableList<String>> {
             val list = ArrayList<MutableList<String>>()
             for (account in accounts) {

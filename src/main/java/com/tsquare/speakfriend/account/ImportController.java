@@ -187,7 +187,6 @@ public class ImportController extends Controller {
         }
     }
 
-    // TODO: Fix import action.
     public void importAction() {
         Task<Void> task = new Task<>() {
             @Override
@@ -195,7 +194,9 @@ public class ImportController extends Controller {
                 Auth auth = new Auth();
 
                 List<List<String>> accountList = AccountList.getStagedImports();
-                for (List<String> account : accountList) {
+                ArrayList<List<String>> listAccounts = new ArrayList<>(accountList);
+                List<List<String>> lockedAccounts = AccountList.lock(listAccounts, auth.getKey(), -1);
+                for (List<String> account : lockedAccounts) {
                     String accountName = account.get(0);
                     String accountUser = account.get(1);
                     String accountPass = account.get(2);
