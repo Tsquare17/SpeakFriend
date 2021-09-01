@@ -1,21 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="accountListContainer" fx:id="account_list_container" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.ImportController">
+<VBox id="accountListContainer" fx:id="account_list_container" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.ImportController">
     <padding>
         <Insets top="20.0" />
     </padding>
     <children>
         <Label text="Import Accounts" />
 
-        <VBox fx:id="decryption_key_container" maxWidth="400.0" prefWidth="400.0">
-            <Label fx:id="decryption_label" text="Password" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <PasswordField fx:id="decryption_key" onKeyTyped="#handleKeyAction" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+        <VBox fx:id="password_field_container" maxWidth="400.0" prefWidth="400.0">
+            <HBox alignment="CENTER_LEFT">
+                <Label fx:id="password_label" text="Password">
+               <padding>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </padding></Label>
+                <HBox fx:id="password_tooltip_container" alignment="CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="15.0" prefWidth="15.0" style="-fx-border-color: white; -fx-border-width: 1; -fx-border-style: solid; -fx-border-radius: 25;">
+                    <Text fill="WHITE" text="?">
+                  <font>
+                     <Font size="8.0" />
+                  </font></Text>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+                </HBox>
+               <HBox.margin>
+                  <Insets left="14.0" />
+               </HBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+
+            <AnchorPane>
+                <PasswordField fx:id="password_field" onKeyTyped="#handleKeyAction" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                <TextField fx:id="plain_text_password_field" focusTraversable="false" onKeyTyped="#handleKeyAction" visible="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+
+                <ImageView fx:id="show_password" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#showPasswordAction" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                    <Image url="@img/eyecon.png" />
+                </ImageView>
+            </AnchorPane>
          <padding>
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
          </padding>
@@ -46,7 +79,7 @@
         </GridPane>
         <AnchorPane fx:id="account_anchor" VBox.vgrow="ALWAYS">
             <children>
-                <ScrollPane fx:id="account_list_scrollpane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <ScrollPane fx:id="account_list_scrollpane" prefHeight="0.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
                     </content>

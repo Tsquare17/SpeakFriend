@@ -3,7 +3,6 @@ package com.tsquare.speakfriend.account;
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.account.Account;
-import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
@@ -11,17 +10,18 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -41,9 +41,12 @@ public class ImportController extends Controller {
     @FXML ScrollPane account_list_scrollpane;
     @FXML Text notice_text;
     @FXML Button import_button;
-    @FXML VBox decryption_key_container;
-    @FXML Label decryption_label;
-    @FXML PasswordField decryption_key;
+    @FXML VBox password_field_container;
+    @FXML Label password_label;
+    @FXML PasswordField password_field;
+    @FXML TextField plain_text_password_field;
+    @FXML ImageView show_password;
+    @FXML HBox password_tooltip_container;
 
     @FXML
     public void initialize() {
@@ -59,16 +62,26 @@ public class ImportController extends Controller {
         stage.widthProperty().addListener(e -> account_list_scrollpane.setPrefWidth(stage.getWidth()));
 
         account_list_container.setPrefHeight(Main.getStage().getHeight());
+
+        Tooltip tooltip = new Tooltip("Enter the password for the account used to export the selected file.");
+        tooltip.setShowDelay(Duration.millis(200));
+        Tooltip.install(password_tooltip_container, tooltip);
     }
 
     @FXML
     public void handleKeyAction(KeyEvent event) {
-        import_button.setDisable(decryption_key.getText().isEmpty());
+        if (plain_text_password_field.isVisible()) {
+            password_field.setText(plain_text_password_field.getText());
+        } else {
+            plain_text_password_field.setText(password_field.getText());
+        }
+
+        import_button.setDisable(password_field.getText().isEmpty());
     }
 
     @FXML
     public void selectAction() throws IOException, ParseException {
-        if (decryption_key.getText().isEmpty()) {
+        if (password_field.getText().isEmpty()) {
             notice_text.setText("You must enter the password for the user that exported the accounts.");
 
             return;
@@ -115,7 +128,7 @@ public class ImportController extends Controller {
 
                 String hash = (String) accountsObject.get("hash");
                 assert hash != null;
-                String key = Crypt.generateKey(hash, decryption_key.getText());
+                String key = Crypt.generateKey(hash, password_field.getText());
 
                 assert key != null;
                 unlocked = AccountList.unlock(newAccounts, key);
@@ -175,8 +188,8 @@ public class ImportController extends Controller {
             notice_text.setText("If the accounts shown appear correct, click import");
 
             // Hide the password label and input
-            decryption_key_container.setVisible(false);
-            decryption_key_container.setManaged(false);
+            password_field_container.setVisible(false);
+            password_field_container.setManaged(false);
 
             import_button.setText("Import");
             import_button.setOnAction(e -> {
@@ -243,4 +256,14 @@ public class ImportController extends Controller {
         });
         new Thread(task).start();
     }
-}
+
+    @FXML
+    public void showPasswordAction() {
+        if (plain_text_password_field.isVisible()) {
+            plain_text_password_field.setVisible(false);
+            password_field.setVisible(true);
+        } else {
+            plain_text_password_field.setVisible(true);
+            password_field.setVisible(false);
+        }
+    }}
