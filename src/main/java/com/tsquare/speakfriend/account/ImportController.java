@@ -204,9 +204,6 @@ public class ImportController extends Controller {
                     String accountUrl = account.get(3);
                     String accountNotes = account.get(4);
 
-                    // Need to check the name with the previous encryption...
-                    // no, it was already decrypted. encrypting with the current method should match
-                    // but it's not...
                     String encryptedName = Crypt.encrypt(key, accountName);
                     String encryptedUser = Crypt.encrypt(key, accountUser);
                     String encryptedPass = Crypt.encrypt(key, accountPass);
@@ -214,9 +211,8 @@ public class ImportController extends Controller {
                     String encryptedNotes = Crypt.encrypt(key, accountNotes);
 
                     Account importAccount = new Account();
-                    AccountEntity existing = importAccount.getByName(encryptedName);
-
-                    if (existing == null) {
+                    int existingId = AccountList.getAccountIdByName(accountName);
+                    if (existingId == 0) {
                         importAccount.create(
                                 auth.getId(),
                                 encryptedName,
@@ -227,7 +223,7 @@ public class ImportController extends Controller {
                         );
                     } else {
                         importAccount.update(
-                                existing.getId().getValue(),
+                                existingId,
                                 encryptedName,
                                 encryptedUser,
                                 encryptedPass,

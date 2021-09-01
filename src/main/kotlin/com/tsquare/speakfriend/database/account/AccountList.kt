@@ -205,5 +205,25 @@ class AccountList {
 
             return accounts.count()
         }
+
+        @JvmStatic
+        fun accountExists(name: String): Boolean {
+            return getPreviews().any {
+                it.name == name
+            }
+        }
+
+        @JvmStatic
+        fun getAccountIdByName(name: String): Int {
+            val account = getPreviews().filter {
+                it.name == name
+            }
+
+            if (account.isEmpty()) {
+                return 0
+            }
+            
+            return account.first().id
+        }
     }
 }
