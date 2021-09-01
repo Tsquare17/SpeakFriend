@@ -30,14 +30,14 @@
                   <Insets />
                </HBox.margin>
                <cursor>
-                  <Cursor fx:constant="HAND" />
+                  <Cursor fx:constant="DEFAULT" />
                </cursor>
                 </HBox>
                <HBox.margin>
                   <Insets left="14.0" />
                </HBox.margin>
                <cursor>
-                  <Cursor fx:constant="HAND" />
+                  <Cursor fx:constant="DEFAULT" />
                </cursor>
             </HBox>
 
