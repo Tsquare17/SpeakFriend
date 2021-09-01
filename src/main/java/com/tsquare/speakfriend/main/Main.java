@@ -22,7 +22,7 @@ import java.net.URL;
 public class Main extends Application {
     private static Stage stage;
 
-    public static String version = "1.0.0";
+    public static String version = "0.0.0";
 
     public static PauseTransition transition;
 
@@ -69,6 +69,8 @@ public class Main extends Application {
 
         Schema schema = new Schema();
         schema.up();
+
+        version = getSemanticVersion();
     }
 
     public static void setTimer(Scene scene) {
