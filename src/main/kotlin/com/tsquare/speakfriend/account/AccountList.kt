@@ -66,10 +66,4 @@ class AccountList {
 
         return accounts
     }
-
-    fun lock(key: String) {
-        if (locked) {
-            return;
-        }
-    }
 }

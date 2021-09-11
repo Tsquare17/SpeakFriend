@@ -10,8 +10,11 @@ Speak Friend secures account information using AES/GCM authenticated encryption.
 
 Speak Friend uses Maven to manage dependencies and build the package.
 
-### Installing Dependencies
+### Install Dependencies
 * mvn install
+
+### Run
+* mvn javafx:run
 
 ### Build executable jar
 * mvn package

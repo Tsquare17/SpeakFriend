@@ -21,7 +21,6 @@ import javafx.util.Duration;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -80,7 +79,7 @@ public class ImportController extends Controller {
     }
 
     @FXML
-    public void selectAction() throws IOException, ParseException {
+    public void selectAction() throws IOException {
         if (password_field.getText().isEmpty()) {
             notice_text.setText("You must enter the password for the user that exported the accounts.");
 
@@ -100,7 +99,7 @@ public class ImportController extends Controller {
         if (file != null) {
             String contents = Files.readString(file.toPath());
 
-            List<List<String>> unlocked = new ArrayList<>();
+            List<List<String>> unlocked;
             List<List<String>> newAccounts = new ArrayList<>();
             try {
                 JSONParser parser = new JSONParser();

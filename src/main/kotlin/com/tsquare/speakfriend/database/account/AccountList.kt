@@ -166,7 +166,7 @@ class AccountList {
             val list = ArrayList<MutableList<String>>()
             for (account in accounts) {
                 val accountFields: MutableList<String> = ArrayList()
-                for ((i, field) in account.withIndex()) {
+                for (field in account) {
                     accountFields.add(decrypt(key, field, 2000))
                 };
                 list.add(accountFields)
@@ -222,7 +222,7 @@ class AccountList {
             if (account.isEmpty()) {
                 return 0
             }
-            
+
             return account.first().id
         }
     }
