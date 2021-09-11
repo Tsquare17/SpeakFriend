@@ -40,7 +40,6 @@ public class AccountController extends Controller {
         Stage newStage = new Stage();
         newStage.initOwner(stage);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/generate-password.fxml"));
-        fxmlLoader.setController(this);
         VBox modal = fxmlLoader.load();
         newStage.setScene(new Scene(modal, 300, 350));
         newStage.initModality(Modality.WINDOW_MODAL);
