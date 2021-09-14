@@ -157,7 +157,7 @@ public class ExportController extends Controller {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save as");
 
-            String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+            String date = new SimpleDateFormat("dd-MM-yyyy-h-m-s").format(new Date());
 
             fileChooser.setInitialFileName("speakfriend-" + date + ".json");
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
