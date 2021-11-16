@@ -157,7 +157,7 @@ public class ExportController extends Controller {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save as");
 
-            String date = new SimpleDateFormat("dd-MM-yyyy-h-m-s").format(new Date());
+            String date = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss").format(new Date());
 
             fileChooser.setInitialFileName("speakfriend-" + date + ".json");
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -171,9 +171,12 @@ public class ExportController extends Controller {
 
                     transitionToAccounts();
                 } catch (FileNotFoundException e) {
+                    // TODO: Figure out a good way to inform the user of export fail.
                    notice_text.setText("There was a problem exporting your data.");
                 }
             }
+
+            transitionToAccounts();
         });
         new Thread(task).start();
     }
