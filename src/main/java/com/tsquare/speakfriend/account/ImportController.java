@@ -87,8 +87,6 @@ public class ImportController extends Controller {
             return;
         }
 
-        // TODO: set this in a separate thread...
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save as");
 
@@ -174,6 +172,7 @@ public class ImportController extends Controller {
 
             accountsVBox.getChildren().addAll(accountBoxes);
             account_list_scrollpane.setContent(accountsVBox);
+            account_list_scrollpane.setPrefHeight(Main.getStage().getHeight());
             account_list_container.setPrefHeight(Main.getStage().getHeight());
 
             if (unlocked.size() == 0) {
