@@ -6,6 +6,7 @@ import com.tsquare.speakfriend.database.account.Account;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
+import com.tsquare.speakfriend.state.State;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -192,6 +193,13 @@ public class ImportController extends Controller {
 
             import_button.setText("Import");
             import_button.setOnAction(e -> {
+                State.setLoadingMessage("Importing accounts...");
+                try {
+                    newScene("loading");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
                 importAction();
             });
         }
