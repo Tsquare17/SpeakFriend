@@ -10,6 +10,7 @@ import com.tsquare.speakfriend.state.State;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -145,6 +146,7 @@ public class ImportController extends Controller {
 
             int count = 0;
             List<HBox> accountBoxes = new ArrayList<>();
+            List<String> accountIds = new ArrayList<>();
             for (List<String> newAccount : unlocked) {
                 String accountName = newAccount.get(0);
 
@@ -155,6 +157,13 @@ public class ImportController extends Controller {
                 Region spaceFiller = new Region();
                 HBox.setHgrow(spaceFiller, Priority.ALWAYS);
                 accountBox.getChildren().add(spaceFiller);
+
+                CheckBox checkBox = new CheckBox();
+                checkBox.setSelected(true);
+                String accountId = "checkbox_" + count;
+                accountIds.add(accountId);
+                checkBox.setId(accountId);
+                accountBox.getChildren().add(checkBox);
 
                 Color accountColor = Color.rgb(47, 52, 57);
                 if (count % 2 != 0) {
@@ -173,6 +182,23 @@ public class ImportController extends Controller {
             accountsVBox.getChildren().addAll(accountBoxes);
             account_list_scrollpane.setContent(accountsVBox);
             account_list_scrollpane.setPrefHeight(Main.getStage().getHeight());
+            account_list_container.setPrefHeight(Main.getStage().getHeight());
+
+            CheckBox selectAll = new CheckBox("Toggle All");
+            selectAll.setPadding(new Insets(0, 0, 0, 30));
+            selectAll.setSelected(true);
+
+            selectAll.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+                Scene scene = Main.getScene();
+                for (String id: accountIds) {
+                    CheckBox checkBox = (CheckBox) scene.lookup("#" + id);
+                    checkBox.setSelected(newValue);
+                }
+            });
+
+            HBox hBox = new HBox();
+            hBox.getChildren().add(selectAll);
+            account_list_container.getChildren().add(2, hBox);
             account_list_container.setPrefHeight(Main.getStage().getHeight());
 
             if (unlocked.size() == 0) {
@@ -216,12 +242,21 @@ public class ImportController extends Controller {
                 String key = auth.getKey();
 
                 List<List<String>> accountList = AccountList.getStagedImports();
+                int counter = 0;
                 for (List<String> account : accountList) {
                     String accountName = account.get(0);
                     String accountUser = account.get(1);
                     String accountPass = account.get(2);
                     String accountUrl = account.get(3);
                     String accountNotes = account.get(4);
+
+                    CheckBox checkBox = (CheckBox) account_list_scrollpane.lookup("#checkbox_" + counter);
+
+                    counter++;
+
+                    if (checkBox == null || !checkBox.isSelected()) {
+                        continue;
+                    }
 
                     String encryptedName = Crypt.encrypt(key, accountName);
                     String encryptedUser = Crypt.encrypt(key, accountUser);
