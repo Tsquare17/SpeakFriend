@@ -1,7 +1,6 @@
 package com.tsquare.speakfriend.main;
 
 import com.tsquare.speakfriend.auth.Auth;
-import com.tsquare.speakfriend.state.State;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
