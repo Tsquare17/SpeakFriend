@@ -59,9 +59,7 @@ public class Nav extends Controller {
 
     @FXML
     public void importView() throws IOException {
-        State.setLoadingMessage("Loading accounts...");
-        newScene("loading");
-        loadingImports();
+        newContainerScene("account-import");
     }
 
     @FXML
