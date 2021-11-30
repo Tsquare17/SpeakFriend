@@ -10,7 +10,7 @@
 
     <properties>
         <main.class>com.tsquare.speakfriend.main.Loader</main.class>
-        <java.major.version>11</java.major.version>
+        <java.major.version>8</java.major.version>
         <javafx.version>16</javafx.version>
         <maven.compiler.source>${java.major.version}</maven.compiler.source>
         <maven.compiler.target>${java.major.version}</maven.compiler.target>

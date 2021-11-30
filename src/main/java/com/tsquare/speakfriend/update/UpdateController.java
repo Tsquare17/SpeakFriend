@@ -20,7 +20,7 @@ public class UpdateController {
     private final String upToDateSysVersion = "100";
 
     public void update() {
-        Task<Void> task = new Task<>() {
+        Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws SQLException {
                 Auth auth = new Auth();

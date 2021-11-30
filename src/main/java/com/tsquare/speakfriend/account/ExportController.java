@@ -121,7 +121,7 @@ public class ExportController extends Controller {
     }
 
     public void export() {
-        Task<Void> task = new Task<>() {
+        Task<Void> task = new Task<Void>() {
             @Override
             public Void call() {
                 Auth auth = new Auth();

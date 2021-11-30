@@ -91,7 +91,7 @@ public class LoginController extends Controller {
             State.setLoadingMessage("Decrypting Accounts...");
             newScene("loading");
 
-            Task<Void> task = new Task<>() {
+            Task<Void> task = new Task<Void>() {
                 @Override
                 public Void call() {
                     AccountList.getPreviews();

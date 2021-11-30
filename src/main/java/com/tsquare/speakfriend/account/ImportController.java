@@ -231,7 +231,7 @@ public class ImportController extends Controller {
     }
 
     public void importAction() {
-        Task<Void> task = new Task<>() {
+        Task<Void> task = new Task<Void>() {
             @Override
             public Void call()
                 throws InvalidAlgorithmParameterException, NoSuchPaddingException,
