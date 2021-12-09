@@ -35,6 +35,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ImportController extends Controller {
     @FXML VBox account_list_container;
@@ -65,7 +66,7 @@ public class ImportController extends Controller {
         account_list_container.setPrefHeight(Main.getStage().getHeight());
 
         Tooltip tooltip = new Tooltip("Enter the password for the account used to export the selected file.");
-        tooltip.setShowDelay(Duration.millis(200));
+        // tooltip.setShowDelay(Duration.millis(200));
         Tooltip.install(password_tooltip_container, tooltip);
     }
 
@@ -97,7 +98,14 @@ public class ImportController extends Controller {
         File file = fileChooser.showOpenDialog(Main.getStage());
 
         if (file != null) {
-            String contents = Files.readString(file.toPath());
+            StringBuilder stringBuilder = new StringBuilder();
+            try (Stream<String> stream = Files.lines(file.toPath())) {
+                stream.forEach(s -> stringBuilder.append(s).append("\n"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String contents = stringBuilder.toString();
 
             List<List<String>> unlocked;
             List<List<String>> newAccounts = new ArrayList<>();
