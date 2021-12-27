@@ -10,10 +10,11 @@
 
     <properties>
         <main.class>com.tsquare.speakfriend.main.Loader</main.class>
-        <java.major.version>8</java.major.version>
+        <java.major.version>17</java.major.version>
+        <javafx.version>17.0.2-ea+2</javafx.version>
         <maven.compiler.source>${java.major.version}</maven.compiler.source>
         <maven.compiler.target>${java.major.version}</maven.compiler.target>
-        <kotlin.version>1.5.10</kotlin.version>
+        <kotlin.version>1.6.10</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -23,7 +24,7 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>1.5.10</version>
+                <version>1.6.10</version>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -114,11 +115,46 @@
     </build>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-maven-plugin -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-maven-plugin</artifactId>
+            <version>0.0.6</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-maven-plugin -->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-maven-plugin</artifactId>
-            <version>1.5.10</version>
+            <version>1.6.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -141,7 +177,7 @@
         <dependency>
             <groupId>org.jetbrains.exposed</groupId>
             <artifactId>exposed</artifactId>
-            <version>0.17.13</version>
+            <version>0.17.14</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->

@@ -2,12 +2,16 @@ package com.tsquare.speakfriend.account;
 
 import com.tsquare.speakfriend.auth.Auth;
 import com.tsquare.speakfriend.database.account.Account;
+import com.tsquare.speakfriend.database.account.AccountEntity;
 import com.tsquare.speakfriend.main.Main;
+import com.tsquare.speakfriend.state.State;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+
+import java.io.IOException;
 
 public class CreateAccountController extends AccountController {
     @FXML private VBox account_container;
@@ -26,7 +30,7 @@ public class CreateAccountController extends AccountController {
     }
 
     @FXML
-    public void createAccountAction() {
+    public void createAccountAction() throws IOException {
         Auth auth = new Auth();
         int id = auth.getId();
         String key = auth.getKey();
@@ -43,8 +47,10 @@ public class CreateAccountController extends AccountController {
         String accountNotes = this.getEncryptedText(key, account_notes);
 
         Account account = new Account();
-        account.create(id, accountName, accountUser, accountPass, accountUrl, accountNotes);
-        notice_text.setText("Account Created");
-        create_account_button.setVisible(false);
+        AccountEntity entity = account.create(id, accountName, accountUser, accountPass, accountUrl, accountNotes);
+
+        State.setSelectedAccountId(entity.getId().getValue());
+
+        newContainerScene("account-details");
     }
 }

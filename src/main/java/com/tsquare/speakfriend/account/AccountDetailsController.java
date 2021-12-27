@@ -68,7 +68,7 @@ public class AccountDetailsController extends AccountController {
     }
 
     @FXML
-    public void updateAccountDetails() {
+    public void updateAccountDetails() throws IOException {
         int accountId = State.getSelectedAccountId();
 
         String accountName = account_name.getText();
@@ -103,7 +103,7 @@ public class AccountDetailsController extends AccountController {
 
         account.update(accountId, encryptedName, encryptedUser, encryptedPass, encryptedUrl, encryptedNotes);
 
-        notice_text.setText("Account Updated");
+        newContainerScene("account-details");
     }
 
     @FXML

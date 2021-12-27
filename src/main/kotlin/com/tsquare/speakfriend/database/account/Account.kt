@@ -12,9 +12,9 @@ class Account {
         Conn()
     }
 
-    fun create(userIdArg: Int, nameArg: String?, userArg: String?, passArg: String?, urlArg: String?, notesArg: String?) {
+    fun create(userIdArg: Int, nameArg: String?, userArg: String?, passArg: String?, urlArg: String?, notesArg: String?): AccountEntity {
         State.isDirtyAccounts = 1
-        transaction {
+        return transaction {
             AccountEntity.new {
                 userId = userIdArg
                 name = nameArg
