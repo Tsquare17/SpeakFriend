@@ -22,3 +22,5 @@ target/
 friend.db
 libs/
 scenicView*
+dist/
+!dist/.gitkeep

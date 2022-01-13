@@ -6,7 +6,7 @@
 
     <groupId>tsquare</groupId>
     <artifactId>SpeakFriend</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.7.0</version>
 
     <properties>
         <main.class>com.tsquare.speakfriend.main.Loader</main.class>
@@ -28,6 +28,7 @@
                 <executions>
                     <execution>
                         <id>compile</id>
+                        <phase>process-sources</phase>
                         <goals> <goal>compile</goal> </goals>
                         <configuration>
                             <sourceDirs>
