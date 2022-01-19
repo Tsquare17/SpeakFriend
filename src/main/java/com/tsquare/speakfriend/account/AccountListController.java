@@ -1,10 +1,12 @@
 package com.tsquare.speakfriend.account;
 
+import com.trevorthompson.Levenshtein;
 import com.tsquare.speakfriend.account.preview.AccountPreview;
 import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.state.State;
+import com.tsquare.speakfriend.utils.LevenshteinComparator;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -13,12 +15,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountListController extends Controller {
@@ -91,16 +93,28 @@ public class AccountListController extends Controller {
     private void setFilteredList(KeyEvent event) {
         String filter = account_filter_field.getText().replace(" ", "").toLowerCase();
 
-        if(event.getCode().equals(KeyCode.DELETE)) {
-            if(filter.isEmpty()) {
-                return;
-            }
+        if(filter.isEmpty()) {
+            toAccounts();
+            return;
         }
 
+        Levenshtein levenshtein = new Levenshtein();
         ObservableList<Node> listView = account_list.getChildren();
+
+        LevenshteinComparator comparator = new LevenshteinComparator();
+        comparator.setCompareTo(filter);
+
+        List<Node> list = new ArrayList<Node>(listView);
+        list.sort(comparator);
+        listView.clear();
+        listView.addAll(list);
+
         int count = 0;
         for (Node item: listView) {
-            if (item.getId().replace("$:$", " ").toLowerCase().startsWith(filter)) {
+            String accountName = item.getId().replace("$:$", " ");
+            float ratio = levenshtein.getRatio(accountName, filter);
+
+            if (ratio > 0.4) {
                 item.setVisible(true);
                 item.setManaged(true);
 

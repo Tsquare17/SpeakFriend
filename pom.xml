@@ -148,7 +148,7 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-maven-plugin</artifactId>
-            <version>0.0.6</version>
+            <version>0.0.8</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-maven-plugin -->
@@ -209,6 +209,13 @@
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
+
+        <!-- https://github.com/Tsquare17/java-levenshtein -->
+        <dependency>
+            <groupId>com.trevor-thompson</groupId>
+            <artifactId>levenshtein</artifactId>
+            <version>1.1.0</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -216,6 +223,11 @@
             <id>exposed</id>
             <name>exposed</name>
             <url>https://dl.bintray.com/kotlin/exposed</url>
+        </repository>
+
+        <repository>
+            <id>tsquare17-github</id>
+            <url>https://maven.pkg.github.com/Tsquare17/java-levenshtein</url>
         </repository>
     </repositories>
 </project>
