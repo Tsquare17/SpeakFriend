@@ -35,7 +35,7 @@
                 <Label fx:id="system_version" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label text="DB Version:" GridPane.rowIndex="2" />
                 <Label fx:id="db_version" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Label text="Java Version:" GridPane.rowIndex="3" />
+                <Label text="Runtime Version:" GridPane.rowIndex="3" />
                 <Label fx:id="java_version" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             </children>
         </GridPane>
