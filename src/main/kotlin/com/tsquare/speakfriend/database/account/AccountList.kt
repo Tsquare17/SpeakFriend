@@ -176,6 +176,22 @@ class AccountList {
         }
 
         @JvmStatic
+        fun unlockAccountObjects(accounts: MutableList<com.tsquare.speakfriend.account.Account>, key: String): MutableList<com.tsquare.speakfriend.account.Account> {
+            val list = ArrayList<com.tsquare.speakfriend.account.Account>()
+            for (account in accounts) {
+                account.name = decrypt(key, account.name, 2000)
+                account.user = decrypt(key, account.user, 2000)
+                account.pass = decrypt(key, account.pass, 2000)
+                account.url = decrypt(key, account.url, 2000)
+                account.notes = decrypt(key, account.notes, 2000)
+
+                list.add(account)
+            }
+
+            return list
+        }
+
+        @JvmStatic
         fun stageImports(accounts: List<MutableList<String>>) {
             stagedImportList = accounts
         }

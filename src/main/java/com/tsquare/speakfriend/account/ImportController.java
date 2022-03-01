@@ -7,6 +7,7 @@ import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.state.State;
+import com.tsquare.speakfriend.utils.AccountsComparator;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -19,15 +20,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -38,17 +40,28 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class ImportController extends Controller {
-    @FXML VBox account_list_container;
-    @FXML AnchorPane account_anchor;
-    @FXML ScrollPane account_list_scrollpane;
-    @FXML Text notice_text;
-    @FXML Button import_button;
-    @FXML VBox password_field_container;
-    @FXML Label password_label;
-    @FXML PasswordField password_field;
-    @FXML TextField plain_text_password_field;
-    @FXML ImageView show_password;
-    @FXML HBox password_tooltip_container;
+    @FXML
+    VBox account_list_container;
+    @FXML
+    AnchorPane account_anchor;
+    @FXML
+    ScrollPane account_list_scrollpane;
+    @FXML
+    Text notice_text;
+    @FXML
+    Button import_button;
+    @FXML
+    VBox password_field_container;
+    @FXML
+    Label password_label;
+    @FXML
+    PasswordField password_field;
+    @FXML
+    TextField plain_text_password_field;
+    @FXML
+    ImageView show_password;
+    @FXML
+    HBox password_tooltip_container;
 
     @FXML
     public void initialize() {
@@ -107,30 +120,34 @@ public class ImportController extends Controller {
 
             String contents = stringBuilder.toString();
 
-            List<List<String>> unlocked;
-            List<List<String>> newAccounts = new ArrayList<>();
+            List<com.tsquare.speakfriend.account.Account> unlocked;
+            List<com.tsquare.speakfriend.account.Account> accountObjects = new ArrayList<>();
+            ArrayList<List<String>> stageAccounts = new ArrayList<List<String>>();
             try {
                 JSONParser parser = new JSONParser();
                 JSONObject accountsObject = (JSONObject) parser.parse(contents);
                 JSONArray accountsArray = (JSONArray) accountsObject.get("accounts");
 
                 for (Object o : accountsArray) {
-                    List<String> newAccount = new ArrayList<>();
                     JSONArray newImport = (JSONArray) o;
 
+                    String accountId = (String) newImport.get(0);
                     String accountName = (String) newImport.get(1);
                     String accountUser = (String) newImport.get(2);
                     String accountPass = (String) newImport.get(3);
                     String accountUrl = (String) newImport.get(4);
                     String accountNotes = (String) newImport.get(5);
 
-                    newAccount.add(accountName);
-                    newAccount.add(accountUser);
-                    newAccount.add(accountPass);
-                    newAccount.add(accountUrl);
-                    newAccount.add(accountNotes);
+                    com.tsquare.speakfriend.account.Account account = new com.tsquare.speakfriend.account.Account(
+                        Integer.parseInt(accountId),
+                        accountName,
+                        accountUser,
+                        accountPass,
+                        accountUrl,
+                        accountNotes
+                    );
 
-                    newAccounts.add(newAccount);
+                    accountObjects.add(account);
                 }
 
                 String hash = (String) accountsObject.get("hash");
@@ -138,9 +155,24 @@ public class ImportController extends Controller {
                 String key = Crypt.generateKey(hash, password_field.getText());
 
                 assert key != null;
-                unlocked = AccountList.unlock(newAccounts, key);
+                unlocked = AccountList.unlockAccountObjects(accountObjects, key);
 
-                AccountList.stageImports(unlocked);
+                AccountsComparator<String> comparator = new AccountsComparator<String>();
+                unlocked.sort(comparator);
+
+                for (com.tsquare.speakfriend.account.Account unlockedAccount : unlocked) {
+                    List<String> stageAccount = new ArrayList<>();
+
+                    stageAccount.add(unlockedAccount.getName());
+                    stageAccount.add(unlockedAccount.getUser());
+                    stageAccount.add(unlockedAccount.getPass());
+                    stageAccount.add(unlockedAccount.getUrl());
+                    stageAccount.add(unlockedAccount.getNotes());
+
+                    stageAccounts.add(stageAccount);
+                }
+
+                AccountList.stageImports(stageAccounts);
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -155,7 +187,7 @@ public class ImportController extends Controller {
             int count = 0;
             List<HBox> accountBoxes = new ArrayList<>();
             List<String> accountIds = new ArrayList<>();
-            for (List<String> newAccount : unlocked) {
+            for (List<String> newAccount : stageAccounts) {
                 String accountName = newAccount.get(0);
 
                 HBox accountBox = new HBox();
@@ -198,7 +230,7 @@ public class ImportController extends Controller {
 
             selectAll.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
                 Scene scene = Main.getScene();
-                for (String id: accountIds) {
+                for (String id : accountIds) {
                     CheckBox checkBox = (CheckBox) scene.lookup("#" + id);
                     checkBox.setSelected(newValue);
                 }
@@ -244,8 +276,7 @@ public class ImportController extends Controller {
             public Void call()
                 throws InvalidAlgorithmParameterException, NoSuchPaddingException,
                 IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException,
-                InvalidKeyException
-            {
+                InvalidKeyException {
                 Auth auth = new Auth();
                 String key = auth.getKey();
 
@@ -276,21 +307,21 @@ public class ImportController extends Controller {
                     int existingId = AccountList.getAccountIdByName(accountName);
                     if (existingId == 0) {
                         importAccount.create(
-                                auth.getId(),
-                                encryptedName,
-                                encryptedUser,
-                                encryptedPass,
-                                encryptedUrl,
-                                encryptedNotes
+                            auth.getId(),
+                            encryptedName,
+                            encryptedUser,
+                            encryptedPass,
+                            encryptedUrl,
+                            encryptedNotes
                         );
                     } else {
                         importAccount.update(
-                                existingId,
-                                encryptedName,
-                                encryptedUser,
-                                encryptedPass,
-                                encryptedUrl,
-                                encryptedNotes
+                            existingId,
+                            encryptedName,
+                            encryptedUser,
+                            encryptedPass,
+                            encryptedUrl,
+                            encryptedNotes
                         );
                     }
                 }
@@ -315,4 +346,5 @@ public class ImportController extends Controller {
             plain_text_password_field.setVisible(true);
             password_field.setVisible(false);
         }
-    }}
+    }
+}
