@@ -25,7 +25,7 @@
                         <Font name="Fira Code Light" size="13.0" />
                     </font>
                 </Hyperlink>
-                <TextField fx:id="account_filter_field" onKeyReleased="#setFilteredList" promptText="Filter" GridPane.columnIndex="1">
+                <TextField fx:id="account_filter_field" promptText="Filter" GridPane.columnIndex="1">
                     <GridPane.margin>
                         <Insets right="30.0" />
                     </GridPane.margin>

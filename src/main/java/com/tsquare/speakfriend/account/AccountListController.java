@@ -87,24 +87,23 @@ public class AccountListController extends Controller {
             account_filter_field.setText(State.getAccountSearchString());
             filterAccounts(State.getAccountSearchString());
         }
+
+        account_filter_field.textProperty().addListener((obs, oldText, newText) -> {
+            String filter = account_filter_field.getText().replace(" ", "").toLowerCase();
+            State.setAccountSearchString(filter);
+
+            if(filter.isEmpty()) {
+                toAccounts();
+                return;
+            }
+
+            filterAccounts(filter);
+        });
     }
 
     @FXML
     public void createAccountView() throws IOException {
         newContainerScene("create-account");
-    }
-
-    @FXML
-    private void setFilteredList(KeyEvent event) {
-        String filter = account_filter_field.getText().replace(" ", "").toLowerCase();
-        State.setAccountSearchString(filter);
-
-        if(filter.isEmpty()) {
-            toAccounts();
-            return;
-        }
-
-        filterAccounts(filter);
     }
 
     private void filterAccounts(String filter) {
