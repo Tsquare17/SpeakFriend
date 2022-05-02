@@ -12,4 +12,7 @@ object State {
 
     @JvmStatic
     var exportFileString = ""
+
+    @JvmStatic
+    var accountSearchString = ""
 }

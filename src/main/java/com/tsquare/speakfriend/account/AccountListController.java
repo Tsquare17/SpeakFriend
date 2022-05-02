@@ -82,6 +82,11 @@ public class AccountListController extends Controller {
             account_anchor.setPrefHeight(stage.getHeight() - 60);
         });
         stage.widthProperty().addListener(e -> account_list_scrollpane.setPrefWidth(stage.getWidth()));
+
+        if (!State.getAccountSearchString().equals("")) {
+            account_filter_field.setText(State.getAccountSearchString());
+            filterAccounts(State.getAccountSearchString());
+        }
     }
 
     @FXML
@@ -92,12 +97,17 @@ public class AccountListController extends Controller {
     @FXML
     private void setFilteredList(KeyEvent event) {
         String filter = account_filter_field.getText().replace(" ", "").toLowerCase();
+        State.setAccountSearchString(filter);
 
         if(filter.isEmpty()) {
             toAccounts();
             return;
         }
 
+        filterAccounts(filter);
+    }
+
+    private void filterAccounts(String filter) {
         Levenshtein levenshtein = new Levenshtein();
         ObservableList<Node> listView = account_list.getChildren();
 
@@ -124,16 +134,15 @@ public class AccountListController extends Controller {
                 }
 
                 ((HBox) item).setBackground(
-                        new Background(
-                                new BackgroundFill(accountColor, CornerRadii.EMPTY, Insets.EMPTY)
-                        )
+                    new Background(
+                        new BackgroundFill(accountColor, CornerRadii.EMPTY, Insets.EMPTY)
+                    )
                 );
                 count++;
             } else {
                 item.setVisible(false);
                 item.setManaged(false);
             }
-
         }
     }
 }
