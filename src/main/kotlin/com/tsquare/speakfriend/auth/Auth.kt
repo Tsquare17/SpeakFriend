@@ -33,7 +33,7 @@ class Auth {
     fun checkOut() {
         CurrentUser.clear()
         AccountList.clear()
-        State.isDirtyAccounts = 1
+        State.clear()
     }
 
     fun getId(): Int {

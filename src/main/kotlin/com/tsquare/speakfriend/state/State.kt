@@ -15,4 +15,13 @@ object State {
 
     @JvmStatic
     var accountSearchString = ""
+
+    @JvmStatic
+    fun clear() {
+        isDirtyAccounts = 1
+        loadingMessage = ""
+        selectedAccountId = 0
+        exportFileString = ""
+        accountSearchString = ""
+    }
 }
