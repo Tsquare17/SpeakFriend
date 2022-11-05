@@ -491,3 +491,7 @@
 .menu-item {
     -fx-cursor: hand;
 }
+
+.account-preview-container:hover {
+    -fx-background-color: rgb(50, 56, 62);
+}

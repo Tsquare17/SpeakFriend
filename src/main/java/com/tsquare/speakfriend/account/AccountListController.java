@@ -45,6 +45,7 @@ public class AccountListController extends Controller {
             accountBox.setId(item.getName().replace(" ", "$:$").toLowerCase());
             accountBox.setPadding(new Insets(20, 30, 20, 30));
             accountBox.setCursor(Cursor.HAND);
+            accountBox.getStyleClass().add("account-preview-container");
 
             Color accountColor = Color.rgb(47, 52, 57);
             if (count % 2 != 0) {
