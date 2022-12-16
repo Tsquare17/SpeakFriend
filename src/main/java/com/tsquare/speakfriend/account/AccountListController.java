@@ -6,7 +6,7 @@ import com.tsquare.speakfriend.database.account.AccountList;
 import com.tsquare.speakfriend.main.Controller;
 import com.tsquare.speakfriend.main.Main;
 import com.tsquare.speakfriend.state.State;
-import com.tsquare.speakfriend.utils.LevenshteinComparator;
+import com.tsquare.speakfriend.utils.AccountSearchComparator;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -15,7 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -111,10 +110,10 @@ public class AccountListController extends Controller {
         Levenshtein levenshtein = new Levenshtein();
         ObservableList<Node> listView = account_list.getChildren();
 
-        LevenshteinComparator comparator = new LevenshteinComparator();
+        AccountSearchComparator comparator = new AccountSearchComparator();
         comparator.setCompareTo(filter);
 
-        List<Node> list = new ArrayList<Node>(listView);
+        List<Node> list = new ArrayList<>(listView);
         list.sort(comparator);
         listView.clear();
         listView.addAll(list);
@@ -124,7 +123,14 @@ public class AccountListController extends Controller {
             String accountName = item.getId().replace("$:$", " ");
             float ratio = levenshtein.getRatio(accountName, filter);
 
-            if (ratio > 0.4) {
+            boolean match = accountName.toLowerCase().startsWith(filter);
+            boolean contains = false;
+
+            if (filter.length() > 5) {
+                contains = accountName.contains(filter);
+            }
+
+            if (ratio > 0.4 || match || contains) {
                 item.setVisible(true);
                 item.setManaged(true);
 
