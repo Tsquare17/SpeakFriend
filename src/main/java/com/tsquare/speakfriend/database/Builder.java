@@ -5,9 +5,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Builder {
-    Connection connection = SqliteConnection.getConnection();
+    Connection connection;
 
-    public Builder() throws SQLException {}
+    public Builder(Connection conn) {
+        connection = conn;
+    }
 
     public void createUsersTable() throws SQLException {
         String sql = """
@@ -26,6 +28,8 @@ public class Builder {
         Statement statement = connection.createStatement();
 
         statement.execute(sql);
+
+        statement.close();
     }
 
     public void createAccountsTable() throws SQLException {
@@ -50,11 +54,13 @@ public class Builder {
         Statement statement = connection.createStatement();
 
         statement.execute(sql);
+
+        statement.close();
     }
 
-    public void createSettingsTable() throws SQLException {
+    public void createUserSettingsTable() throws SQLException {
         String sql = """
-            create table settings
+            create table user_settings
             (
                 id      INTEGER
                     primary key autoincrement,
@@ -66,16 +72,18 @@ public class Builder {
                 value   VARCHAR(255) not null
             );
 
-            create unique index settings_option
-                on settings (option);
+            create unique index user_settings_option
+                on user_settings (user_id, option);
 
-            create index settings_user_id
-                on settings (user_id);
+            create index user_settings_user_id
+                on user_settings (user_id);
             """;
 
         Statement statement = connection.createStatement();
 
         statement.execute(sql);
+
+        statement.close();
     }
 
     public void createSystemSettingsTable() throws SQLException {
@@ -87,10 +95,35 @@ public class Builder {
                 option VARCHAR(255) not null,
                 value  VARCHAR(255) not null
             );
+
+            create unique index system_settings_option
+                on system_settings (option);
             """;
 
         Statement statement = connection.createStatement();
 
         statement.execute(sql);
+
+        statement.close();
+    }
+
+    public void renameTable(String tableName, String newName) throws SQLException {
+        String sql = "alter table " + tableName + " rename to " + newName;
+
+        Statement statement = connection.createStatement();
+
+        statement.execute(sql);
+
+        statement.close();
+    }
+
+    public void dropTable(String tableName) throws SQLException {
+        String sql = "drop table " + tableName;
+
+        Statement statement = connection.createStatement();
+
+        statement.execute(sql);
+
+        statement.close();
     }
 }

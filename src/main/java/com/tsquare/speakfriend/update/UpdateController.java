@@ -20,9 +20,9 @@ public class UpdateController {
     private final String upToDateSysVersion = "100";
 
     public void update() {
-        Task<Void> task = new Task<Void>() {
+        Task<Void> task = new Task<>() {
             @Override
-            public Void call() throws SQLException {
+            public Void call() {
                 Auth auth = new Auth();
 
                 String firstSystemRun = SystemSettings.get("first_run");
@@ -46,7 +46,7 @@ public class UpdateController {
                 }
 
                 if (dbVersion < 101) {
-                    UpdateController.changeEncryptionIterations(65536,2000);
+                    UpdateController.changeEncryptionIterations(65536, 2000);
                     Options.put("db_version", "101");
                     dbVersion = 101;
                 }
