@@ -3,6 +3,8 @@ package com.tsquare.speakfriend.utils;
 import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.model.UserSettingsModel;
 import com.tsquare.speakfriend.database.model.UsersModel;
+import com.tsquare.speakfriend.session.AccountListSession;
+import com.tsquare.speakfriend.session.ApplicationSession;
 import com.tsquare.speakfriend.session.UserSession;
 
 import java.sql.ResultSet;
@@ -34,5 +36,16 @@ public class Auth {
         }
 
         return true;
+    }
+
+    public void checkOut() {
+        UserSession userSession = UserSession.getInstance();
+        userSession.clear();
+
+        ApplicationSession applicationSession = ApplicationSession.getInstance();
+        applicationSession.clear();
+
+        AccountListSession accountListSession = AccountListSession.getInstance();
+        accountListSession.clear();
     }
 }

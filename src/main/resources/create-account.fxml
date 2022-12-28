@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="account_container" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.account.CreateAccountController">
+<VBox fx:id="account_container" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.controller.account.CreateAccountController">
    <children>
       <GridPane prefHeight="400.0" prefWidth="600.0" style="-fx-text-fill: black;">
          <columnConstraints>

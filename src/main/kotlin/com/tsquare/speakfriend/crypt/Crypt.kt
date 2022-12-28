@@ -42,9 +42,6 @@ object Crypt
 
     @JvmStatic
     @JvmOverloads
-    @Throws(NoSuchAlgorithmException::class, InvalidAlgorithmParameterException::class,
-        InvalidKeyException::class, InvalidKeySpecException::class,
-        NoSuchPaddingException::class, BadPaddingException::class, IllegalBlockSizeException::class)
     fun decrypt(key: String, subject: String?, iterations: Int = 0): String {
         if(subject === null) {
             return "";

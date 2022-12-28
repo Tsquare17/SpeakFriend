@@ -4,6 +4,7 @@ import com.tsquare.speakfriend.database.connection.SqliteConnection;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.List;
 
 abstract public class Model {
     Connection connection = SqliteConnection.getConnection();
@@ -58,7 +59,35 @@ abstract public class Model {
         return statement.executeQuery();
     }
 
-    protected void insert(HashMap<String, Object> columnValueMap) throws SQLException {
+    protected ResultSet getIn(String column, List<Integer> values) throws SQLException {
+        StringBuilder sql = new StringBuilder("select * from " + getTableName() + " where " + column + " in (");
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        int length = values.size();
+        int counter = 0;
+        for (Integer id : values) {
+            counter++;
+
+            sql.append("?");
+
+            if (counter != length) {
+                sql.append(", ");
+            }
+
+            hashMap.put(id.toString(), id);
+        }
+
+        sql.append(")");
+
+        PreparedStatement statement = initPreparedStatement(
+            connection.prepareStatement(sql.toString()),
+            hashMap
+        );
+
+        return statement.executeQuery();
+    }
+
+    protected int insert(HashMap<String, Object> columnValueMap) throws SQLException {
         StringBuilder sql = new StringBuilder("insert into " + getTableName() + " (");
 
         int counter = 0;
@@ -93,9 +122,11 @@ abstract public class Model {
             columnValueMap
         );
 
-        statement.executeUpdate();
+        int row = statement.executeUpdate();
 
         statement.close();
+
+        return row;
     }
 
     protected void update(

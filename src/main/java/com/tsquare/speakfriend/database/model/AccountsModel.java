@@ -2,6 +2,7 @@ package com.tsquare.speakfriend.database.model;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.List;
 
 public class AccountsModel extends Model {
     public AccountsModel() throws SQLException {}
@@ -10,7 +11,7 @@ public class AccountsModel extends Model {
         return "accounts";
     }
 
-    public void createUserAccount(
+    public int createUserAccount(
         int userId,
         String name,
         String user,
@@ -26,7 +27,7 @@ public class AccountsModel extends Model {
         hashMap.put("url", url);
         hashMap.put("notes", notes);
 
-        insert(hashMap);
+        return insert(hashMap);
     }
 
     public ResultSet getAccounts() throws SQLException {
@@ -34,8 +35,11 @@ public class AccountsModel extends Model {
     }
 
     public ResultSet getAccount(int accountId) throws SQLException {
-
         return get("id", accountId);
+    }
+
+    public ResultSet getAccountsByIds(List<Integer> list) throws SQLException {
+        return getIn("id", list);
     }
 
     public ResultSet getUserAccounts(int userId) throws SQLException {
@@ -50,8 +54,8 @@ public class AccountsModel extends Model {
         return get(columnValueMap);
     }
 
-    public void updateUserAccount(
-        int userId,
+    public void updateAccount(
+        int accountId,
         String name,
         String user,
         String pass,
@@ -66,7 +70,7 @@ public class AccountsModel extends Model {
         updateMap.put("notes", notes);
 
         HashMap<String, Object> whereMap = new HashMap<>();
-        whereMap.put("user_id", userId);
+        whereMap.put("id", accountId);
 
         update(updateMap, whereMap);
     }

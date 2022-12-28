@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="login_container" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.user.LoginController">
+<VBox fx:id="login_container" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.controller.user.LoginController">
     <children>
         <Label fx:id="login_title" alignment="TOP_CENTER" contentDisplay="CENTER" text="Speak friend and enter." textAlignment="CENTER" textFill="#e1e1e1">
             <opaqueInsets>

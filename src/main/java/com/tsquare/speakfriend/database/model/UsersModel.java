@@ -10,7 +10,7 @@ public class UsersModel extends Model {
         return "users";
     }
 
-    public void createUser(
+    public int createUser(
         String name,
         String pass
     ) throws SQLException {
@@ -18,7 +18,7 @@ public class UsersModel extends Model {
         hashMap.put("name", name);
         hashMap.put("pass", pass);
 
-        insert(hashMap);
+        return insert(hashMap);
     }
 
     public void updateUser(int userId, String name) throws SQLException {

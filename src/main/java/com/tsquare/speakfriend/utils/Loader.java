@@ -1,6 +1,6 @@
 package com.tsquare.speakfriend.utils;
 
-import com.tsquare.speakfriend.state.State;
+import com.tsquare.speakfriend.session.ApplicationSession;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -21,6 +21,7 @@ public class Loader {
         rotate.setInterpolator(Interpolator.LINEAR);
         rotate.play();
 
-        notice_text.setText(State.getLoadingMessage());
+        ApplicationSession applicationSession = ApplicationSession.getInstance();
+        notice_text.setText(applicationSession.getLoadingMessage());
     }
 }

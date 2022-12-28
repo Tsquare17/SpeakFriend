@@ -1,6 +1,6 @@
 package com.tsquare.speakfriend.session;
 
-import com.tsquare.speakfriend.entity.UserEntity;
+import com.tsquare.speakfriend.database.entity.UserEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

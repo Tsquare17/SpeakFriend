@@ -1,4 +1,4 @@
-import com.tsquare.speakfriend.database.Builder;
+import com.tsquare.speakfriend.database.schema.Builder;
 import com.tsquare.speakfriend.database.connection.SqliteConnection;
 
 import org.junit.jupiter.api.Assertions;

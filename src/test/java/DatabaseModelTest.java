@@ -9,6 +9,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Order(2)
@@ -99,11 +101,30 @@ public class DatabaseModelTest {
 
     @Test
     @Order(7)
+    void canGetAccountsByIds() throws SQLException {
+        AccountsModel accountsModel = new AccountsModel();
+
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+
+        ResultSet resultSet = accountsModel.getAccountsByIds(list);
+
+        int counter = 0;
+        while(resultSet.next()) {
+            counter++;
+        }
+
+        Assertions.assertEquals(2, counter);
+    }
+
+    @Test
+    @Order(7)
     void canUpdateAccounts() throws SQLException {
         AccountsModel accountsModel = new AccountsModel();
-        accountsModel.updateUserAccount(1, "new", "user", "pass", "url", "notes");
+        accountsModel.updateAccount(1, "new", "user", "pass", "url", "notes");
 
-        ResultSet resultSet = accountsModel.getUserAccountByName(1, "new");
+        ResultSet resultSet = accountsModel.getAccount(1);
 
         Assertions.assertEquals("new", resultSet.getString("name"));
     }
