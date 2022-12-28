@@ -9,7 +9,7 @@
     <version>0.7.0</version>
 
     <properties>
-        <main.class>com.tsquare.speakfriend.main.Loader</main.class>
+        <main.class>com.tsquare.speakfriend.controller.main.Loader</main.class>
         <java.major.version>17</java.major.version>
         <javafx.version>17.0.2-ea+2</javafx.version>
         <maven.compiler.source>${java.major.version}</maven.compiler.source>
@@ -87,19 +87,6 @@
                     <mainClass>${main.class}</mainClass>
                 </configuration>
             </plugin>
-
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <version>2.22.2</version>-->
-<!--                <dependencies>-->
-<!--                    <dependency>-->
-<!--                        <groupId>org.junit.jupiter</groupId>-->
-<!--                        <artifactId>junit-jupiter-engine</artifactId>-->
-<!--                        <version>5.9.1</version>-->
-<!--                    </dependency>-->
-<!--                </dependencies>-->
-<!--            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -228,13 +215,6 @@
             <groupId>com.trevor-thompson</groupId>
             <artifactId>levenshtein</artifactId>
             <version>1.1.0</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M5</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
