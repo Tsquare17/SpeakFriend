@@ -1,10 +1,10 @@
 package com.tsquare.speakfriend.session;
 
-import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.entity.AccountPreviewEntity;
 import com.tsquare.speakfriend.database.model.AccountsModel;
 import com.tsquare.speakfriend.database.entity.AccountEntity;
 import com.tsquare.speakfriend.utils.AccountPreviewComparator;
+import com.tsquare.speakfriend.utils.Crypt;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -79,6 +79,7 @@ public final class AccountListSession {
 
         UserSession userSession = UserSession.getInstance();
         String key = userSession.getKey();
+        Crypt crypt = new Crypt();
 
         try {
             AccountsModel accountsModel = new AccountsModel();
@@ -87,7 +88,7 @@ public final class AccountListSession {
             while(resultSet.next()) {
                 AccountPreviewEntity accountPreview = new AccountPreviewEntity(resultSet);
 
-                String accountName = Crypt.decrypt(key, accountPreview.getName());
+                String accountName = crypt.decrypt(key, accountPreview.getName());
 
                 accountPreview.setName(accountName);
 
@@ -96,8 +97,7 @@ public final class AccountListSession {
 
             // Sort the list of accounts by name.
             previewList.sort(new AccountPreviewComparator<String>());
-        } catch (
-            SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -109,6 +109,7 @@ public final class AccountListSession {
     public ArrayList<List<String>> getDecryptedAccounts(List<Integer> list) throws SQLException {
         UserSession userSession = UserSession.getInstance();
         String key = userSession.getKey();
+        Crypt crypt = new Crypt();
 
         AccountsModel accountsModel = new AccountsModel();
         ResultSet resultSet;
@@ -120,12 +121,23 @@ public final class AccountListSession {
 
         ArrayList<List<String>> accountList = new ArrayList<>();
         while(resultSet.next()) {
-            String accountId = resultSet.getString("id");
-            String accountName = Crypt.decrypt(key, resultSet.getString("name"));
-            String accountUser = Crypt.decrypt(key, resultSet.getString("user"));
-            String accountPass = Crypt.decrypt(key, resultSet.getString("pass"));
-            String accountUrl = Crypt.decrypt(key, resultSet.getString("url"));
-            String accountNotes = Crypt.decrypt(key, resultSet.getString("notes"));
+            String accountId = null;
+            String accountName = null;
+            String accountUser = null;
+            String accountPass = null;
+            String accountUrl = null;
+            String accountNotes = null;
+
+            try {
+                accountId = resultSet.getString("id");
+                accountName = crypt.decrypt(key, resultSet.getString("name"));
+                accountUser = crypt.decrypt(key, resultSet.getString("user"));
+                accountPass = crypt.decrypt(key, resultSet.getString("pass"));
+                accountUrl = crypt.decrypt(key, resultSet.getString("url"));
+                accountNotes = crypt.decrypt(key, resultSet.getString("notes"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             List<String> addAccount = new ArrayList<>();
             addAccount.add(accountId);
@@ -143,6 +155,7 @@ public final class AccountListSession {
 
     public ArrayList<List<String>> lock(ArrayList<List<String>> accounts, String key) {
         ArrayList<List<String>> list = new ArrayList<List<String>>();
+        Crypt crypt = new Crypt();
         for (List<String> account : accounts) {
             List<String> accountFields = new ArrayList<>();
 
@@ -152,7 +165,7 @@ public final class AccountListSession {
                 } else {
                     try {
                         accountFields.add(
-                            Crypt.encrypt(key, account.get(i), 2000)
+                            crypt.encrypt(key, account.get(i), 2000)
                         );
                     } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException | InvalidKeySpecException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
                         e.printStackTrace();
@@ -168,24 +181,29 @@ public final class AccountListSession {
 
      public List<AccountEntity> unlockAccountObjects(List<AccountEntity> accounts, String key) {
         ArrayList<AccountEntity> list = new ArrayList<>();
+        Crypt crypt = new Crypt();
         for (AccountEntity account : accounts) {
 
-            String name = Crypt.decrypt(key, account.getName(), 2000);
-            String user = Crypt.decrypt(key, account.getUser(), 2000);
-            String pass = Crypt.decrypt(key, account.getPass(), 2000);
-            String url = Crypt.decrypt(key, account.getUrl(), 2000);
-            String notes = Crypt.decrypt(key, account.getNotes(), 2000);
+            try {
+                String name = crypt.decrypt(key, account.getName(), 2000);
+                String user = crypt.decrypt(key, account.getUser(), 2000);
+                String pass = crypt.decrypt(key, account.getPass(), 2000);
+                String url = crypt.decrypt(key, account.getUrl(), 2000);
+                String notes = crypt.decrypt(key, account.getNotes(), 2000);
 
-            AccountEntity addAccount = new AccountEntity(
-                account.getId(),
-                name,
-                user,
-                pass,
-                url,
-                notes
-            );
+                AccountEntity addAccount = new AccountEntity(
+                    account.getId(),
+                    name,
+                    user,
+                    pass,
+                    url,
+                    notes
+                );
 
-            list.add(addAccount);
+                list.add(addAccount);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return list;

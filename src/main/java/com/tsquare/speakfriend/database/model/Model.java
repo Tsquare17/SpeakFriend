@@ -1,6 +1,7 @@
 package com.tsquare.speakfriend.database.model;
 
 import com.tsquare.speakfriend.database.connection.SqliteConnection;
+import org.sqlite.SQLiteConnection;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -8,6 +9,10 @@ import java.util.List;
 
 abstract public class Model {
     Connection connection = SqliteConnection.getConnection();
+
+    Statement statement = null;
+
+    PreparedStatement preparedStatement = null;
 
     public Model() throws SQLException {}
 
@@ -17,10 +22,40 @@ abstract public class Model {
         return connection;
     }
 
+    public void close() throws SQLException {
+        if (statement != null && !statement.isClosed()) {
+            statement.close();
+        }
+
+        if (preparedStatement != null && !preparedStatement.isClosed()) {
+            preparedStatement.close();
+        }
+
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
+    }
+
+    public void reset() throws SQLException {
+        if (statement != null && !statement.isClosed()) {
+            statement.close();
+        }
+
+        if (preparedStatement != null && !preparedStatement.isClosed()) {
+            preparedStatement.close();
+        }
+
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+
+            connection = SqliteConnection.getConnection();
+        }
+    }
+
     protected ResultSet get() throws SQLException {
         String sql = "select * from " + getTableName();
 
-        Statement statement = connection.createStatement();
+        statement = connection.createStatement();
 
         return statement.executeQuery(sql);
     }
@@ -28,21 +63,21 @@ abstract public class Model {
     protected ResultSet get(String column, String value) throws SQLException {
         String sql = "select * from " + getTableName() + " where " + column + " = ?";
 
-        PreparedStatement statement = connection.prepareStatement(sql);
+        preparedStatement = connection.prepareStatement(sql);
 
-        statement.setString(1, value);
+        preparedStatement.setString(1, value);
 
-        return statement.executeQuery();
+        return preparedStatement.executeQuery();
     };
 
     protected ResultSet get(String column, int value) throws SQLException {
         String sql = "select * from " + getTableName() + " where " + column + " = ?";
 
-        PreparedStatement statement = connection.prepareStatement(sql);
+        preparedStatement = connection.prepareStatement(sql);
 
-        statement.setInt(1, value);
+        preparedStatement.setInt(1, value);
 
-        return statement.executeQuery();
+        return preparedStatement.executeQuery();
     };
 
     protected ResultSet get(HashMap<String, Object> columnValueMap) throws SQLException {
@@ -51,12 +86,12 @@ abstract public class Model {
             sql.append("and ").append(entry.getKey()).append(" = ? ");
         }
 
-        PreparedStatement statement = initPreparedStatement(
+        preparedStatement = initPreparedStatement(
             connection.prepareStatement(sql.toString()),
             columnValueMap
         );
 
-        return statement.executeQuery();
+        return Model.this.preparedStatement.executeQuery();
     }
 
     protected ResultSet getIn(String column, List<Integer> values) throws SQLException {
@@ -79,12 +114,12 @@ abstract public class Model {
 
         sql.append(")");
 
-        PreparedStatement statement = initPreparedStatement(
+        preparedStatement = initPreparedStatement(
             connection.prepareStatement(sql.toString()),
             hashMap
         );
 
-        return statement.executeQuery();
+        return preparedStatement.executeQuery();
     }
 
     protected int insert(HashMap<String, Object> columnValueMap) throws SQLException {
@@ -117,16 +152,12 @@ abstract public class Model {
 
         sql.append(")");
 
-        PreparedStatement statement = initPreparedStatement(
+        preparedStatement = initPreparedStatement(
             connection.prepareStatement(sql.toString()),
             columnValueMap
         );
 
-        int row = statement.executeUpdate();
-
-        statement.close();
-
-        return row;
+        return preparedStatement.executeUpdate();
     }
 
     protected void update(
@@ -161,27 +192,23 @@ abstract public class Model {
             }
         }
 
-        PreparedStatement statement = initUpdateStatement(
+        preparedStatement = initUpdateStatement(
             connection.prepareStatement(sql.toString()),
             updateColumnValueMap,
             whereColumnValueMap
         );
 
-        statement.executeUpdate();
-
-        statement.close();
+        preparedStatement.executeUpdate();
     }
 
     protected void delete(int id) throws SQLException {
         String sql = "delete from " + getTableName() + " where id = ?";
 
-        PreparedStatement statement = connection.prepareStatement(sql);
+        preparedStatement = connection.prepareStatement(sql);
 
-        statement.setInt(1, id);
+        preparedStatement.setInt(1, id);
 
-        statement.executeUpdate();
-
-        statement.close();;
+        preparedStatement.executeUpdate();
     }
 
     protected void delete(HashMap<String, Object> columnValueMap) throws SQLException {
@@ -201,14 +228,12 @@ abstract public class Model {
             }
         }
 
-        PreparedStatement statement = initPreparedStatement(
+        preparedStatement = initPreparedStatement(
             connection.prepareStatement(sql.toString()),
             columnValueMap
         );
 
-        statement.executeUpdate();
-
-        statement.close();
+        preparedStatement.executeUpdate();
     }
 
     private PreparedStatement initPreparedStatement(

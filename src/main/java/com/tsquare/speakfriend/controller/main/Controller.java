@@ -1,8 +1,7 @@
 package com.tsquare.speakfriend.controller.main;
 
-import com.tsquare.speakfriend.crypt.Crypt;
-
 import com.tsquare.speakfriend.session.UserSession;
+import com.tsquare.speakfriend.utils.Crypt;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -136,7 +135,8 @@ public abstract class Controller {
     protected String getEncryptedText(String key, TextField field) {
         if(!field.getText().isEmpty()) {
             try {
-                return Crypt.encrypt(key, field.getText());
+                Crypt crypt = new Crypt();
+                return crypt.encrypt(key, field.getText());
             } catch(Exception ignored) {}
         }
         return "";
@@ -148,7 +148,8 @@ public abstract class Controller {
 
         String decrypted = "";
         try {
-            decrypted = Crypt.decrypt(key, encrypted);
+            Crypt crypt = new Crypt();
+            decrypted = crypt.decrypt(key, encrypted);
         } catch (Exception ignore) {}
 
         return decrypted;

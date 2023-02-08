@@ -10,13 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Schema {
-    Connection connection = SqliteConnection.getConnection();
-
     private final List<String> tables = new ArrayList<>();
 
-    public Schema() throws SQLException {}
-
     public void up() throws SQLException {
+        Connection connection = SqliteConnection.getConnection();
+
         DatabaseMetaData databaseMetaData = connection.getMetaData();
 
         ResultSet resultSet = databaseMetaData.getTables(null, null, null, new String[] {"TABLE"});
@@ -27,8 +25,10 @@ public class Schema {
             tables.add(name);
         }
 
-        Connection connection = SqliteConnection.getConnection();
-        Builder builder = new Builder(connection);
+        resultSet.close();
+        connection.close();
+
+        Builder builder = new Builder();
 
         if (!tables.contains("users")) {
             builder.createUsersTable();
@@ -45,5 +45,7 @@ public class Schema {
         if (!tables.contains("user_settings")) {
             builder.createUserSettingsTable();
         }
+
+        builder.close();
     }
 }

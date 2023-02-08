@@ -1,11 +1,11 @@
 package com.tsquare.speakfriend.controller.account;
 
-import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.entity.AccountEntity;
 import com.tsquare.speakfriend.database.model.AccountsModel;
 import com.tsquare.speakfriend.controller.main.Main;
 import com.tsquare.speakfriend.session.ApplicationSession;
 import com.tsquare.speakfriend.session.UserSession;
+import com.tsquare.speakfriend.utils.Crypt;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -94,17 +94,19 @@ public class AccountDetailsController extends AccountController {
 
         UserSession userSession = UserSession.getInstance();
         String key = userSession.getKey();
+        Crypt crypt = new Crypt();
 
         try {
-            encryptedName = Crypt.encrypt(key, accountName);
-            encryptedUser = Crypt.encrypt(key, accountUser);
-            encryptedPass = Crypt.encrypt(key, accountPass);
-            encryptedUrl = Crypt.encrypt(key, accountUrl);
-            encryptedNotes = Crypt.encrypt(key, accountNotes);
+            encryptedName = crypt.encrypt(key, accountName);
+            encryptedUser = crypt.encrypt(key, accountUser);
+            encryptedPass = crypt.encrypt(key, accountPass);
+            encryptedUrl = crypt.encrypt(key, accountUrl);
+            encryptedNotes = crypt.encrypt(key, accountNotes);
         } catch (Exception ignored) {}
 
         AccountsModel accountsModel = new AccountsModel();
         accountsModel.updateAccount(accountId, encryptedName, encryptedUser, encryptedPass, encryptedUrl, encryptedNotes);
+        accountsModel.close();
 
         newContainerScene("account-details");
     }
@@ -143,6 +145,7 @@ public class AccountDetailsController extends AccountController {
 
         AccountsModel accountsModel = new AccountsModel();
         accountsModel.deleteAccount(accountId);
+        accountsModel.close();
 
         newContainerScene("account-list");
     }

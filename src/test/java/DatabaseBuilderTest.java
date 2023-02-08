@@ -2,6 +2,7 @@ import com.tsquare.speakfriend.database.schema.Builder;
 import com.tsquare.speakfriend.database.connection.SqliteConnection;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
@@ -9,37 +10,38 @@ import java.sql.*;
 
 @Order(1)
 public class DatabaseBuilderTest {
+    @BeforeAll
+    static void setup() {
+        TestSuite.setup();
+    }
+
     @Test
     void canBuildUsersTable() throws SQLException {
-        Connection connection = SqliteConnection.getConnection(true);
-        Builder builder = new Builder(connection);
+        Builder builder = new Builder();
         builder.createUsersTable();
     }
 
     @Test
     void canBuildAccountsTable() throws SQLException {
-        Connection connection = SqliteConnection.getConnection(true);
-        Builder builder = new Builder(connection);
+        Builder builder = new Builder();
         builder.createAccountsTable();
     }
 
     @Test
     void canBuildUserSettingsTable() throws SQLException {
-        Connection connection = SqliteConnection.getConnection(true);
-        Builder builder = new Builder(connection);
+        Builder builder = new Builder();
         builder.createUserSettingsTable();
     }
 
     @Test
     void canCreateSystemSettingsTable() throws SQLException {
-        Connection connection = SqliteConnection.getConnection(true);
-        Builder builder = new Builder(connection);
+        Builder builder = new Builder();
         builder.createSystemSettingsTable();
     }
 
     @Test
     void canRenameAndDropTables() throws SQLException {
-        Connection connection = SqliteConnection.getConnection(true);
+        Connection connection = SqliteConnection.getConnection();
 
         String sql = """
             create table test_table
@@ -55,7 +57,7 @@ public class DatabaseBuilderTest {
 
         statement.close();
 
-        Builder builder = new Builder(connection);
+        Builder builder = new Builder();
         builder.renameTable("test_table", "renamed");
 
         DatabaseMetaData metaData = connection.getMetaData();
@@ -67,5 +69,6 @@ public class DatabaseBuilderTest {
         resultSet.close();
 
         builder.dropTable("renamed");
+        builder.close();
     }
 }

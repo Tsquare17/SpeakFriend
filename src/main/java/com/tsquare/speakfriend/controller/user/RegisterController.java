@@ -1,8 +1,8 @@
 package com.tsquare.speakfriend.controller.user;
 
-import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.model.UsersModel;
 import com.tsquare.speakfriend.controller.main.Controller;
+import com.tsquare.speakfriend.utils.Crypt;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -37,8 +37,8 @@ public class RegisterController extends Controller {
         } else if(!password.getText().equals(confirm_password.getText())) {
             notice_text.setText("The password you entered doesn't match the confirmation.");
         } else {
-            String hashedPass = Crypt.generatePassword(password.getText());
-            assert hashedPass != null;
+            Crypt crypt = new Crypt();
+            String hashedPass = crypt.generatePassword(password.getText());
 
             UsersModel usersModel = new UsersModel();
 

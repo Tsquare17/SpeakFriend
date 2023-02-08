@@ -130,8 +130,15 @@ public class Main extends Application {
     public static String getSemanticVersion() throws SQLException {
         SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
         ResultSet resultSet = systemSettingsModel.getSystemSetting("version");
-        String systemVersionString = resultSet.getString("value");
-        if (systemVersionString.equals("")) {
+        String systemVersionString = null;
+        if (resultSet.next()) {
+            systemVersionString = resultSet.getString("value");
+        }
+
+        resultSet.close();
+        systemSettingsModel.close();
+
+        if (systemVersionString == null) {
             return "0.1.0";
         }
 
@@ -144,6 +151,10 @@ public class Main extends Application {
         SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
         ResultSet resultSet = systemSettingsModel.getSystemSetting("version");
         String systemVersionString = resultSet.getString("value");
+
+        resultSet.close();
+        systemSettingsModel.close();
+
         if (systemVersionString.equals("")) {
             return "0";
         }

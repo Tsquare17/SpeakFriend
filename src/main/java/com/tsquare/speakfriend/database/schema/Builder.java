@@ -1,14 +1,24 @@
 package com.tsquare.speakfriend.database.schema;
 
+import com.tsquare.speakfriend.database.connection.SqliteConnection;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Builder {
-    Connection connection;
+    Connection connection = SqliteConnection.getConnection();
 
-    public Builder(Connection conn) {
-        connection = conn;
+    public Builder() throws SQLException {}
+
+    public void close() throws SQLException {
+        connection.close();
+    }
+
+    public void reset() throws SQLException {
+        connection.close();
+
+        connection = SqliteConnection.getConnection();
     }
 
     public void createUsersTable() throws SQLException {

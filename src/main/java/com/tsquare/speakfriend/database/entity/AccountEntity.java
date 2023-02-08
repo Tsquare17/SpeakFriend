@@ -1,6 +1,6 @@
 package com.tsquare.speakfriend.database.entity;
 
-import com.tsquare.speakfriend.crypt.Crypt;
+import com.tsquare.speakfriend.utils.Crypt;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -30,11 +30,12 @@ public class AccountEntity extends Entity {
     public void decrypt(String key) throws InvalidAlgorithmParameterException, NoSuchPaddingException,
         IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException,
         InvalidKeyException {
+        Crypt crypt = new Crypt();
         for (Map.Entry<String, Object> column : props.entrySet()) {
             if (column.getValue() instanceof String) {
                 props.replace(
                     column.getKey(),
-                    Crypt.decrypt(key, (String) column.getValue())
+                    crypt.decrypt(key, (String) column.getValue())
                 );
             }
         }

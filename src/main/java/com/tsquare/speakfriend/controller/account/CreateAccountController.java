@@ -48,6 +48,7 @@ public class CreateAccountController extends AccountController {
 
         AccountsModel accountsModel = new AccountsModel();
         int row = accountsModel.createUserAccount(id, accountName, accountUser, accountPass, accountUrl, accountNotes);
+        accountsModel.close();
 
         ApplicationSession applicationSession = ApplicationSession.getInstance();
         applicationSession.setSelectedAccountId(row);

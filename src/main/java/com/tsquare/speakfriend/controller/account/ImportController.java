@@ -1,6 +1,5 @@
 package com.tsquare.speakfriend.controller.account;
 
-import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.entity.AccountEntity;
 import com.tsquare.speakfriend.database.model.AccountsModel;
 import com.tsquare.speakfriend.controller.main.Controller;
@@ -9,6 +8,7 @@ import com.tsquare.speakfriend.session.AccountListSession;
 import com.tsquare.speakfriend.session.ApplicationSession;
 import com.tsquare.speakfriend.session.UserSession;
 import com.tsquare.speakfriend.utils.AccountsComparator;
+import com.tsquare.speakfriend.utils.Crypt;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -129,6 +129,7 @@ public class ImportController extends Controller {
                 JSONParser parser = new JSONParser();
                 JSONObject accountsObject = (JSONObject) parser.parse(contents);
                 JSONArray accountsArray = (JSONArray) accountsObject.get("accounts");
+                Crypt crypt = new Crypt();
 
                 for (Object o : accountsArray) {
                     JSONArray newImport = (JSONArray) o;
@@ -154,7 +155,7 @@ public class ImportController extends Controller {
 
                 String hash = (String) accountsObject.get("hash");
                 assert hash != null;
-                String key = Crypt.generateKey(hash, password_field.getText());
+                String key = crypt.generateKey(hash, password_field.getText());
 
                 assert key != null;
                 AccountListSession accountListSession = AccountListSession.getInstance();
@@ -288,6 +289,7 @@ public class ImportController extends Controller {
                 List<List<String>> accountList = accountListSession.getStagedImports();
                 int counter = 0;
                 AccountsModel accountsModel = new AccountsModel();
+                Crypt crypt = new Crypt();
                 for (List<String> account : accountList) {
                     String accountName = account.get(0);
                     String accountUser = account.get(1);
@@ -303,13 +305,11 @@ public class ImportController extends Controller {
                         continue;
                     }
 
-                    String encryptedName = Crypt.encrypt(key, accountName);
-                    String encryptedUser = Crypt.encrypt(key, accountUser);
-                    String encryptedPass = Crypt.encrypt(key, accountPass);
-                    String encryptedUrl = Crypt.encrypt(key, accountUrl);
-                    String encryptedNotes = Crypt.encrypt(key, accountNotes);
-
-                    AccountEntity importAccount;
+                    String encryptedName = crypt.encrypt(key, accountName);
+                    String encryptedUser = crypt.encrypt(key, accountUser);
+                    String encryptedPass = crypt.encrypt(key, accountPass);
+                    String encryptedUrl = crypt.encrypt(key, accountUrl);
+                    String encryptedNotes = crypt.encrypt(key, accountNotes);
 
                     ResultSet resultSet = accountsModel.getUserAccountByName(
                         userSession.getId(),
@@ -340,7 +340,11 @@ public class ImportController extends Controller {
                             encryptedNotes
                         );
                     }
+
+                    resultSet.close();
                 }
+
+                accountsModel.close();
 
                 return null;
             }

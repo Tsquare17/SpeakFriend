@@ -25,6 +25,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -53,7 +55,7 @@ public class LoginController extends Controller {
     }
 
     @FXML
-    protected void loginAction() throws IOException, SQLException {
+    protected void loginAction() throws IOException, SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         Auth auth = new Auth();
         if(auth.checkIn(username.getText().trim(), password.getText())) {
             login_grid.setVisible(false);
@@ -123,7 +125,7 @@ public class LoginController extends Controller {
     }
 
     @FXML
-    protected void loginEnterKeyAction(KeyEvent event) throws IOException, SQLException {
+    protected void loginEnterKeyAction(KeyEvent event) throws IOException, SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         if(event.getCode().equals(KeyCode.ENTER)) {
             this.loginAction();
         }

@@ -27,6 +27,9 @@ public class SettingsController extends Controller {
 
         String durationSetting = resultSet.getString("value");
 
+        resultSet.close();
+        userSettingsModel.close();
+
         String duration = switch (durationSetting) {
             case "5" -> "5 minutes";
             case "10" -> "10 minutes";
@@ -62,6 +65,8 @@ public class SettingsController extends Controller {
             "auto_logout_time",
             durationSetting
         );
+
+        userSettingsModel.close();
 
         int duration = Integer.parseInt(durationSetting);
         Main.setNewTimer(duration);

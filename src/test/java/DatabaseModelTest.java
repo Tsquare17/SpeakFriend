@@ -1,8 +1,8 @@
-import com.tsquare.speakfriend.crypt.Crypt;
 import com.tsquare.speakfriend.database.model.AccountsModel;
 import com.tsquare.speakfriend.database.model.SystemSettingsModel;
 import com.tsquare.speakfriend.database.model.UserSettingsModel;
 import com.tsquare.speakfriend.database.model.UsersModel;
+import com.tsquare.speakfriend.utils.Crypt;
 import org.junit.jupiter.api.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -19,8 +19,10 @@ public class DatabaseModelTest {
     @Order(1)
     void canCreateUsers() throws SQLException, NoSuchAlgorithmException, InvalidKeySpecException {
         UsersModel usersModel = new UsersModel();
-        String hashedPass = Crypt.generatePassword("pass");
+        Crypt crypt = new Crypt();
+        String hashedPass = crypt.generatePassword("pass");
         usersModel.createUser("test-name", hashedPass);
+        usersModel.close();
     }
 
     @Test
@@ -34,7 +36,10 @@ public class DatabaseModelTest {
 
         resultSet.close();
 
-        String hashedPass = Crypt.generatePassword("pass");
+        usersModel.reset();
+
+        Crypt crypt = new Crypt();
+        String hashedPass = crypt.generatePassword("pass");
         usersModel.createUser("test", hashedPass);
 
         ResultSet resultSet1 = usersModel.getUsers();
@@ -43,6 +48,9 @@ public class DatabaseModelTest {
         while(resultSet1.next()) {
             count++;
         }
+
+        resultSet1.close();
+        usersModel.close();
 
         Assertions.assertEquals(2, count);
     }
@@ -56,6 +64,10 @@ public class DatabaseModelTest {
         ResultSet resultSet = usersModel.getUser(1);
 
         Assertions.assertEquals("new", resultSet.getString("name"));
+
+        resultSet.close();
+
+        usersModel.close();
     }
 
     @Test
@@ -67,6 +79,9 @@ public class DatabaseModelTest {
         ResultSet resultSet = usersModel.getUser(2);
 
         Assertions.assertFalse(resultSet.next());
+
+        resultSet.close();
+        usersModel.close();
     }
 
     @Test
@@ -74,6 +89,7 @@ public class DatabaseModelTest {
     void canCreateAccounts() throws SQLException {
         AccountsModel accountsModel = new AccountsModel();
         accountsModel.createUserAccount(1, "test-name", "user", "pass", "url", "notes");
+        accountsModel.close();
     }
 
     @Test
@@ -86,6 +102,7 @@ public class DatabaseModelTest {
         Assertions.assertEquals("test-name", resultSet.getString("name"));
 
         resultSet.close();
+        accountsModel.reset();
 
         accountsModel.createUserAccount(1, "test", "user", "pass", "url", "notes");
 
@@ -95,6 +112,9 @@ public class DatabaseModelTest {
         while(resultSet1.next()) {
             count++;
         }
+
+        resultSet1.close();
+        accountsModel.close();
 
         Assertions.assertEquals(2, count);
     }
@@ -115,6 +135,9 @@ public class DatabaseModelTest {
             counter++;
         }
 
+        resultSet.close();
+        accountsModel.close();
+
         Assertions.assertEquals(2, counter);
     }
 
@@ -127,6 +150,9 @@ public class DatabaseModelTest {
         ResultSet resultSet = accountsModel.getAccount(1);
 
         Assertions.assertEquals("new", resultSet.getString("name"));
+
+        resultSet.close();
+        accountsModel.close();
     }
 
     @Test
@@ -138,6 +164,9 @@ public class DatabaseModelTest {
         ResultSet resultSet = accountsModel.getAccount(2);
 
         Assertions.assertFalse(resultSet.next());
+
+        resultSet.close();
+        accountsModel.close();
     }
 
     @Test
@@ -145,6 +174,7 @@ public class DatabaseModelTest {
     void canCreateUserSettings() throws SQLException {
         UserSettingsModel userSettingsModel = new UserSettingsModel();
         userSettingsModel.createUserSetting(1, "option", "test");
+        userSettingsModel.close();
     }
 
     @Test
@@ -155,6 +185,9 @@ public class DatabaseModelTest {
         ResultSet resultSet = userSettingsModel.getUserSetting(1, "option");
 
         Assertions.assertEquals("test", resultSet.getString("value"));
+
+        resultSet.close();
+        userSettingsModel.close();
     }
 
     @Test
@@ -167,6 +200,9 @@ public class DatabaseModelTest {
         ResultSet resultSet = userSettingsModel.getUserSetting(1, "option");
 
         Assertions.assertEquals("new", resultSet.getString("value"));
+
+        resultSet.close();
+        userSettingsModel.close();
     }
 
     @Test
@@ -178,6 +214,9 @@ public class DatabaseModelTest {
         ResultSet resultSet = userSettingsModel.getUserSetting(1, "option");
 
         Assertions.assertFalse(resultSet.next());
+
+        resultSet.close();
+        userSettingsModel.close();
     }
 
     @Test
@@ -185,6 +224,7 @@ public class DatabaseModelTest {
     void canCreateSystemSettings() throws SQLException {
         SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
         systemSettingsModel.createSystemSetting("option", "test");
+        systemSettingsModel.close();
     }
 
     @Test
@@ -195,6 +235,9 @@ public class DatabaseModelTest {
         ResultSet resultSet = systemSettingsModel.getSystemSetting("option");
 
         Assertions.assertEquals("test", resultSet.getString("value"));
+
+        resultSet.close();
+        systemSettingsModel.close();
     }
 
     @Test
@@ -207,6 +250,9 @@ public class DatabaseModelTest {
         ResultSet resultSet = systemSettingsModel.getSystemSetting("option");
 
         Assertions.assertEquals("new", resultSet.getString("value"));
+
+        resultSet.close();
+        systemSettingsModel.close();
     }
 
     @Test
@@ -218,5 +264,8 @@ public class DatabaseModelTest {
         ResultSet resultSet = systemSettingsModel.getSystemSetting("option");
 
         Assertions.assertFalse(resultSet.next());
+
+        resultSet.close();
+        systemSettingsModel.close();
     }
 }

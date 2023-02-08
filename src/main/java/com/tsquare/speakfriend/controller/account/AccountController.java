@@ -1,7 +1,7 @@
 package com.tsquare.speakfriend.controller.account;
 
-import com.tsquare.speakfriend.crypt.Crypt;
-import com.tsquare.speakfriend.crypt.Password;
+import com.tsquare.speakfriend.utils.Crypt;
+import com.tsquare.speakfriend.utils.Password;
 import com.tsquare.speakfriend.database.entity.AccountEntity;
 import com.tsquare.speakfriend.database.model.AccountsModel;
 import com.tsquare.speakfriend.controller.main.Controller;
@@ -61,9 +61,13 @@ public class AccountController extends Controller {
 
         AccountEntity accountEntity = new AccountEntity(resultSet);
 
+        resultSet.close();
+        accountsModel.close();
+
         String accountNotes = "";
+        Crypt crypt = new Crypt();
         try {
-            accountNotes = Crypt.decrypt(key, accountEntity.getNotes());
+            accountNotes = crypt.decrypt(key, accountEntity.getNotes());
         } catch (Exception ignore) {}
 
         Stage newStage = new Stage();

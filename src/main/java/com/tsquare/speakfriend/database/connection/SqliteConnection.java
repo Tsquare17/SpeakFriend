@@ -7,30 +7,24 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SqliteConnection {
-    private static Connection connection = null;
+    private static String dbName = null;
 
-    public static Connection getConnection() throws SQLException {
-        if (connection == null) {
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            String db = System.getProperty("user.home") + "/.speakfriend/friend.db";
-            String url = "jdbc:sqlite:" + db;
-            connection = DriverManager.getConnection(url, config.toProperties());
-        }
+    public static Connection getConnection(String dbName) throws SQLException {
+        SqliteConnection.dbName = dbName;
+        SQLiteConfig config = new SQLiteConfig();
+        config.enforceForeignKeys(true);
+        String url = "jdbc:sqlite:" + dbName;
 
-        return connection;
+        return DriverManager.getConnection(url, config.toProperties());
     }
 
-    public static Connection getConnection(boolean inMemory) throws SQLException {
-        if (connection == null && inMemory) {
-            SQLiteConfig config = new SQLiteConfig();
-            config.enforceForeignKeys(true);
-            String url = "jdbc:sqlite::memory:";
-            connection = DriverManager.getConnection(url, config.toProperties());
-        } else if (connection == null) {
-            return getConnection();
+    public static Connection getConnection() throws SQLException {
+        if (dbName != null) {
+            return getConnection(dbName);
         }
 
-        return connection;
+        String db = System.getProperty("user.home") + "/.speakfriend/friend.db";
+
+        return getConnection(db);
     }
 }

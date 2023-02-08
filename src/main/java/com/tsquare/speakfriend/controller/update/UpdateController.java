@@ -1,22 +1,25 @@
 package com.tsquare.speakfriend.controller.update;
 
-import com.tsquare.speakfriend.crypt.Crypt;
+import com.tsquare.speakfriend.database.connection.SqliteConnection;
 import com.tsquare.speakfriend.database.entity.AccountEntity;
 import com.tsquare.speakfriend.database.model.AccountsModel;
 import com.tsquare.speakfriend.database.model.SystemSettingsModel;
 import com.tsquare.speakfriend.database.model.UserSettingsModel;
 import com.tsquare.speakfriend.controller.main.Main;
 import com.tsquare.speakfriend.controller.main.Nav;
+import com.tsquare.speakfriend.database.schema.Builder;
 import com.tsquare.speakfriend.session.UserSession;
+import com.tsquare.speakfriend.utils.Crypt;
 import javafx.animation.PauseTransition;
 import javafx.concurrent.Task;
 import javafx.util.Duration;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UpdateController {
-    private final String upToDateDbVersion = "101";
+    private final String upToDateDbVersion = "102";
     private final String upToDateSysVersion = "100";
 
     public void update() {
@@ -25,53 +28,100 @@ public class UpdateController {
             public Void call() throws SQLException {
                 UserSession userSession = UserSession.getInstance();
 
-                SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
-                ResultSet resultSet = systemSettingsModel.getSystemSetting("first_run");
+                UserSettingsModel userSettingsModel = new UserSettingsModel();
+                ResultSet resultSet = userSettingsModel.getUserSetting(userSession.getId(), "db_version");
+                int dbVersion = 0;
+                if (resultSet.next()) {
+                    dbVersion = resultSet.getInt("value");
+                }
 
-                String firstSystemRun = resultSet.getString("value");
-                if (firstSystemRun.equals("")) {
+                resultSet.close();
+                userSettingsModel.close();
+
+                if (dbVersion < 102) {
+                    Builder builder = new Builder();
+                    builder.renameTable("Accounts", "accounts_tmp");
+                    builder.reset();
+
+                    builder.renameTable("accounts_tmp", "accounts");
+                    builder.reset();
+
+                    builder.dropTable("system_settings");
+                    builder.reset();
+
+                    builder.renameTable("SystemSettings", "system_settings");
+                    builder.reset();
+
+                    builder.dropTable("user_settings");
+                    builder.reset();
+
+                    builder.renameTable("Settings", "user_settings");
+                    builder.reset();
+
+                    builder.renameTable("Users", "users_tmp");
+                    builder.reset();
+
+                    builder.renameTable("users_tmp", "users");
+                    builder.close();
+                }
+
+                SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
+                resultSet = systemSettingsModel.getSystemSetting("first_run");
+
+                if (!resultSet.next() || resultSet.getString("value").equals("")) {
                     systemSettingsModel.createSystemSetting("version", upToDateSysVersion);
                     systemSettingsModel.createSystemSetting("first_run", "false");
                 }
 
-                UserSettingsModel userSettingsModel = new UserSettingsModel();
+                resultSet.close();
+                systemSettingsModel.close();
+
                 resultSet = userSettingsModel.getUserSetting(
                     userSession.getId(),
                     "first_run"
                 );
 
-                String firstRun = resultSet.getString("value");
-                if (firstRun.equals("")) {
+                if (!resultSet.next() || resultSet.getString("value").equals("")) {
+                    resultSet.close();
+
                     userSettingsModel.createUserSetting(
                         userSession.getId(),
                         "auto_logout_time",
                         "0"
                     );
+                    userSettingsModel.reset();
+
                     userSettingsModel.createUserSetting(
                         userSession.getId(),
                         "db_version",
                         upToDateDbVersion
                     );
+                    userSettingsModel.reset();
+
                     userSettingsModel.createUserSetting(
                         userSession.getId(),
                         "first_run",
                         "false"
                     );
+                    userSettingsModel.reset();
+                } else {
+                    resultSet.close();
                 }
 
-                resultSet = userSettingsModel.getUserSetting(userSession.getId(), "db_version");
-                int dbVersion = resultSet.getInt("value");
                 if (dbVersion == 0) {
                     userSettingsModel.createUserSetting(
                         userSession.getId(),
                         "db_version",
                         "100"
                     );
+                    userSettingsModel.reset();
+
                     userSettingsModel.createUserSetting(
                         userSession.getId(),
                         "auto_logout_time",
                         "0"
                     );
+                    userSettingsModel.reset();
 
                     dbVersion = 100;
                 }
@@ -83,10 +133,21 @@ public class UpdateController {
                         "db_version",
                         "101"
                     );
+                    userSettingsModel.reset();
+
                     dbVersion = 101;
                 }
 
-                resultSet = systemSettingsModel.getSystemSetting("auto_logout_time");
+                if (dbVersion < 102) {
+                    userSettingsModel.updateUserSetting(
+                        userSession.getId(),
+                        "db_version",
+                        "102"
+                    );
+                    userSettingsModel.reset();
+                }
+
+                resultSet = userSettingsModel.getUserSetting(userSession.getId(), "auto_logout_time");
 
                 String durationSetting = resultSet.getString("value");
                 if (!durationSetting.equals("0") && !durationSetting.isEmpty()) {
@@ -94,6 +155,9 @@ public class UpdateController {
                     Duration delay = Duration.minutes(duration);
                     Main.transition = new PauseTransition(delay);
                 }
+
+                resultSet.close();
+                userSettingsModel.close();
 
                 return null;
             }
@@ -111,23 +175,37 @@ public class UpdateController {
         UserSettingsModel userSettingsModel = new UserSettingsModel();
 
         ResultSet resultSet = userSettingsModel.getUserSetting(userSession.getId(), "db_version");
-        String dbVersion = resultSet.getString("value");
-        if (dbVersion.equals("")) {
+        if (!resultSet.next()) {
+            resultSet.close();
+            userSettingsModel.close();
+
             return true;
         }
+
+        String dbVersion = resultSet.getString("value");
+
+        resultSet.close();
+        userSettingsModel.close();
 
         SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
 
         resultSet = systemSettingsModel.getSystemSetting("version");
-        String systemVersion = resultSet.getString("value");
-        if (systemVersion == null) {
+        if (!resultSet.next()) {
+            resultSet.close();
+            systemSettingsModel.close();
+
             return true;
         }
+
+        String systemVersion = resultSet.getString("value");
+
+        resultSet.close();
+        systemSettingsModel.close();
 
         int version = Integer.parseInt(dbVersion);
         int sysVersion = Integer.parseInt(systemVersion);
 
-        return version < 101 || sysVersion < 100;
+        return version < 102 || sysVersion < 100;
     }
 
     private static void changeEncryptionIterations(int iterationsBefore, int iterationsAfter) throws SQLException {
@@ -149,22 +227,27 @@ public class UpdateController {
             String accountNotes = UpdateController.decrypt(key, account.getNotes(), iterationsBefore);
 
             try {
-                accountName = Crypt.encrypt(key, accountName, iterationsAfter);
-                accountUser = Crypt.encrypt(key, accountUser, iterationsAfter);
-                accountPass = Crypt.encrypt(key, accountPass, iterationsAfter);
-                accountUrl = Crypt.encrypt(key, accountUrl, iterationsAfter);
-                accountNotes = Crypt.encrypt(key, accountNotes, iterationsAfter);
+                Crypt crypt = new Crypt();
+                accountName = crypt.encrypt(key, accountName, iterationsAfter);
+                accountUser = crypt.encrypt(key, accountUser, iterationsAfter);
+                accountPass = crypt.encrypt(key, accountPass, iterationsAfter);
+                accountUrl = crypt.encrypt(key, accountUrl, iterationsAfter);
+                accountNotes = crypt.encrypt(key, accountNotes, iterationsAfter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             accountsModel.updateAccount(accountId, accountName, accountUser, accountPass, accountUrl, accountNotes);
         }
+
+        resultSet.close();
+        accountsModel.close();
     }
 
     private static String decrypt(String key, String string, int iterations) {
         try {
-            string = Crypt.decrypt(key, string, iterations);
+            Crypt crypt = new Crypt();
+            string = crypt.decrypt(key, string, iterations);
         } catch (Exception e) {
             string = "";
         }

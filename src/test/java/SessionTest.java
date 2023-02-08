@@ -40,6 +40,9 @@ public class SessionTest {
 
         Assertions.assertEquals(1, userSession.getId());
         Assertions.assertEquals("new", userSession.getName());
+
+        resultSet.close();
+        usersModel.close();
     }
 
     @Test

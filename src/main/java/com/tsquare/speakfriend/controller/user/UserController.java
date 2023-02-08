@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 
 public class UserController extends Controller {
@@ -17,7 +19,7 @@ public class UserController extends Controller {
     private int clickCount;
 
     @FXML
-    public void deleteUserAction() throws IOException, SQLException {
+    public void deleteUserAction() throws IOException, SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         if(!this.password.getText().equals(this.confirm_password.getText())) {
             this.notice_text.setText("Password mismatch. Please confirm.");
             this.clickCount = 0;
