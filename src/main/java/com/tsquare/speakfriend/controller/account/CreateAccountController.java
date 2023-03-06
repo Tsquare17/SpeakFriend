@@ -53,6 +53,8 @@ public class CreateAccountController extends AccountController {
         ApplicationSession applicationSession = ApplicationSession.getInstance();
         applicationSession.setSelectedAccountId(row);
 
+        applicationSession.setDirtyAccounts(true);
+
         newContainerScene("account-details");
     }
 }

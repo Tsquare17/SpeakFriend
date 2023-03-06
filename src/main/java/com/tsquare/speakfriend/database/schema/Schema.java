@@ -46,6 +46,10 @@ public class Schema {
             builder.createUserSettingsTable();
         }
 
+        if (!tables.contains("account_tags")) {
+            builder.createAccountTagsTables();
+        }
+
         builder.close();
     }
 }

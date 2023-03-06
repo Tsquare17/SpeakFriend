@@ -1,6 +1,5 @@
 package com.tsquare.speakfriend.database.model;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;

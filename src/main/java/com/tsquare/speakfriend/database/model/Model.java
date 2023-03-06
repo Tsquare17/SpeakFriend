@@ -1,7 +1,7 @@
 package com.tsquare.speakfriend.database.model;
 
 import com.tsquare.speakfriend.database.connection.SqliteConnection;
-import org.sqlite.SQLiteConnection;
+import com.tsquare.speakfriend.database.model.relationship.JoinTable;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -94,6 +94,29 @@ abstract public class Model {
         return Model.this.preparedStatement.executeQuery();
     }
 
+    protected ResultSet getJoin(HashMap<String, Object> columnValueMap, List<JoinTable> joinTables) throws SQLException {
+        StringBuilder sql = new StringBuilder("select * from " + getTableName() + " ");
+
+        for (var joinTable : joinTables) {
+            sql.append("left join ").append(joinTable.getTable()).append(" on ").append(getTableName())
+                .append(".").append(joinTable.getKey()).append("=").append(joinTable.getTable())
+                .append(".").append(joinTable.getRelatedKey()).append(" ");
+        }
+
+        sql.append("where 1=1 ");
+
+        for (var entry : columnValueMap.entrySet()) {
+            sql.append("and ").append(entry.getKey()).append(" = ? ");
+        }
+
+        preparedStatement = initPreparedStatement(
+            connection.prepareStatement(sql.toString()),
+            columnValueMap
+        );
+
+        return preparedStatement.executeQuery();
+    }
+
     protected ResultSet getIn(String column, List<Integer> values) throws SQLException {
         StringBuilder sql = new StringBuilder("select * from " + getTableName() + " where " + column + " in (");
 
@@ -157,7 +180,20 @@ abstract public class Model {
             columnValueMap
         );
 
-        return preparedStatement.executeUpdate();
+        int rows = preparedStatement.executeUpdate();
+
+        if (rows == 0) {
+            return 0;
+        }
+
+        int key = 0;
+        try (ResultSet keys = preparedStatement.getGeneratedKeys()) {
+            if (keys.next()) {
+                key = keys.getInt(1);
+            }
+        }
+
+        return key;
     }
 
     protected void update(

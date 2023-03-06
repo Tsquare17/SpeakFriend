@@ -68,6 +68,58 @@ public class Builder {
         statement.close();
     }
 
+    public void createAccountTagsTables() throws SQLException {
+        String sql = """
+            create table if not exists account_tags (\n
+                id       INTEGER\n
+                primary key autoincrement,\n
+                user_id INT not null\n
+                constraint fk_account_tags_user_id\n
+                references users\n
+                on update cascade on delete cascade,\n
+                tag_name     VARCHAR(255)\n
+            );
+
+            create index account_tags_user_id\n
+                on account_tags (user_id);\n
+            """;
+
+        Statement statement = connection.createStatement();
+
+        statement.execute(sql);
+
+        sql = """
+            create table if not exists account_account_tags (\n
+                id INTEGER\n
+                primary key autoincrement,\n
+
+                account_id  INT not null\n
+                constraint fk_account_tags_account_id\n
+                references accounts\n
+                on update cascade on delete cascade,\n
+
+                account_tag_id  INT not null\n
+                constraint fk_account_tags_account_tag_id\n
+                references account_tags\n
+                on update cascade on delete cascade\n
+            );
+
+            create index account_tags_account_id\n
+                on account_account_tags (account_id);\n
+
+            create index account_tags_tag_id\n
+                on account_account_tags (account_tag_id);\n
+            """;
+
+        statement.close();
+
+        statement = connection.createStatement();
+
+        statement.execute(sql);
+
+        statement.close();
+    }
+
     public void createUserSettingsTable() throws SQLException {
         String sql = """
             create table if not exists user_settings

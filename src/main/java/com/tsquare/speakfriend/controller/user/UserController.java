@@ -45,6 +45,7 @@ public class UserController extends Controller {
 
         UsersModel usersModel = new UsersModel();
         usersModel.deleteUser(userSession.getId());
+        usersModel.close();
 
         newScene("sign-in");
     }

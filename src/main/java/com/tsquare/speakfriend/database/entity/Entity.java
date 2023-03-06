@@ -15,8 +15,10 @@ abstract public class Entity {
         ResultSetMetaData meta = resultSet.getMetaData();
         int columns = meta.getColumnCount();
 
-        for (int i = 1; i <= columns; i++) {
-            props.put(meta.getColumnName(i), resultSet.getObject(i));
+        if (!resultSet.isClosed()) {
+            for (int i = 1; i <= columns; i++) {
+                props.put(meta.getColumnName(i), resultSet.getObject(i));
+            }
         }
     }
 }

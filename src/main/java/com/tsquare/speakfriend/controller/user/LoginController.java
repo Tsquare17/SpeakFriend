@@ -95,13 +95,24 @@ public class LoginController extends Controller {
                 Main.transition = new PauseTransition(delay);
             }
 
+            resultSet.close();
+            userSettingsModel.close();
+
             // Check if there are any accounts before displaying the loading messate.
             // If not, just go right to the empty list.
             AccountsModel accountsModel = new AccountsModel();
             resultSet = accountsModel.getUserAccounts(userSession.getId());
             if (!resultSet.next()) {
+                resultSet.close();
+                accountsModel.close();
+
                 toAccounts();
+
+                return;
             }
+
+            resultSet.close();
+            accountsModel.close();
 
             applicationSession.setLoadingMessage("Decrypting Accounts...");
             newScene("loading");

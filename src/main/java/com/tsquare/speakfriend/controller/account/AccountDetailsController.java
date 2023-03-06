@@ -48,6 +48,9 @@ public class AccountDetailsController extends AccountController {
         ResultSet resultSet = accountsModel.getAccount(applicationSession.getSelectedAccountId());
         AccountEntity accountEntity = new AccountEntity(resultSet);
 
+        resultSet.close();
+        accountsModel.close();
+
         String accountName = this.getDecryptedText(accountEntity.getName());
         String accountUser = this.getDecryptedText(accountEntity.getUser());
         String accountPass = this.getDecryptedText(accountEntity.getPass());
@@ -108,6 +111,8 @@ public class AccountDetailsController extends AccountController {
         accountsModel.updateAccount(accountId, encryptedName, encryptedUser, encryptedPass, encryptedUrl, encryptedNotes);
         accountsModel.close();
 
+        applicationSession.setDirtyAccounts(true);
+
         newContainerScene("account-details");
     }
 
@@ -146,6 +151,8 @@ public class AccountDetailsController extends AccountController {
         AccountsModel accountsModel = new AccountsModel();
         accountsModel.deleteAccount(accountId);
         accountsModel.close();
+
+        applicationSession.setDirtyAccounts(true);
 
         newContainerScene("account-list");
     }

@@ -49,6 +49,8 @@ public class RegisterController extends Controller {
                 success = false;
             }
 
+            usersModel.close();
+
             if(!success) {
                 notice_text.setText("A user with that name already exists.");
                 return;

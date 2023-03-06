@@ -69,13 +69,13 @@ public final class AccountListSession {
     }
 
     public List<AccountPreviewEntity> getPreviews() {
-        ArrayList<AccountPreviewEntity> previewList = new ArrayList<>();
-
         ApplicationSession applicationSession = ApplicationSession.getInstance();
 
         if (!applicationSession.isDirtyAccounts()) {
             return accountPreviewList;
         }
+
+        accountPreviewList.clear();
 
         UserSession userSession = UserSession.getInstance();
         String key = userSession.getKey();
@@ -85,25 +85,29 @@ public final class AccountListSession {
             AccountsModel accountsModel = new AccountsModel();
             ResultSet resultSet = accountsModel.getUserAccounts(userSession.getId());
 
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 AccountPreviewEntity accountPreview = new AccountPreviewEntity(resultSet);
 
                 String accountName = crypt.decrypt(key, accountPreview.getName());
 
                 accountPreview.setName(accountName);
 
-                previewList.add(accountPreview);
+                accountPreviewList.add(accountPreview);
             }
 
+            resultSet.close();
+
+            accountsModel.close();
+
             // Sort the list of accounts by name.
-            previewList.sort(new AccountPreviewComparator<String>());
+            accountPreviewList.sort(new AccountPreviewComparator<String>());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         applicationSession.setDirtyAccounts(false);
 
-        return previewList;
+        return accountPreviewList;
     }
 
     public ArrayList<List<String>> getDecryptedAccounts(List<Integer> list) throws SQLException {
@@ -120,7 +124,7 @@ public final class AccountListSession {
         }
 
         ArrayList<List<String>> accountList = new ArrayList<>();
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             String accountId = null;
             String accountName = null;
             String accountUser = null;
@@ -149,6 +153,9 @@ public final class AccountListSession {
 
             accountList.add(addAccount);
         }
+
+        resultSet.close();
+        accountsModel.close();
 
         return accountList;
     }
