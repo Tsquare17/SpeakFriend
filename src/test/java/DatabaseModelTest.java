@@ -1,7 +1,4 @@
-import com.tsquare.speakfriend.database.model.AccountsModel;
-import com.tsquare.speakfriend.database.model.SystemSettingsModel;
-import com.tsquare.speakfriend.database.model.UserSettingsModel;
-import com.tsquare.speakfriend.database.model.UsersModel;
+import com.tsquare.speakfriend.database.model.*;
 import com.tsquare.speakfriend.utils.Crypt;
 import org.junit.jupiter.api.*;
 
@@ -157,6 +154,30 @@ public class DatabaseModelTest {
 
     @Test
     @Order(8)
+    void canCreateUserAccountTags() throws SQLException {
+        TagsModel tagsModel = new TagsModel();
+        int tagId = tagsModel.createUserTag(1, "Test");
+        tagsModel.reset();
+
+        tagsModel.createAccountTag(1, tagId);
+        tagsModel.reset();
+
+        ResultSet resultSet = tagsModel.getUserTags(1);
+
+        resultSet.close();
+        tagsModel.reset();
+
+        resultSet = tagsModel.getAccountTags(1);
+
+        Assertions.assertEquals("Test", resultSet.getString("tag_name"));
+
+        resultSet.close();
+
+        tagsModel.close();
+    }
+
+    @Test
+    @Order(9)
     void canDeleteAccounts() throws SQLException {
         AccountsModel accountsModel = new AccountsModel();
         accountsModel.deleteAccount(2);
@@ -170,7 +191,7 @@ public class DatabaseModelTest {
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     void canCreateUserSettings() throws SQLException {
         UserSettingsModel userSettingsModel = new UserSettingsModel();
         userSettingsModel.createUserSetting(1, "option", "test");
@@ -178,7 +199,7 @@ public class DatabaseModelTest {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     void canGetUserSettings() throws SQLException {
         UserSettingsModel userSettingsModel = new UserSettingsModel();
 
@@ -191,7 +212,7 @@ public class DatabaseModelTest {
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     void canUpdateUserSettings() throws SQLException {
         UserSettingsModel userSettingsModel = new UserSettingsModel();
 
@@ -206,7 +227,7 @@ public class DatabaseModelTest {
     }
 
     @Test
-    @Order(12)
+    @Order(13)
     void canDeleteUserSettings() throws SQLException {
         UserSettingsModel userSettingsModel = new UserSettingsModel();
         userSettingsModel.deleteUserSetting(1, "option");
@@ -220,7 +241,7 @@ public class DatabaseModelTest {
     }
 
     @Test
-    @Order(13)
+    @Order(14)
     void canCreateSystemSettings() throws SQLException {
         SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
         systemSettingsModel.createSystemSetting("option", "test");
@@ -228,7 +249,7 @@ public class DatabaseModelTest {
     }
 
     @Test
-    @Order(14)
+    @Order(15)
     void canGetSystemSettings() throws SQLException {
         SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
 
@@ -241,7 +262,7 @@ public class DatabaseModelTest {
     }
 
     @Test
-    @Order(15)
+    @Order(16)
     void canUpdateSystemSettings() throws SQLException {
         SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
 
@@ -256,7 +277,7 @@ public class DatabaseModelTest {
     }
 
     @Test
-    @Order(16)
+    @Order(17)
     void canDeleteSystemSettings() throws SQLException {
         SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
         systemSettingsModel.deleteSystemSetting("option");

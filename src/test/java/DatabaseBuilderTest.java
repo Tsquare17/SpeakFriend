@@ -40,6 +40,12 @@ public class DatabaseBuilderTest {
     }
 
     @Test
+    void canCreateAccountTagsTables() throws SQLException {
+        Builder builder = new Builder();
+        builder.createAccountTagsTables();
+    }
+
+    @Test
     void canRenameAndDropTables() throws SQLException {
         Connection connection = SqliteConnection.getConnection();
 
