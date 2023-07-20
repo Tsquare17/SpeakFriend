@@ -24,14 +24,9 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <children>
-                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#deleteAction" style="-fx-background-color: red; -fx-text-fill: white;" text="Delete" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin></Button>
-                <Button accessibleText="Back" alignment="CENTER" cancelButton="true" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goBack" text="Back" textAlignment="CENTER" GridPane.rowIndex="2" />
             <ListView id="tag_list" fx:id="tag_list" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnSpan="3" GridPane.rowIndex="1" />
             <TextField id="tag_input" fx:id="tag_input" promptText="Enter Tag" GridPane.columnSpan="3" />
-            <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#saveAction" text="Add" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+            <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#saveAction" text="Save" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets bottom="8.0" />
                </GridPane.margin>

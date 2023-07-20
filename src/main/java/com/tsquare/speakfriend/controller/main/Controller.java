@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.io.IOException;
@@ -153,5 +154,15 @@ public abstract class Controller {
         } catch (Exception ignore) {}
 
         return decrypted;
+    }
+
+    protected void createModalView(String resource) throws IOException {
+        Stage stage = Main.getStage();
+        Stage newStage = new Stage();
+        newStage.initOwner(stage);
+        VBox modal = FXMLLoader.load(getClass().getResource(resource));
+        newStage.setScene(new Scene(modal, 300, 350));
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.show();
     }
 }

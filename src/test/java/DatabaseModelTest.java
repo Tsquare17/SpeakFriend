@@ -169,7 +169,7 @@ public class DatabaseModelTest {
 
         resultSet = tagsModel.getAccountTags(1);
 
-        Assertions.assertEquals("Test", resultSet.getString("tag_name"));
+        Assertions.assertEquals("Test", resultSet.getString("user_tag_name"));
 
         resultSet.close();
 

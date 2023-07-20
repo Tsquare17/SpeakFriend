@@ -91,7 +91,7 @@ abstract public class Model {
             columnValueMap
         );
 
-        return Model.this.preparedStatement.executeQuery();
+        return preparedStatement.executeQuery();
     }
 
     protected ResultSet getJoin(HashMap<String, Object> columnValueMap, List<JoinTable> joinTables) throws SQLException {
