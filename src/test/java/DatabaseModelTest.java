@@ -111,6 +111,12 @@ public class DatabaseModelTest {
         }
 
         resultSet1.close();
+        accountsModel.reset();
+
+        resultSet = accountsModel.getUserAccounts(1);
+
+        Assertions.assertEquals(1, resultSet.getInt("user_id"));
+
         accountsModel.close();
 
         Assertions.assertEquals(2, count);

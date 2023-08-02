@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TagsModel extends Model {
-    public TagsModel() throws SQLException {}
+    public TagsModel() throws SQLException {
+        setSelect("SELECT account_tags.* from account_tags ");
+    }
 
     String tableName = "account_tags";
 
@@ -43,11 +45,15 @@ public class TagsModel extends Model {
     public ResultSet getUserTags(int userId) throws SQLException {
         tableName = "user_tags";
 
+        setSelect("SELECT user_tags.* from user_tags ");
+
         return get("user_id", userId);
     }
 
     public ResultSet getAccountTagByName(int accountId, String tagName) throws SQLException {
         tableName = "account_tags";
+
+        setSelect("SELECT account_tags.* from account_tags ");
 
         HashMap<String, Object> columnValueMap = new HashMap<>();
         columnValueMap.put("account_id", accountId);
@@ -67,6 +73,8 @@ public class TagsModel extends Model {
     public ResultSet getAccountTags(int accountId) throws SQLException {
         tableName = "account_tags";
 
+        setSelect("SELECT account_tags.*, user_tags.* from account_tags ");
+
         HashMap<String, Object> columnValueMap = new HashMap<>();
         columnValueMap.put("account_id", accountId);
 
@@ -74,7 +82,7 @@ public class TagsModel extends Model {
 
         JoinTable join = new JoinTable();
         join.setTable("user_tags");
-        join.setKeys("user_tag_id", "user_tag_id");
+        join.setKeys("user_tags.user_tag_id", "account_tags.user_tag_id");
 
         joinTables.add(join);
 
@@ -83,6 +91,8 @@ public class TagsModel extends Model {
 
     public ResultSet getTagByName(int userId, String tag) throws SQLException {
         tableName = "user_tags";
+
+        setSelect("SELECT user_tags.* from user_tags ");
 
         HashMap<String, Object> columnValueMap = new HashMap<>();
         columnValueMap.put("user_id", userId);

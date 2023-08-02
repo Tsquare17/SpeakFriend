@@ -98,7 +98,7 @@ public class LoginController extends Controller {
             resultSet.close();
             userSettingsModel.close();
 
-            // Check if there are any accounts before displaying the loading messate.
+            // Check if there are any accounts before displaying the loading message.
             // If not, just go right to the empty list.
             AccountsModel accountsModel = new AccountsModel();
             resultSet = accountsModel.getUserAccounts(userSession.getId());
