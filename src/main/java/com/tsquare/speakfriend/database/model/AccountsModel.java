@@ -1,11 +1,15 @@
 package com.tsquare.speakfriend.database.model;
 
+import com.tsquare.speakfriend.database.model.relationship.JoinTable;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class AccountsModel extends Model {
-    public AccountsModel() throws SQLException {}
+    public AccountsModel() throws SQLException {
+    }
 
     protected String getTableName() {
         return "accounts";
@@ -43,7 +47,31 @@ public class AccountsModel extends Model {
     }
 
     public ResultSet getUserAccounts(int userId) throws SQLException {
-        return get("user_id", userId);
+        setSelect(
+            "SELECT accounts.*, GROUP_CONCAT(user_tags.user_tag_name, '||') AS tags " +
+                "FROM accounts "
+        );
+
+        HashMap<String, Object> columnValueMap = new HashMap<>();
+        columnValueMap.put("accounts.user_id", userId);
+
+        List<JoinTable> joinTables = new ArrayList<>();
+
+        JoinTable accountTagsJoin = new JoinTable();
+        accountTagsJoin.setTable("account_tags");
+        accountTagsJoin.setKeys("accounts.id", "account_tags.account_id");
+
+        joinTables.add(accountTagsJoin);
+
+        JoinTable userTagsJoin = new JoinTable();
+        userTagsJoin.setTable("user_tags");
+        userTagsJoin.setKeys("account_tags.user_tag_id", "user_tags.user_tag_id");
+
+        joinTables.add(userTagsJoin);
+
+        setGroupBy("accounts.id");
+
+        return getJoin(columnValueMap, joinTables);
     }
 
     public ResultSet getUserAccountByName(int userId, String accountName) throws SQLException {

@@ -21,6 +21,7 @@
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
                         <MenuItem fx:id="menu_item_edit_settings" mnemonicParsing="false" onAction="#editSettingsView" text="Settings" />
+                        <MenuItem fx:id="menu_item_edit_tags" mnemonicParsing="false" onAction="#editTagsView" text="Tags" />
                         <MenuItem fx:id="menu_item_delete_user" mnemonicParsing="false" onAction="#deleteUserView" text="Delete User" />
                     </items>
                 </Menu>

@@ -6,134 +6,155 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="account_container" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.controller.account.AccountDetailsController">
-   <children>
-      <GridPane prefHeight="400.0" prefWidth="600.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <Label fx:id="account_id" visible="false" GridPane.rowIndex="1" />
-            <Label text="Account Name" textAlignment="RIGHT" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-               <font>
-                  <Font name="Fira Code Medium" size="13.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-            </Label>
-            <TextField fx:id="account_name" editable="false" focusTraversable="false" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin></TextField>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="86.0" layoutY="67.0" text="User Name" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-               <font>
-                  <Font name="Fira Code Medium" size="13.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-            </Label>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-               <children>
-                  <TextField fx:id="account_user" editable="false" focusTraversable="false" prefWidth="180.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <ImageView fx:id="username_clipboard" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#copyUsernameToClipboard" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.rightAnchor="5.0">
-                     <image>
-                        <Image url="@img/clipboard.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-            <Label layoutX="62.0" layoutY="69.0" text="Password" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-               <font>
-                  <Font name="Fira Code Medium" size="13.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-            </Label>
-            <AnchorPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
-               <children>
-                  <PasswordField fx:id="account_password_masked" editable="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <TextField fx:id="account_password" editable="false" focusTraversable="false" visible="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <ImageView fx:id="generate_password_icon" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#passwordModalView" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" visible="false" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
-                     <image>
-                        <Image url="@img/gear.png" />
-                     </image></ImageView>
-                  <ImageView fx:id="password_clipboard" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#copyToClipboard" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="10.0">
-                     <image>
-                        <Image url="@img/clipboard.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="show_password" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#showPassword" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
-                     <image>
-                        <Image url="@img/eyecon.png" />
-                     </image>
-                  </ImageView>
-               </children>
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <Label layoutX="75.0" layoutY="202.0" text="URL" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-               <font>
-                  <Font name="Fira Code Medium" size="13.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-            </Label>
-            <AnchorPane layoutX="210.0" layoutY="118.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
-               <children>
-                  <TextField fx:id="account_url" editable="false" focusTraversable="false" prefWidth="180.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <ImageView fx:id="go_to_url" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#goToUrl" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-                     <image>
-                        <Image url="@img/goto.png" />
-                     </image>
-                  </ImageView>
-               </children>
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <Label layoutX="94.0" layoutY="335.0" text="Notes" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-               <font>
-                  <Font name="Fira Code Medium" size="13.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets right="30.0" />
-               </GridPane.margin>
-            </Label>
-            <Button fx:id="view_notes_button" mnemonicParsing="false" onAction="#accountNotesModalView" text="View" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Button fx:id="edit_notes_button" disable="true" mnemonicParsing="false" onAction="#accountNotesEditModalView" text="Edit" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Button fx:id="back_button" defaultButton="true" mnemonicParsing="false" onAction="#viewAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-            <Button fx:id="update_account_button" mnemonicParsing="false" onAction="#updateAccountDetails" text="Update" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-            <Hyperlink fx:id="edit_account_link" onAction="#editAccountAction" text="Edit Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button fx:id="delete_account_button" cancelButton="true" mnemonicParsing="false" onAction="#deleteAccountAction" style="-fx-background-color: red;" text="DELETE" textFill="WHITE" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <TextField fx:id="account_notes" cacheShape="false" centerShape="false" focusTraversable="false" opacity="0.0" scaleShape="false" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </GridPane>
-      <AnchorPane prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label fx:id="notice_text" alignment="CENTER" contentDisplay="CENTER" style="-fx-text-alignment: center;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-         </children>
-      </AnchorPane>
-   </children>
+<VBox fx:id="account_container" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.controller.account.AccountDetailsController">
+    <children>
+        <ScrollPane VBox.vgrow="ALWAYS">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+                    <children>
+                        <VBox alignment="CENTER">
+                            <children>
+                                <GridPane prefHeight="400.0" prefWidth="600.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <Label fx:id="account_id" visible="false" GridPane.rowIndex="1" />
+                                        <Label text="Account Name" textAlignment="RIGHT" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                            <font>
+                                                <Font name="Fira Code Medium" size="13.0" />
+                                            </font>
+                                            <GridPane.margin>
+                                                <Insets right="30.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <TextField fx:id="account_name" editable="false" focusTraversable="false" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                            <GridPane.margin>
+                                                <Insets right="30.0" />
+                                            </GridPane.margin>
+                                        </TextField>
+                                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="86.0" layoutY="67.0" text="User Name" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                            <font>
+                                                <Font name="Fira Code Medium" size="13.0" />
+                                            </font>
+                                            <GridPane.margin>
+                                                <Insets right="30.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                                            <GridPane.margin>
+                                                <Insets right="30.0" />
+                                            </GridPane.margin>
+                                            <children>
+                                                <TextField fx:id="account_user" editable="false" focusTraversable="false" prefWidth="180.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                <ImageView fx:id="username_clipboard" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#copyUsernameToClipboard" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.rightAnchor="5.0">
+                                                    <image>
+                                                        <Image url="@img/clipboard.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </children>
+                                        </AnchorPane>
+                                        <Label layoutX="62.0" layoutY="69.0" text="Password" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                            <font>
+                                                <Font name="Fira Code Medium" size="13.0" />
+                                            </font>
+                                            <GridPane.margin>
+                                                <Insets right="30.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <AnchorPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                            <children>
+                                                <PasswordField fx:id="account_password_masked" editable="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                <TextField fx:id="account_password" editable="false" focusTraversable="false" visible="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                <ImageView fx:id="generate_password_icon" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#passwordModalView" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" visible="false" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                                                    <image>
+                                                        <Image url="@img/gear.png" />
+                                                    </image>
+                                                </ImageView>
+                                                <ImageView fx:id="password_clipboard" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#copyToClipboard" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="10.0">
+                                                    <image>
+                                                        <Image url="@img/clipboard.png" />
+                                                    </image>
+                                                </ImageView>
+                                                <ImageView fx:id="show_password" fitHeight="25.0" fitWidth="25.0" layoutX="340.0" layoutY="20.0" onMouseClicked="#showPassword" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                                                    <image>
+                                                        <Image url="@img/eyecon.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </children>
+                                            <GridPane.margin>
+                                                <Insets right="30.0" />
+                                            </GridPane.margin>
+                                        </AnchorPane>
+                                        <Label layoutX="75.0" layoutY="202.0" text="URL" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                            <font>
+                                                <Font name="Fira Code Medium" size="13.0" />
+                                            </font>
+                                            <GridPane.margin>
+                                                <Insets right="30.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <AnchorPane layoutX="210.0" layoutY="118.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                                            <children>
+                                                <TextField fx:id="account_url" editable="false" focusTraversable="false" prefWidth="180.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                                <ImageView fx:id="go_to_url" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#goToUrl" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                    <image>
+                                                        <Image url="@img/goto.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </children>
+                                            <GridPane.margin>
+                                                <Insets right="30.0" />
+                                            </GridPane.margin>
+                                        </AnchorPane>
+                                        <Label layoutX="94.0" layoutY="335.0" text="Notes" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                                            <font>
+                                                <Font name="Fira Code Medium" size="13.0" />
+                                            </font>
+                                            <GridPane.margin>
+                                                <Insets right="30.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <Button fx:id="view_notes_button" mnemonicParsing="false" onAction="#accountNotesModalView" text="View" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                        <Button fx:id="edit_notes_button" disable="true" mnemonicParsing="false" onAction="#accountNotesEditModalView" text="Edit" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                        <Button fx:id="back_button" defaultButton="true" mnemonicParsing="false" onAction="#viewAccountsView" style="-fx-background-color: red;" text="Back" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+                                        <Button fx:id="update_account_button" mnemonicParsing="false" onAction="#updateAccountDetails" text="Update" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+                                        <Hyperlink fx:id="edit_account_link" onAction="#editAccountAction" text="Edit Account" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                        <Button fx:id="delete_account_button" cancelButton="true" mnemonicParsing="false" onAction="#deleteAccountAction" style="-fx-background-color: red;" text="DELETE" textFill="WHITE" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                        <TextField fx:id="account_notes" cacheShape="false" centerShape="false" focusTraversable="false" opacity="0.0" scaleShape="false" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                                        <Label layoutX="94.0" layoutY="335.0" text="Tags" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                                            <font>
+                                                <Font name="Fira Code Medium" size="13.0" />
+                                            </font>
+                                            <GridPane.margin>
+                                                <Insets right="30.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <Button fx:id="edit_tags_button" mnemonicParsing="false" onAction="#tagsEditModalView" text="Edit" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </padding>
+                                </GridPane>
+                                <Label fx:id="notice_text" alignment="CENTER" contentDisplay="CENTER" style="-fx-text-alignment: center;" />
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </children>
 </VBox>

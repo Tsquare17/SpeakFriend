@@ -7,15 +7,11 @@ import com.tsquare.speakfriend.session.ApplicationSession;
 import com.tsquare.speakfriend.session.UserSession;
 import com.tsquare.speakfriend.utils.Crypt;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -158,14 +154,13 @@ public class AccountDetailsController extends AccountController {
     }
 
     @FXML
+    public void tagsEditModalView() throws IOException {
+        createModalView("/edit-tags.fxml");
+    }
+
+    @FXML
     public void passwordModalView() throws IOException {
-        Stage stage = Main.getStage();
-        Stage newStage = new Stage();
-        newStage.initOwner(stage);
-        VBox modal = FXMLLoader.load(getClass().getResource("/generate-password.fxml"));
-        newStage.setScene(new Scene(modal, 300, 350));
-        newStage.initModality(Modality.WINDOW_MODAL);
-        newStage.show();
+        createModalView("/generate-password.fxml");
     }
 
     @FXML

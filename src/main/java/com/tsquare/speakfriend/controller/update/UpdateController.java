@@ -20,7 +20,7 @@ import java.sql.SQLException;
 
 public class UpdateController {
     private final String upToDateDbVersion = "102";
-    private final String upToDateSysVersion = "100";
+    private final String upToDateSysVersion = "101";
 
     public void update() {
         Task<Void> task = new Task<>() {
@@ -28,17 +28,18 @@ public class UpdateController {
             public Void call() throws SQLException {
                 UserSession userSession = UserSession.getInstance();
 
-                UserSettingsModel userSettingsModel = new UserSettingsModel();
-                ResultSet resultSet = userSettingsModel.getUserSetting(userSession.getId(), "db_version");
-                int dbVersion = 0;
+                SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
+                ResultSet resultSet = systemSettingsModel.getSystemSetting("version");
+
+                int systemVersion = 0;
                 if (resultSet.next()) {
-                    dbVersion = resultSet.getInt("value");
+                    systemVersion = resultSet.getInt("value");
                 }
 
                 resultSet.close();
-                userSettingsModel.close();
+                systemSettingsModel.reset();
 
-                if (dbVersion < 102) {
+                if (systemVersion < 101) {
                     Builder builder = new Builder();
                     builder.renameTable("Accounts", "accounts_tmp");
                     builder.reset();
@@ -49,7 +50,10 @@ public class UpdateController {
                     builder.dropTable("system_settings");
                     builder.reset();
 
-                    builder.renameTable("SystemSettings", "system_settings");
+                    builder.renameTable("SystemSettings", "system_settings_tmp");
+                    builder.reset();
+
+                    builder.renameTable("system_settings_tmp", "system_settings");
                     builder.reset();
 
                     builder.dropTable("user_settings");
@@ -65,7 +69,6 @@ public class UpdateController {
                     builder.close();
                 }
 
-                SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
                 resultSet = systemSettingsModel.getSystemSetting("first_run");
 
                 if (!resultSet.next() || resultSet.getString("value").equals("")) {
@@ -74,7 +77,17 @@ public class UpdateController {
                 }
 
                 resultSet.close();
-                systemSettingsModel.close();
+                systemSettingsModel.reset();
+
+                UserSettingsModel userSettingsModel = new UserSettingsModel();
+                resultSet = userSettingsModel.getUserSetting(userSession.getId(), "db_version");
+                int userDbVersion = 0;
+                if (resultSet.next()) {
+                    userDbVersion = resultSet.getInt("value");
+                }
+
+                resultSet.close();
+                userSettingsModel.reset();
 
                 resultSet = userSettingsModel.getUserSetting(
                     userSession.getId(),
@@ -108,7 +121,7 @@ public class UpdateController {
                     resultSet.close();
                 }
 
-                if (dbVersion == 0) {
+                if (userDbVersion == 0) {
                     userSettingsModel.createUserSetting(
                         userSession.getId(),
                         "db_version",
@@ -123,10 +136,10 @@ public class UpdateController {
                     );
                     userSettingsModel.reset();
 
-                    dbVersion = 100;
+                    userDbVersion = 100;
                 }
 
-                if (dbVersion < 101) {
+                if (userDbVersion < 101) {
                     UpdateController.changeEncryptionIterations(65536, 2000);
                     userSettingsModel.updateUserSetting(
                         userSession.getId(),
@@ -135,10 +148,10 @@ public class UpdateController {
                     );
                     userSettingsModel.reset();
 
-                    dbVersion = 101;
+                    userDbVersion = 101;
                 }
 
-                if (dbVersion < 102) {
+                if (userDbVersion < 102) {
                     userSettingsModel.updateUserSetting(
                         userSession.getId(),
                         "db_version",
@@ -158,6 +171,12 @@ public class UpdateController {
 
                 resultSet.close();
                 userSettingsModel.close();
+
+                if (systemVersion < 101) {
+                    systemSettingsModel.updateSystemSetting("version", "101");
+                }
+
+                systemSettingsModel.close();
 
                 return null;
             }

@@ -47,6 +47,11 @@ public class Nav extends Controller {
     }
 
     @FXML
+    public void editTagsView() throws IOException {
+        newContainerScene("edit-tags");
+    }
+
+    @FXML
     public void helpAboutView() throws IOException {
         newContainerScene("about");
     }
