@@ -161,12 +161,12 @@ public final class AccountListSession {
     }
 
     public ArrayList<List<String>> lock(ArrayList<List<String>> accounts, String key) {
-        ArrayList<List<String>> list = new ArrayList<List<String>>();
+        ArrayList<List<String>> list = new ArrayList<>();
         Crypt crypt = new Crypt();
         for (List<String> account : accounts) {
             List<String> accountFields = new ArrayList<>();
 
-            for (int i = 0; i < accounts.size(); i++) {
+            for (int i = 0; i < account.size(); i++) {
                 if (i == 0) {
                     accountFields.add(account.get(i));
                 } else {
