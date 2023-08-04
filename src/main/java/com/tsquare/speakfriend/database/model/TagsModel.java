@@ -47,6 +47,8 @@ public class TagsModel extends Model {
 
         setSelect("SELECT user_tags.* from user_tags ");
 
+        setOrderBy("user_tags.user_tag_name ASC");
+
         return get("user_id", userId);
     }
 

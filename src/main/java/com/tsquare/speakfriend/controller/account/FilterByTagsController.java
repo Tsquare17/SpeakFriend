@@ -67,7 +67,7 @@ public class FilterByTagsController extends Controller {
                 for (Node check: tagListParent) {
                     if (check instanceof CheckBox) {
                         if (((CheckBox) check).isSelected()) {
-                            tags.add(((CheckBox) check).getText());
+                            tags.add(((CheckBox) check).getText().toLowerCase());
                         }
                     }
                 }
@@ -106,7 +106,7 @@ public class FilterByTagsController extends Controller {
                     }
 
                     for (String accountTag: accountTags) {
-                        if (tags.contains(accountTag)) {
+                        if (tags.contains(accountTag.toLowerCase())) {
                             // show account
                             item.setVisible(true);
                             item.setManaged(true);
