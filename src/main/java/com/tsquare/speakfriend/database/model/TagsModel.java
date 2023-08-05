@@ -58,14 +58,14 @@ public class TagsModel extends Model {
         setSelect("SELECT account_tags.* from account_tags ");
 
         HashMap<String, Object> columnValueMap = new HashMap<>();
-        columnValueMap.put("account_id", accountId);
-        columnValueMap.put("user_tag_name", tagName);
+        columnValueMap.put("account_tags.account_id", accountId);
+        columnValueMap.put("user_tags.user_tag_name", tagName);
 
         List<JoinTable> joinTables = new ArrayList<>();
 
         JoinTable join = new JoinTable();
         join.setTable("user_tags");
-        join.setKeys("user_tag_id", "user_tag_id");
+        join.setKeys("user_tags.user_tag_id", "account_tags.user_tag_id");
 
         joinTables.add(join);
 

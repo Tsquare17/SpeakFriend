@@ -3,7 +3,6 @@ package com.tsquare.speakfriend.controller.tags;
 import com.tsquare.speakfriend.controller.main.Controller;
 import com.tsquare.speakfriend.database.entity.Tag;
 import com.tsquare.speakfriend.database.model.TagsModel;
-import com.tsquare.speakfriend.fxml.TagCell;
 import com.tsquare.speakfriend.fxml.TagCellFactory;
 import com.tsquare.speakfriend.session.ApplicationSession;
 import com.tsquare.speakfriend.session.UserSession;
@@ -40,7 +39,6 @@ public class TagsController extends Controller {
         resultSet = tagsModel.getUserTags(userSession.getId());
 
         while (resultSet.next()) {
-            // check if usertag is in accounttags. if so, set the class
             Tag tag = new Tag(resultSet);
 
             Integer accountTagId = resultSet.getInt("user_tag_id");
@@ -62,6 +60,10 @@ public class TagsController extends Controller {
 
     @FXML
     public void saveAction() throws SQLException {
+        if (tag_input.getText().isEmpty()) {
+            return;
+        }
+
         UserSession userSession = UserSession.getInstance();
         ApplicationSession applicationSession = ApplicationSession.getInstance();
 
