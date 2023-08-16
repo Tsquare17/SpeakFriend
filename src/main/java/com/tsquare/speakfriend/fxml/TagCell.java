@@ -3,9 +3,7 @@ package com.tsquare.speakfriend.fxml;
 import com.tsquare.speakfriend.database.entity.Tag;
 import com.tsquare.speakfriend.database.model.TagsModel;
 import com.tsquare.speakfriend.session.ApplicationSession;
-import com.tsquare.speakfriend.session.UserSession;
 import javafx.scene.control.ListCell;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -57,6 +55,8 @@ public class TagCell extends ListCell<Tag> {
                 }
 
                 tag.setIsSelected(!tag.isSelected());
+
+                applicationSession.setDirtyAccounts(true);
             });
 
             if (tag.isSelected()) {
