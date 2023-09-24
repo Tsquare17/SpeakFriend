@@ -111,4 +111,13 @@ public class TagsModel extends Model {
 
         delete(columnValues);
     }
+
+    public void deleteUserTag(int userTagId) throws SQLException {
+        tableName = "user_tags";
+
+        HashMap<String, Object> columnValues = new HashMap<>();
+        columnValues.put("user_tag_id", userTagId);
+
+        delete(columnValues);
+    }
 }
