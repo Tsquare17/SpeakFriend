@@ -163,6 +163,11 @@
     -fx-text-fill: -fx-text-button-colored;
 }
 
+.button.danger {
+    -fx-background-color: red;
+    -fx-text-fill: #fff;
+}
+
 .toggle-button:focused, .button:focused, .button:default:focused {
     -fx-background-color: -swatch-light-grey;
 }

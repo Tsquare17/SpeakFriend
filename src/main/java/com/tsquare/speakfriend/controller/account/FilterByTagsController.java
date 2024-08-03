@@ -7,7 +7,6 @@ import com.tsquare.speakfriend.database.model.TagsModel;
 import com.tsquare.speakfriend.session.AccountListSession;
 import com.tsquare.speakfriend.session.UserSession;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -67,7 +66,7 @@ public class FilterByTagsController extends Controller {
                 for (Node check: tagListParent) {
                     if (check instanceof CheckBox) {
                         if (((CheckBox) check).isSelected()) {
-                            tags.add(((CheckBox) check).getText());
+                            tags.add(((CheckBox) check).getText().toLowerCase());
                         }
                     }
                 }
@@ -79,7 +78,7 @@ public class FilterByTagsController extends Controller {
                 HashMap<String, String[]> tagMap = new HashMap<>();
                 for (AccountPreviewEntity account: accounts) {
                     if (account.getTags() != null) {
-                        tagMap.put(account.getName(), account.getTags());
+                        tagMap.put(account.getName().toLowerCase(), account.getTags());
                     }
                 }
 
@@ -106,7 +105,7 @@ public class FilterByTagsController extends Controller {
                     }
 
                     for (String accountTag: accountTags) {
-                        if (tags.contains(accountTag)) {
+                        if (tags.contains(accountTag.toLowerCase())) {
                             // show account
                             item.setVisible(true);
                             item.setManaged(true);

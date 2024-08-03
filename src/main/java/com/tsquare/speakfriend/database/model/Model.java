@@ -18,12 +18,18 @@ abstract public class Model {
 
     String groupBy = null;
 
+    String orderBy = null;
+
     public void setSelect(String select) {
         this.select = select;
     }
 
     public void setGroupBy(String groupBy) {
         this.groupBy = groupBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
     }
 
     public Model() throws SQLException {}
@@ -77,6 +83,10 @@ abstract public class Model {
     protected ResultSet get(String column, String value) throws SQLException {
         String sql = select + "where " + column + " = ?";
 
+        if (orderBy != null) {
+            sql += " order by " + orderBy;
+        }
+
         preparedStatement = connection.prepareStatement(sql);
 
         preparedStatement.setString(1, value);
@@ -86,6 +96,10 @@ abstract public class Model {
 
     protected ResultSet get(String column, int value) throws SQLException {
         String sql = select + "where " + column + " = ?";
+
+        if (orderBy != null) {
+            sql += " order by " + orderBy;
+        }
 
         preparedStatement = connection.prepareStatement(sql);
 

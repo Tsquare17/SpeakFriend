@@ -48,7 +48,7 @@ public class Nav extends Controller {
 
     @FXML
     public void editTagsView() throws IOException {
-        newContainerScene("edit-tags");
+        newContainerScene("edit-user-tags");
     }
 
     @FXML

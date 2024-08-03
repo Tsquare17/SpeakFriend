@@ -3,6 +3,7 @@ package com.tsquare.speakfriend.session;
 import com.tsquare.speakfriend.database.entity.AccountPreviewEntity;
 import com.tsquare.speakfriend.database.model.AccountsModel;
 import com.tsquare.speakfriend.database.entity.AccountEntity;
+import com.tsquare.speakfriend.database.model.TagsModel;
 import com.tsquare.speakfriend.utils.AccountPreviewComparator;
 import com.tsquare.speakfriend.utils.Crypt;
 
@@ -160,9 +161,10 @@ public final class AccountListSession {
         return accountList;
     }
 
-    public ArrayList<List<String>> lock(ArrayList<List<String>> accounts, String key) {
+    public ArrayList<List<String>> lock(ArrayList<List<String>> accounts, String key) throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
         ArrayList<List<String>> list = new ArrayList<>();
         Crypt crypt = new Crypt();
+        TagsModel tagsModel = new TagsModel();
         for (List<String> account : accounts) {
             List<String> accountFields = new ArrayList<>();
 
@@ -178,10 +180,27 @@ public final class AccountListSession {
                         e.printStackTrace();
                     }
                 }
-
-                list.add(accountFields);
             }
+
+            ResultSet resultSet = tagsModel.getAccountTags(Integer.parseInt(account.get(0)));
+            StringBuilder accountTags = new StringBuilder();
+            while (resultSet.next()) {
+                accountTags.append(
+                    crypt.encrypt(key, resultSet.getString("user_tag_name"), 2000)
+                ).append("$:$");
+            }
+
+            resultSet.close();
+            tagsModel.reset();
+
+            if (!accountTags.isEmpty()) {
+                accountFields.add(accountTags.toString());
+            }
+
+            list.add(accountFields);
         }
+
+        tagsModel.close();
 
         return list;
     }

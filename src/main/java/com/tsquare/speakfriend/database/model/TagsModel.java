@@ -47,6 +47,8 @@ public class TagsModel extends Model {
 
         setSelect("SELECT user_tags.* from user_tags ");
 
+        setOrderBy("user_tags.user_tag_name ASC");
+
         return get("user_id", userId);
     }
 
@@ -56,14 +58,14 @@ public class TagsModel extends Model {
         setSelect("SELECT account_tags.* from account_tags ");
 
         HashMap<String, Object> columnValueMap = new HashMap<>();
-        columnValueMap.put("account_id", accountId);
-        columnValueMap.put("user_tag_name", tagName);
+        columnValueMap.put("account_tags.account_id", accountId);
+        columnValueMap.put("user_tags.user_tag_name", tagName);
 
         List<JoinTable> joinTables = new ArrayList<>();
 
         JoinTable join = new JoinTable();
         join.setTable("user_tags");
-        join.setKeys("user_tag_id", "user_tag_id");
+        join.setKeys("user_tags.user_tag_id", "account_tags.user_tag_id");
 
         joinTables.add(join);
 
@@ -106,6 +108,15 @@ public class TagsModel extends Model {
 
         HashMap<String, Object> columnValues = new HashMap<>();
         columnValues.put("account_tag_id", accountTagId);
+
+        delete(columnValues);
+    }
+
+    public void deleteUserTag(int userTagId) throws SQLException {
+        tableName = "user_tags";
+
+        HashMap<String, Object> columnValues = new HashMap<>();
+        columnValues.put("user_tag_id", userTagId);
 
         delete(columnValues);
     }

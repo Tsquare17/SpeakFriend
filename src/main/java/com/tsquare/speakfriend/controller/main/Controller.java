@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
@@ -17,6 +19,7 @@ import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 
 public abstract class Controller {
     @FXML private URL location;
@@ -186,9 +189,48 @@ public abstract class Controller {
             onClose.getClass().getMethod("apply");
 
             newStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, windowEvent -> {
-                onClose.apply();
+                try {
+                    onClose.apply();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             });
         } catch (NoSuchMethodException ignored) {}
+
+        newStage.show();
+    }
+
+
+    protected void createModalConfirmation(String message, Function onConfirm) throws IOException {
+        Stage stage;
+        stage = Main.getStage();
+
+        Stage newStage = new Stage();
+        newStage.initOwner(stage);
+
+        VBox modal = FXMLLoader.load(getClass().getResource("/confirm.fxml"));
+        newStage.setScene(new Scene(modal, 300, 350));
+        newStage.initModality(Modality.WINDOW_MODAL);
+
+        Label messageLabel = (Label) modal.lookup("#message");
+        messageLabel.setText(message);
+        messageLabel.setWrapText(true);
+
+        Button cancel = (Button) modal.lookup("#cancel");
+        cancel.setOnAction(e -> {
+            newStage.close();
+        });
+
+        Button confirm = (Button) modal.lookup("#confirm");
+        confirm.setOnAction(e -> {
+            try {
+                onConfirm.apply();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+            newStage.close();
+        });
 
         newStage.show();
     }
