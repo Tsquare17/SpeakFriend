@@ -22,10 +22,17 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -125,7 +132,7 @@ public class ExportController extends Controller {
     public void export() {
         Task<Void> task = new Task<>() {
             @Override
-            public Void call() throws SQLException {
+            public Void call() throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
                 AccountListSession accountListSession = AccountListSession.getInstance();
                 List<AccountPreviewEntity> accountPreviews = accountListSession.getPreviews();
                 List<Integer> selectedAccounts = new ArrayList<>();

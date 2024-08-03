@@ -48,6 +48,7 @@
     -fx-text-subtitle-color: rgb(65.0, 65.0, 65.0);
     -fx-text-control-title-color: rgb(130.0, 130.0, 130.0);
     -fx-text-fill: -fx-text-base-color;
+    -medium: rgb(120, 99, 120);
     -darkish: rgb(54, 56, 64);
     -dark: rgb(47, 52, 57);
     -darker: rgb(43, 46, 52);
@@ -160,6 +161,11 @@
 .button:default {
     -fx-background-color: -swatch-500;
     -fx-text-fill: -fx-text-button-colored;
+}
+
+.button.danger {
+    -fx-background-color: red;
+    -fx-text-fill: #fff;
 }
 
 .toggle-button:focused, .button:focused, .button:default:focused {

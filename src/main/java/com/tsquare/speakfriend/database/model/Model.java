@@ -14,6 +14,24 @@ abstract public class Model {
 
     PreparedStatement preparedStatement = null;
 
+    String select = "select * from " + this.getTableName() + " ";
+
+    String groupBy = null;
+
+    String orderBy = null;
+
+    public void setSelect(String select) {
+        this.select = select;
+    }
+
+    public void setGroupBy(String groupBy) {
+        this.groupBy = groupBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
     public Model() throws SQLException {}
 
     abstract String getTableName();
@@ -37,6 +55,8 @@ abstract public class Model {
     }
 
     public void reset() throws SQLException {
+        this.groupBy = null;
+
         if (statement != null && !statement.isClosed()) {
             statement.close();
         }
@@ -61,7 +81,11 @@ abstract public class Model {
     }
 
     protected ResultSet get(String column, String value) throws SQLException {
-        String sql = "select * from " + getTableName() + " where " + column + " = ?";
+        String sql = select + "where " + column + " = ?";
+
+        if (orderBy != null) {
+            sql += " order by " + orderBy;
+        }
 
         preparedStatement = connection.prepareStatement(sql);
 
@@ -71,7 +95,11 @@ abstract public class Model {
     };
 
     protected ResultSet get(String column, int value) throws SQLException {
-        String sql = "select * from " + getTableName() + " where " + column + " = ?";
+        String sql = select + "where " + column + " = ?";
+
+        if (orderBy != null) {
+            sql += " order by " + orderBy;
+        }
 
         preparedStatement = connection.prepareStatement(sql);
 
@@ -81,7 +109,7 @@ abstract public class Model {
     };
 
     protected ResultSet get(HashMap<String, Object> columnValueMap) throws SQLException {
-        StringBuilder sql = new StringBuilder("select * from " + getTableName() + " where 1=1 ");
+        StringBuilder sql = new StringBuilder(select + "where 1=1 ");
         for (var entry : columnValueMap.entrySet()) {
             sql.append("and ").append(entry.getKey()).append(" = ? ");
         }
@@ -91,22 +119,26 @@ abstract public class Model {
             columnValueMap
         );
 
-        return Model.this.preparedStatement.executeQuery();
+        return preparedStatement.executeQuery();
     }
 
     protected ResultSet getJoin(HashMap<String, Object> columnValueMap, List<JoinTable> joinTables) throws SQLException {
-        StringBuilder sql = new StringBuilder("select * from " + getTableName() + " ");
+        StringBuilder sql = new StringBuilder(select + "");
 
         for (var joinTable : joinTables) {
-            sql.append("left join ").append(joinTable.getTable()).append(" on ").append(getTableName())
-                .append(".").append(joinTable.getKey()).append("=").append(joinTable.getTable())
-                .append(".").append(joinTable.getRelatedKey()).append(" ");
+            sql.append("left join ").append(joinTable.getTable()).append(" on ")
+                .append(joinTable.getKey()).append("=")
+                .append(joinTable.getRelatedKey()).append(" ");
         }
 
         sql.append("where 1=1 ");
 
         for (var entry : columnValueMap.entrySet()) {
             sql.append("and ").append(entry.getKey()).append(" = ? ");
+        }
+
+        if (this.groupBy != null) {
+            sql.append("group by ").append(this.groupBy);
         }
 
         preparedStatement = initPreparedStatement(
@@ -118,7 +150,7 @@ abstract public class Model {
     }
 
     protected ResultSet getIn(String column, List<Integer> values) throws SQLException {
-        StringBuilder sql = new StringBuilder("select * from " + getTableName() + " where " + column + " in (");
+        StringBuilder sql = new StringBuilder(select + "where " + column + " in (");
 
         HashMap<String, Object> hashMap = new HashMap<>();
         int length = values.size();

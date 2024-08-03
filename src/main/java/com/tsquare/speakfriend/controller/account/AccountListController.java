@@ -7,14 +7,14 @@ import com.tsquare.speakfriend.controller.main.Main;
 import com.tsquare.speakfriend.session.AccountListSession;
 import com.tsquare.speakfriend.session.ApplicationSession;
 import com.tsquare.speakfriend.utils.AccountSearchComparator;
+import com.tsquare.speakfriend.utils.Function;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -152,5 +152,35 @@ public class AccountListController extends Controller {
                 item.setManaged(false);
             }
         }
+    }
+
+    @FXML
+    public void filterByTagsModal() throws IOException {
+        Function clearTagFilters = () -> {
+            Scene scene = Main.getScene();
+            VBox accountList = (VBox) scene.lookup("#account_list");
+
+            ObservableList<Node> listView = accountList.getChildren();
+
+            int count = 0;
+            for (Node item: listView) {
+                item.setVisible(true);
+                item.setManaged(true);
+
+                Color accountColor = Color.rgb(47, 52, 57);
+                if (count % 2 != 0) {
+                    accountColor = Color.rgb(43, 46, 52);
+                }
+
+                ((HBox) item).setBackground(
+                    new Background(
+                        new BackgroundFill(accountColor, CornerRadii.EMPTY, Insets.EMPTY)
+                    )
+                );
+                count++;
+            }
+        };
+
+        createModalView("/filter-by-tags.fxml", "Tags", false, clearTagFilters);
     }
 }

@@ -24,3 +24,4 @@ libs/
 scenicView*
 dist/
 !dist/.gitkeep
+out/
