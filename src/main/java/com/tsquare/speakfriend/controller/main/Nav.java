@@ -3,10 +3,12 @@ package com.tsquare.speakfriend.controller.main;
 import com.tsquare.speakfriend.utils.Auth;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Nav extends Controller {
     @FXML MenuItem menu_item_logout;
@@ -35,10 +37,13 @@ public class Nav extends Controller {
     }
 
     @FXML
-    public void logoutAction(ActionEvent event) throws IOException {
+    public void logoutAction(ActionEvent event) throws IOException, SQLException {
         Auth auth = new Auth();
         auth.checkOut();
         newScene("sign-in");
+
+        Scene scene = Main.getScene();
+        Main.setLoginScene(scene);
     }
 
     @FXML

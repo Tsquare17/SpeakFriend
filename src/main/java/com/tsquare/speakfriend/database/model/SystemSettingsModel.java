@@ -26,10 +26,6 @@ public class SystemSettingsModel extends Model {
         String option,
         String value
     ) throws SQLException {
-        String sql = """
-            update system_settings set value = ? where `option` = ?;
-            """;
-
         HashMap<String, Object> updateMap = new HashMap<>();
         updateMap.put("value", value);
 

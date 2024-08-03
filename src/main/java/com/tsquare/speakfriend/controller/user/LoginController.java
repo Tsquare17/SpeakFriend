@@ -1,6 +1,7 @@
 package com.tsquare.speakfriend.controller.user;
 
 import com.tsquare.speakfriend.database.model.AccountsModel;
+import com.tsquare.speakfriend.database.model.SystemSettingsModel;
 import com.tsquare.speakfriend.database.model.UserSettingsModel;
 import com.tsquare.speakfriend.controller.main.Controller;
 import com.tsquare.speakfriend.controller.main.Main;
@@ -15,6 +16,7 @@ import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -38,6 +40,7 @@ public class LoginController extends Controller {
     @FXML private Label login_title;
     @FXML private Text notice_text;
     @FXML private ImageView update_loader;
+    @FXML private CheckBox remember_checkbox;
 
     @FXML
     public void initialize() {
@@ -97,6 +100,22 @@ public class LoginController extends Controller {
 
             resultSet.close();
             userSettingsModel.close();
+
+            SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
+            ResultSet resultSet1 = systemSettingsModel.getSystemSetting("remember_user");
+            if (!resultSet1.next()) {
+                systemSettingsModel.createSystemSetting("remember_user", "");
+            }
+
+            resultSet1.close();
+
+            if (remember_checkbox.isSelected()) {
+                systemSettingsModel.updateSystemSetting("remember_user", String.valueOf(userSession.getId()));
+            } else {
+                systemSettingsModel.updateSystemSetting("remember_user", "");
+            }
+
+            systemSettingsModel.close();
 
             // Check if there are any accounts before displaying the loading message.
             // If not, just go right to the empty list.

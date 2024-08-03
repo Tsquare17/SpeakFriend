@@ -1,6 +1,7 @@
 package com.tsquare.speakfriend.controller.main;
 
 import com.tsquare.speakfriend.database.model.SystemSettingsModel;
+import com.tsquare.speakfriend.database.model.UsersModel;
 import com.tsquare.speakfriend.database.schema.Schema;
 import com.tsquare.speakfriend.utils.Auth;
 import javafx.animation.PauseTransition;
@@ -8,6 +9,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.InputEvent;
 import javafx.stage.Stage;
@@ -56,6 +59,8 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
+        setLoginScene(scene);
+
         // ScenicView.show(scene);
     }
 
@@ -73,6 +78,33 @@ public class Main extends Application {
         schema.up();
 
         version = getSemanticVersion();
+    }
+
+    public static void setLoginScene(Scene scene) throws SQLException {
+        SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
+        ResultSet rememberUserResult = systemSettingsModel.getSystemSetting("remember_user");
+        String rememberedUserId = rememberUserResult.getString("value");
+        rememberUserResult.close();
+        systemSettingsModel.close();
+
+        if (rememberedUserId != null && !rememberedUserId.isEmpty()) {
+            UsersModel usersModel = new UsersModel();
+            ResultSet resultSet = usersModel.getUser(Integer.parseInt(rememberedUserId));
+
+            if (resultSet.next()) {
+                TextField username = (TextField) scene.lookup("#username");
+                username.setText(resultSet.getString("name"));
+
+                TextField pass = (TextField) scene.lookup("#password");
+                pass.requestFocus();
+            }
+
+            resultSet.close();
+            usersModel.close();
+
+            CheckBox remember = (CheckBox) scene.lookup("#remember_checkbox");
+            remember.setSelected(true);
+        }
     }
 
     public static void setTimer(Scene scene) {
