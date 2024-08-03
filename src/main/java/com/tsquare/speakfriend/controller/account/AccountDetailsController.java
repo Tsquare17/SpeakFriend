@@ -155,12 +155,12 @@ public class AccountDetailsController extends AccountController {
 
     @FXML
     public void tagsEditModalView() throws IOException {
-        createModalView("/edit-tags.fxml");
+        createModalView("/edit-tags.fxml", "Edit Tags");
     }
 
     @FXML
     public void passwordModalView() throws IOException {
-        createModalView("/generate-password.fxml");
+        createModalView("/generate-password.fxml", "Generate Password");
     }
 
     @FXML

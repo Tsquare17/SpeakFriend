@@ -20,9 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class AccountListController extends Controller {
     @FXML private VBox account_list_container;
@@ -183,6 +181,6 @@ public class AccountListController extends Controller {
             }
         };
 
-        createModalView("/filter-by-tags.fxml", false, clearTagFilters);
+        createModalView("/filter-by-tags.fxml", "Tags", false, clearTagFilters);
     }
 }

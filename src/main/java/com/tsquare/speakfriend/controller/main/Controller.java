@@ -4,7 +4,6 @@ import com.tsquare.speakfriend.session.UserSession;
 import com.tsquare.speakfriend.utils.Crypt;
 import com.tsquare.speakfriend.utils.Function;
 import javafx.animation.PauseTransition;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -162,15 +161,15 @@ public abstract class Controller {
         return decrypted;
     }
 
-    protected void createModalView(String resource) throws IOException {
-        this.createModalView(resource, true);
+    protected void createModalView(String resource, String title) throws IOException {
+        this.createModalView(resource, title, true);
     }
 
-    protected void createModalView(String resource, boolean blocking) throws IOException {
-        this.createModalView(resource, blocking, () -> {});
+    protected void createModalView(String resource, String title, boolean blocking) throws IOException {
+        this.createModalView(resource, title, blocking, () -> {});
     }
 
-    protected void createModalView(String resource, boolean blocking, Function onClose) throws IOException {
+    protected void createModalView(String resource, String title, boolean blocking, Function onClose) throws IOException {
         Stage stage;
         if (blocking) {
             stage = Main.getStage();
@@ -184,6 +183,7 @@ public abstract class Controller {
         VBox modal = FXMLLoader.load(getClass().getResource(resource));
         newStage.setScene(new Scene(modal, 300, 350));
         newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.setTitle(title);
 
         try {
             onClose.getClass().getMethod("apply");
