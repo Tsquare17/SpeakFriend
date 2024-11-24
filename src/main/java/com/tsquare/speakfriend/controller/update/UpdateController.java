@@ -176,6 +176,10 @@ public class UpdateController {
                     systemSettingsModel.updateSystemSetting("version", "101");
                 }
 
+                if (systemVersion < 102) {
+                    // create app config.
+                }
+
                 systemSettingsModel.close();
 
                 return null;

@@ -1,6 +1,6 @@
 package com.tsquare.speakfriend.utils;
 
-import com.trevorthompson.Levenshtein;
+import com.tsquare.levenshtein.Levenshtein;
 import javafx.scene.Node;
 
 import java.util.Comparator;

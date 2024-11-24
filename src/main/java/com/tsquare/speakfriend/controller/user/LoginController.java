@@ -1,7 +1,7 @@
 package com.tsquare.speakfriend.controller.user;
 
+import com.tsquare.speakfriend.config.AppConfig;
 import com.tsquare.speakfriend.database.model.AccountsModel;
-import com.tsquare.speakfriend.database.model.SystemSettingsModel;
 import com.tsquare.speakfriend.database.model.UserSettingsModel;
 import com.tsquare.speakfriend.controller.main.Controller;
 import com.tsquare.speakfriend.controller.main.Main;
@@ -101,21 +101,13 @@ public class LoginController extends Controller {
             resultSet.close();
             userSettingsModel.close();
 
-            SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
-            ResultSet resultSet1 = systemSettingsModel.getSystemSetting("remember_user");
-            if (!resultSet1.next()) {
-                systemSettingsModel.createSystemSetting("remember_user", "");
-            }
-
-            resultSet1.close();
+            AppConfig appConfig = AppConfig.getInstance();
 
             if (remember_checkbox.isSelected()) {
-                systemSettingsModel.updateSystemSetting("remember_user", String.valueOf(userSession.getId()));
+                appConfig.setProperty("remember_user", String.valueOf(userSession.getId()));
             } else {
-                systemSettingsModel.updateSystemSetting("remember_user", "");
+                appConfig.setProperty("remember_user", "0");
             }
-
-            systemSettingsModel.close();
 
             // Check if there are any accounts before displaying the loading message.
             // If not, just go right to the empty list.
@@ -164,5 +156,10 @@ public class LoginController extends Controller {
     @FXML
     public void registerView() throws IOException {
         newScene("register");
+    }
+
+    @FXML
+    public void settingsAction() throws IOException {
+        newScene("app_settings");
     }
 }
