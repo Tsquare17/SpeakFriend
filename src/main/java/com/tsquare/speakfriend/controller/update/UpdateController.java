@@ -1,6 +1,5 @@
 package com.tsquare.speakfriend.controller.update;
 
-import com.tsquare.speakfriend.database.connection.SqliteConnection;
 import com.tsquare.speakfriend.database.entity.AccountEntity;
 import com.tsquare.speakfriend.database.model.AccountsModel;
 import com.tsquare.speakfriend.database.model.SystemSettingsModel;
@@ -12,17 +11,25 @@ import com.tsquare.speakfriend.session.UserSession;
 import com.tsquare.speakfriend.utils.Crypt;
 import javafx.animation.PauseTransition;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.util.Duration;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UpdateController {
-    private final String upToDateDbVersion = "102";
-    private final String upToDateSysVersion = "101";
+    public static final String upToDateDbVersion = "102";
+    public static final String upToDateSysVersion = "101";
 
     public void update() {
+        update(event -> {
+            Nav nav = new Nav();
+            nav.toAccounts();
+        });
+    }
+
+    public void update(EventHandler<WorkerStateEvent> onFinished) {
         Task<Void> task = new Task<>() {
             @Override
             public Void call() throws SQLException {
@@ -186,10 +193,7 @@ public class UpdateController {
             }
         };
 
-        task.setOnSucceeded(taskFinishEvent -> {
-            Nav nav = new Nav();
-            nav.toAccounts();
-        });
+        task.setOnSucceeded(onFinished);
         new Thread(task).start();
     }
 

@@ -1,6 +1,8 @@
 package com.tsquare.speakfriend.controller.main;
 
 import com.tsquare.speakfriend.config.AppConfig;
+import com.tsquare.speakfriend.controller.settings.AppSettingsController;
+import com.tsquare.speakfriend.database.exception.DatabaseFileNotFoundException;
 import com.tsquare.speakfriend.database.model.SystemSettingsModel;
 import com.tsquare.speakfriend.database.model.UsersModel;
 import com.tsquare.speakfriend.database.schema.Schema;
@@ -52,7 +54,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Main.setup();
+        boolean errorThrown = false;
+        try {
+            Main.setup();
+        } catch (DatabaseFileNotFoundException e) {
+            errorThrown = true;
+        }
+
 
         stage = primaryStage;
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/icon.png")));
@@ -62,16 +70,42 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-        setLoginScene(scene);
+        if (errorThrown) {
+            showDbFileError();
+        } else {
+            setLoginScene(scene);
+        }
 
         // ScenicView.show(scene);
+    }
+
+    protected void showDbFileError() throws Exception {
+        AppConfig appConfig = AppConfig.getInstance();
+
+        String db = appConfig.getDbFile();
+
+        File file = new File(db);
+        if (!file.exists()) {
+            String resource = "/app_settings.fxml";
+            FXMLLoader loader = new FXMLLoader(Controller.class.getResource(resource));
+            Parent scene = loader.load();
+            AppSettingsController appSettingsController = loader.getController();
+            appSettingsController.setNoticeText("Database file not found.\nSelect the location of your friend.db file");
+            appSettingsController.setBackButtonVisible(false);
+
+            Stage stage = Main.getStage();
+            Scene currentScene = stage.getScene();
+
+            Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
+            stage.setScene(newScene);
+        }
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    protected static void setup() throws SQLException, IOException {
+    protected static void setup() throws SQLException, DatabaseFileNotFoundException, IOException {
         File dir = new File(System.getProperty("user.home") + "/" + configDirName);
         if(!dir.exists()) {
             dir.mkdir();
@@ -80,6 +114,7 @@ public class Main extends Application {
         // check for config file.
         Properties props = new Properties();
         File config = new File(System.getProperty("user.home") + "/"  + configDirName + "/config.properties");
+        boolean createdConfig = false;
         if (!config.exists()) {
             FileWriter writer = new FileWriter(config);
 
@@ -87,15 +122,17 @@ public class Main extends Application {
             props.setProperty("remember_user", "0");
             props.store(writer, "Speak Friend App Config");
             writer.close();
+
+            createdConfig = true;
         }
 
         Schema schema = new Schema();
-        schema.up();
+        schema.up(!createdConfig);
 
         version = getSemanticVersion();
     }
 
-    public static void setLoginScene(Scene scene) throws SQLException, IOException {
+    public static void setLoginScene(Scene scene) throws SQLException {
         AppConfig appConfig = AppConfig.getInstance();
 
         String rememberUser = appConfig.getProperty("remember_user");

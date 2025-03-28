@@ -4,6 +4,8 @@ import com.tsquare.speakfriend.session.UserSession;
 import com.tsquare.speakfriend.utils.Crypt;
 import com.tsquare.speakfriend.utils.Function;
 import javafx.animation.PauseTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -85,16 +87,20 @@ public abstract class Controller {
 
     @FXML
     public void transitionScene(String newScene, int duration) {
-        PauseTransition pause = new PauseTransition(
-                Duration.seconds(duration)
-        );
-        pause.setOnFinished(e -> {
+        transitionEvent(e -> {
             try {
                 this.newScene(newScene);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        });
+        }, duration);
+    }
+
+    public void transitionEvent(EventHandler<ActionEvent> event, int duration) {
+        PauseTransition pause = new PauseTransition(
+            Duration.seconds(duration)
+        );
+        pause.setOnFinished(event);
         pause.play();
     }
 

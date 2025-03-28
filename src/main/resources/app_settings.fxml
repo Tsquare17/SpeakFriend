@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.controller.settings.AppSettingsController">
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.controller.settings.AppSettingsController">
     <children>
-        <Label alignment="CENTER" contentDisplay="CENTER" text="App Settings" textAlignment="CENTER" textFill="#e1e1e1" />
+        <Label fx:id="app_settings_label" alignment="CENTER" contentDisplay="CENTER" text="App Settings" textAlignment="CENTER" textFill="#e1e1e1" />
         <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" vgap="10.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="126.0" />
@@ -29,10 +29,10 @@
                         <Font name="Fira Code Medium" size="13.0" />
                     </font>
                 </Label>
-                <TextField fx:id="dbPathTextField" onMouseClicked="#openDbFileChooser" GridPane.columnIndex="1" />
+                <TextField fx:id="db_path_text_field" onMouseClicked="#openDbFileChooser" GridPane.columnIndex="1" />
 
                 <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#saveSettingsAction" text="Save" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                <Button accessibleText="Back" alignment="CENTER" cancelButton="true" contentDisplay="CENTER" mnemonicParsing="false" onAction="#backToLoginView" text="Back" textAlignment="CENTER" GridPane.rowIndex="2" />
+                <Button fx:id="back_button" accessibleText="Back" alignment="CENTER" cancelButton="true" contentDisplay="CENTER" mnemonicParsing="false" onAction="#backToLoginView" text="Back" textAlignment="CENTER" GridPane.rowIndex="2" />
             </children>
         </GridPane>
         <Text fx:id="notice_text" fill="#ff6161" textAlignment="CENTER" textOrigin="CENTER">

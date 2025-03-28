@@ -1,7 +1,12 @@
 package com.tsquare.speakfriend.database.schema;
 
+import com.tsquare.speakfriend.config.AppConfig;
+import com.tsquare.speakfriend.controller.update.UpdateController;
 import com.tsquare.speakfriend.database.connection.SqliteConnection;
+import com.tsquare.speakfriend.database.exception.DatabaseFileNotFoundException;
+import com.tsquare.speakfriend.database.model.SystemSettingsModel;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -12,7 +17,23 @@ import java.util.List;
 public class Schema {
     private final List<String> tables = new ArrayList<>();
 
-    public void up() throws SQLException {
+    public void up() throws SQLException, DatabaseFileNotFoundException {
+        up(false);
+    }
+
+    public void up(Boolean throwDbFileNotFound) throws SQLException, DatabaseFileNotFoundException {
+        if (throwDbFileNotFound) {
+            AppConfig appConfig = AppConfig.getInstance();
+
+            String db = appConfig.getDbFile();
+
+            // check for file existence
+            File file = new File(db);
+            if (!file.exists()) {
+                throw new DatabaseFileNotFoundException();
+            }
+        }
+
         Connection connection = SqliteConnection.getConnection();
 
         DatabaseMetaData databaseMetaData = connection.getMetaData();
@@ -40,6 +61,10 @@ public class Schema {
 
         if (!tables.contains("system_settings")) {
             builder.createSystemSettingsTable();
+
+            SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
+            systemSettingsModel.createSystemSetting("version", UpdateController.upToDateSysVersion);
+            systemSettingsModel.close();
         }
 
         if (!tables.contains("user_settings")) {
