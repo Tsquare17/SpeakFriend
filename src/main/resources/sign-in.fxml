@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="login_container" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.controller.user.LoginController">
+<VBox fx:id="login_container" alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/materialfx.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsquare.speakfriend.controller.user.LoginController">
     <children>
         <Label fx:id="login_title" alignment="TOP_CENTER" contentDisplay="CENTER" text="Speak friend and enter." textAlignment="CENTER" textFill="#e1e1e1">
             <opaqueInsets>
@@ -61,6 +61,11 @@
                     <Hyperlink onAction="#registerView" text="Create New User" />
                 </HBox>
             <CheckBox fx:id="remember_checkbox" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Remember" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <ImageView onMouseClicked="#settingsAction" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@img/gear.png" />
+               </image>
+            </ImageView>
 
             </children>
             <cursor>

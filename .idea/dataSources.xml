@@ -28,5 +28,14 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$USER_HOME$/.speakfriend/friend.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="SQLite - friend.db [2]" uuid="8567b5d8-8bec-4326-8c78-f5429b317b76">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:/media/t/990 Evo/friend.db</jdbc-url>
+      <driver-properties>
+        <property name="foreign_keys" value="true" />
+      </driver-properties>
+    </data-source>
   </component>
 </project>

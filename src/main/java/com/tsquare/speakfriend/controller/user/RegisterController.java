@@ -1,9 +1,11 @@
 package com.tsquare.speakfriend.controller.user;
 
+import com.tsquare.speakfriend.controller.main.Main;
 import com.tsquare.speakfriend.database.model.UsersModel;
 import com.tsquare.speakfriend.controller.main.Controller;
 import com.tsquare.speakfriend.utils.Crypt;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -59,7 +61,17 @@ public class RegisterController extends Controller {
             notice_text.setFill(Color.rgb(255,255,255));
             notice_text.setText("Successfully created account.");
 
-            this.transitionScene("sign-in", 2);
+            // set login scene
+            this.transitionEvent(e -> {
+                try {
+                    this.newScene("sign-in");
+
+                    Scene scene = Main.getScene();
+                    Main.setLoginScene(scene);
+                } catch (IOException | SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }, 2);
         }
     }
 

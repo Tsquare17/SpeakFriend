@@ -1,5 +1,6 @@
 package com.tsquare.speakfriend.database.connection;
 
+import com.tsquare.speakfriend.config.AppConfig;
 import org.sqlite.SQLiteConfig;
 
 import java.sql.Connection;
@@ -23,8 +24,18 @@ public class SqliteConnection {
             return getConnection(dbName);
         }
 
-        String db = System.getProperty("user.home") + "/.speakfriend/friend.db";
+        AppConfig appConfig = AppConfig.getInstance();
+
+        String db = appConfig.getDbFile();
 
         return getConnection(db);
+    }
+
+    public static void resetConnection() throws SQLException {
+        AppConfig appConfig = AppConfig.getInstance();
+
+        String db = appConfig.getDbFile();
+
+        getConnection(db);
     }
 }

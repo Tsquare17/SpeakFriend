@@ -1,6 +1,6 @@
 package com.tsquare.speakfriend.controller.account;
 
-import com.trevorthompson.Levenshtein;
+import com.tsquare.levenshtein.Levenshtein;
 import com.tsquare.speakfriend.database.entity.AccountPreviewEntity;
 import com.tsquare.speakfriend.controller.main.Controller;
 import com.tsquare.speakfriend.controller.main.Main;

@@ -1,5 +1,8 @@
 package com.tsquare.speakfriend.controller.main;
 
+import com.tsquare.speakfriend.config.AppConfig;
+import com.tsquare.speakfriend.controller.settings.AppSettingsController;
+import com.tsquare.speakfriend.database.exception.DatabaseFileNotFoundException;
 import com.tsquare.speakfriend.database.model.SystemSettingsModel;
 import com.tsquare.speakfriend.database.model.UsersModel;
 import com.tsquare.speakfriend.database.schema.Schema;
@@ -18,13 +21,15 @@ import javafx.util.Duration;
 
 // import org.scenicview.ScenicView;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
+import java.util.Properties;
 
 public class Main extends Application {
+    private static final String configDirName = ".speakfriend";
     private static Stage stage;
 
     public static String version = "0.0.0";
@@ -49,7 +54,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Main.setup();
+        boolean errorThrown = false;
+        try {
+            Main.setup();
+        } catch (DatabaseFileNotFoundException e) {
+            errorThrown = true;
+        }
+
 
         stage = primaryStage;
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/icon.png")));
@@ -59,37 +70,77 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-        setLoginScene(scene);
+        if (errorThrown) {
+            showDbFileError();
+        } else {
+            setLoginScene(scene);
+        }
 
         // ScenicView.show(scene);
+    }
+
+    protected void showDbFileError() throws Exception {
+        AppConfig appConfig = AppConfig.getInstance();
+
+        String db = appConfig.getDbFile();
+
+        File file = new File(db);
+        if (!file.exists()) {
+            String resource = "/app_settings.fxml";
+            FXMLLoader loader = new FXMLLoader(Controller.class.getResource(resource));
+            Parent scene = loader.load();
+            AppSettingsController appSettingsController = loader.getController();
+            appSettingsController.setNoticeText("Database file not found.\nSelect the location of your friend.db file");
+            appSettingsController.setBackButtonVisible(false);
+
+            Stage stage = Main.getStage();
+            Scene currentScene = stage.getScene();
+
+            Scene newScene = new Scene(scene, currentScene.getWidth(), currentScene.getHeight());
+            stage.setScene(newScene);
+        }
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    protected static void setup() throws SQLException {
-        File dir = new File(System.getProperty("user.home") + "/.speakfriend");
+    protected static void setup() throws SQLException, DatabaseFileNotFoundException, IOException {
+        File dir = new File(System.getProperty("user.home") + "/" + configDirName);
         if(!dir.exists()) {
             dir.mkdir();
         }
 
+        // check for config file.
+        Properties props = new Properties();
+        File config = new File(System.getProperty("user.home") + "/"  + configDirName + "/config.properties");
+        boolean createdConfig = false;
+        if (!config.exists()) {
+            FileWriter writer = new FileWriter(config);
+
+            props.setProperty("db_file", dir.getAbsolutePath() + "/friend.db");
+            props.setProperty("remember_user", "0");
+            props.store(writer, "Speak Friend App Config");
+            writer.close();
+
+            createdConfig = true;
+        }
+
         Schema schema = new Schema();
-        schema.up();
+        schema.up(!createdConfig);
 
         version = getSemanticVersion();
     }
 
     public static void setLoginScene(Scene scene) throws SQLException {
-        SystemSettingsModel systemSettingsModel = new SystemSettingsModel();
-        ResultSet rememberUserResult = systemSettingsModel.getSystemSetting("remember_user");
-        String rememberedUserId = rememberUserResult.getString("value");
-        rememberUserResult.close();
-        systemSettingsModel.close();
+        AppConfig appConfig = AppConfig.getInstance();
 
-        if (rememberedUserId != null && !rememberedUserId.isEmpty()) {
+        String rememberUser = appConfig.getProperty("remember_user");
+        // make sure the db file exists
+        File dbFile = new File(appConfig.getDbFile());
+        if (!Objects.equals(rememberUser, "0") && dbFile.exists()) {
             UsersModel usersModel = new UsersModel();
-            ResultSet resultSet = usersModel.getUser(Integer.parseInt(rememberedUserId));
+            ResultSet resultSet = usersModel.getUser(Integer.parseInt(rememberUser));
 
             if (resultSet.next()) {
                 TextField username = (TextField) scene.lookup("#username");

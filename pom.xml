@@ -18,6 +18,7 @@
     </properties>
 
     <build>
+        <pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -82,6 +83,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        </pluginManagement>
     </build>
 
     <dependencies>
@@ -149,13 +151,6 @@
             <version>1.1.1</version>
         </dependency>
 
-        <!-- https://github.com/Tsquare17/java-levenshtein -->
-        <dependency>
-            <groupId>com.trevor-thompson</groupId>
-            <artifactId>levenshtein</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -164,11 +159,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>tsquare17-github</id>
-            <url>https://maven.pkg.github.com/Tsquare17/java-levenshtein</url>
-        </repository>
-    </repositories>
 </project>
