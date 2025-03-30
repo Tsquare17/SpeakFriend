@@ -55,12 +55,15 @@
             <children>
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                     <children>
-                        <Text fx:id="notice_text" fill="#ff6161" textOrigin="CENTER">
+                        <Text fx:id="notice_text" fill="#ff6161" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="400.0">
                             <effect>
                                 <Glow />
                             </effect>
                         </Text>
                     </children>
+               <padding>
+                  <Insets left="80.0" right="80.0" />
+               </padding>
                 </VBox>
             </children>
         </HBox>

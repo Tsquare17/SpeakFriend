@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -78,6 +79,25 @@ public abstract class Controller {
         Scene currentScene = stage.getScene();
 
         VBox box = FXMLLoader.load(getClass().getResource("/container.fxml"));
+        box.getChildren().add(scene);
+
+        Scene newScene = new Scene(box, currentScene.getWidth(), currentScene.getHeight());
+        Main.setTimer(newScene);
+        stage.setScene(newScene);
+    }
+
+    public void newContainerSceneWithText(String resource, Text textObject, String text) throws IOException {
+        Main.previousUrl = location;
+
+        URL file = Nav.class.getResource("/" + resource + ".fxml");
+
+        Parent scene       = FXMLLoader.load(file);
+        Stage stage        = Main.getStage();
+        Scene currentScene = stage.getScene();
+
+        VBox box = FXMLLoader.load(getClass().getResource("/container.fxml"));
+        Text sceneText = (Text) scene.lookup("#" + textObject.getId());
+        sceneText.setText(text);
         box.getChildren().add(scene);
 
         Scene newScene = new Scene(box, currentScene.getWidth(), currentScene.getHeight());

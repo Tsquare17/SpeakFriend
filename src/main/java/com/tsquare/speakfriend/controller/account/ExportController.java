@@ -6,6 +6,7 @@ import com.tsquare.speakfriend.controller.main.Main;
 import com.tsquare.speakfriend.session.AccountListSession;
 import com.tsquare.speakfriend.session.ApplicationSession;
 import com.tsquare.speakfriend.session.UserSession;
+import com.tsquare.speakfriend.utils.HTMLParser;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -18,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -47,6 +49,9 @@ public class ExportController extends Controller {
     @FXML
     public void initialize() {
         export_choicebox.getItems().addAll("Speak Friend", "Bitwarden");
+        export_choicebox.setValue("Speak Friend");
+
+        notice_text.setText("Warning: Your information will be stored in plain text.\n(Even passwords when not exporting for Speak Friend)\nSecure or delete this file immediately.");
 
         account_list_scrollpane.setFitToWidth(true);
         account_list_scrollpane.setFitToHeight(true);
@@ -134,7 +139,7 @@ public class ExportController extends Controller {
             @Override
             public Void call() throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException,
                 NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException,
-                InvalidKeyException
+                InvalidKeyException, IOException
             {
                 AccountListSession accountListSession = AccountListSession.getInstance();
                 List<AccountPreviewEntity> accountPreviews = accountListSession.getPreviews();
@@ -152,7 +157,7 @@ public class ExportController extends Controller {
                 ArrayList<List<String>> decryptedList = accountListSession.getDecryptedAccounts(selectedAccounts);
 
                 if (export_choicebox.getSelectionModel().getSelectedItem().equals("Bitwarden")) {
-
+                    exportBitwarden(decryptedList);
                 } else {
                     exportSpeakFriend(decryptedList);
                 }
@@ -189,11 +194,25 @@ public class ExportController extends Controller {
 
                     transitionToAccounts();
                 } catch (FileNotFoundException e) {
-                    // TODO: Figure out a good way to inform the user of export fail.
-                   notice_text.setText("There was a problem exporting your data.");
+                    try {
+                        newContainerSceneWithText(
+                            "account-export",
+                            notice_text,
+                            "There was a problem exporting your data."
+                        );
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
 
-                   return;
+                    return;
                 }
+            } else {
+                try {
+                    newContainerScene("account-export");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                return;
             }
 
             transitionToAccounts();
@@ -232,8 +251,40 @@ public class ExportController extends Controller {
         applicationSession.setExportFileString(accounts);
     }
 
-    private void exportBitwarden(ArrayList<List<String>> accountList) {
-        AccountListSession accountListSession = AccountListSession.getInstance();
-        UserSession userSession = UserSession.getInstance();
+    private void exportBitwarden(ArrayList<List<String>> accountList) throws IOException {
+        JSONObject exportJSON = new JSONObject();
+        JSONArray itemsJSON = new JSONArray();
+
+        for (List<String> account : accountList) {
+            JSONObject itemJSON = new JSONObject();
+            JSONObject loginJSON = new JSONObject();
+
+            loginJSON.put("username", account.get(2));
+            loginJSON.put("password", account.get(3));
+
+            if (account.get(4) != null && !account.get(4).isEmpty()) {
+                JSONArray urisArray = new JSONArray();
+                JSONObject uriJSON = new JSONObject();
+
+                uriJSON.put("uri", account.get(4));
+                urisArray.add(uriJSON);
+                loginJSON.put("uris", urisArray);
+            }
+
+            if (account.get(5) != null && !account.get(5).isEmpty()) {
+                itemJSON.put("notes", HTMLParser.toText(account.get(5)));
+            }
+
+            itemJSON.put("type", 1);
+            itemJSON.put("name", account.get(1));
+            itemJSON.put("login", loginJSON);
+
+            itemsJSON.add(itemJSON);
+        }
+
+        exportJSON.put("items", itemsJSON);
+
+        ApplicationSession applicationSession = ApplicationSession.getInstance();
+        applicationSession.setExportFileString(exportJSON.toString());
     }
 }
