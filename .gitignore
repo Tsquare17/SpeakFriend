@@ -25,3 +25,4 @@ scenicView*
 dist/
 !dist/.gitkeep
 out/
+bitwarden.json

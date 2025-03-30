@@ -11,10 +11,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -40,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ExportController extends Controller {
+    @FXML ChoiceBox<String> export_choicebox;
     @FXML VBox account_list_container;
     @FXML AnchorPane account_anchor;
     @FXML ScrollPane account_list_scrollpane;
@@ -48,6 +46,8 @@ public class ExportController extends Controller {
 
     @FXML
     public void initialize() {
+        export_choicebox.getItems().addAll("Speak Friend", "Bitwarden");
+
         account_list_scrollpane.setFitToWidth(true);
         account_list_scrollpane.setFitToHeight(true);
 
@@ -132,7 +132,10 @@ public class ExportController extends Controller {
     public void export() {
         Task<Void> task = new Task<>() {
             @Override
-            public Void call() throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+            public Void call() throws SQLException, InvalidAlgorithmParameterException, IllegalBlockSizeException,
+                NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException,
+                InvalidKeyException
+            {
                 AccountListSession accountListSession = AccountListSession.getInstance();
                 List<AccountPreviewEntity> accountPreviews = accountListSession.getPreviews();
                 List<Integer> selectedAccounts = new ArrayList<>();
@@ -146,18 +149,15 @@ public class ExportController extends Controller {
                     }
                 }
 
-                UserSession userSession = UserSession.getInstance();
-
                 ArrayList<List<String>> decryptedList = accountListSession.getDecryptedAccounts(selectedAccounts);
 
-                ArrayList<List<String>> encryptedList = accountListSession.lock(decryptedList, userSession.getKey());
+                if (export_choicebox.getSelectionModel().getSelectedItem().equals("Bitwarden")) {
 
-                String hash = userSession.getPassHash();
+                } else {
+                    exportSpeakFriend(decryptedList);
+                }
 
-                String accounts = "{\"accounts\": " + JSONArray.toJSONString(encryptedList) + ", \"hash\": \"" + hash + "\"}";
 
-                ApplicationSession applicationSession = ApplicationSession.getInstance();
-                applicationSession.setExportFileString(accounts);
 
                 return null;
             }
@@ -169,7 +169,13 @@ public class ExportController extends Controller {
 
             String date = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss").format(new Date());
 
-            fileChooser.setInitialFileName("speakfriend-" + date + ".json");
+            String exportFileName = "speakfriend-";
+
+            if (export_choicebox.getSelectionModel().getSelectedItem().equals("Bitwarden")) {
+                exportFileName += "bitwarden-";
+            }
+
+            fileChooser.setInitialFileName(exportFileName + date + ".json");
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.json"));
 
@@ -185,6 +191,8 @@ public class ExportController extends Controller {
                 } catch (FileNotFoundException e) {
                     // TODO: Figure out a good way to inform the user of export fail.
                    notice_text.setText("There was a problem exporting your data.");
+
+                   return;
                 }
             }
 
@@ -205,5 +213,27 @@ public class ExportController extends Controller {
         writer = new PrintWriter(file);
         writer.println(content);
         writer.close();
+    }
+
+    private void exportSpeakFriend(ArrayList<List<String>> accountList) throws InvalidAlgorithmParameterException,
+        SQLException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException,
+        InvalidKeySpecException, BadPaddingException, InvalidKeyException
+    {
+        AccountListSession accountListSession = AccountListSession.getInstance();
+        UserSession userSession = UserSession.getInstance();
+
+        ArrayList<List<String>> encryptedList = accountListSession.lock(accountList, userSession.getKey());
+
+        String hash = userSession.getPassHash();
+
+        String accounts = "{\"accounts\": " + JSONArray.toJSONString(encryptedList) + ", \"hash\": \"" + hash + "\"}";
+
+        ApplicationSession applicationSession = ApplicationSession.getInstance();
+        applicationSession.setExportFileString(accounts);
+    }
+
+    private void exportBitwarden(ArrayList<List<String>> accountList) {
+        AccountListSession accountListSession = AccountListSession.getInstance();
+        UserSession userSession = UserSession.getInstance();
     }
 }

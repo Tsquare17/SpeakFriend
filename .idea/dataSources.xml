@@ -22,7 +22,7 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$USER_HOME$/.speakfriend/friend-dan-bak.db</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="friend.db" uuid="b24e3aa8-db54-4211-bc5f-3e67e1d35eec">
+    <data-source source="LOCAL" name="db" uuid="b24e3aa8-db54-4211-bc5f-3e67e1d35eec">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
