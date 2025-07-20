@@ -19,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UpdateController {
-    public static final String upToDateDbVersion = "102";
+    public static final String upToDateDbVersion = "103";
     public static final String upToDateSysVersion = "101";
 
     public void update() {
@@ -167,6 +167,17 @@ public class UpdateController {
                     userSettingsModel.reset();
                 }
 
+                if (userDbVersion < 103) {
+                    // Migrate from SHA1 to SHA256 and increase iterations
+                    UpdateController.migrateToStrongerEncryption();
+                    userSettingsModel.updateUserSetting(
+                        userSession.getId(),
+                        "db_version",
+                        "103"
+                    );
+                    userSettingsModel.reset();
+                }
+
                 resultSet = userSettingsModel.getUserSetting(userSession.getId(), "auto_logout_time");
 
                 String durationSetting = resultSet.getString("value");
@@ -232,7 +243,7 @@ public class UpdateController {
         int version = Integer.parseInt(dbVersion);
         int sysVersion = Integer.parseInt(systemVersion);
 
-        return version < 102 || sysVersion < 100;
+        return version < 103 || sysVersion < 100;
     }
 
     private static void changeEncryptionIterations(int iterationsBefore, int iterationsAfter) throws SQLException {
@@ -271,12 +282,64 @@ public class UpdateController {
         accountsModel.close();
     }
 
+    private static void migrateToStrongerEncryption() throws SQLException {
+        UserSession userSession = UserSession.getInstance();
+
+        // Use legacy key for decrypting old data
+        String legacyKey = userSession.getLegacyKey();
+
+        AccountsModel accountsModel = new AccountsModel();
+        ResultSet resultSet = accountsModel.getUserAccounts(userSession.getId());
+
+        while(resultSet.next()) {
+            AccountEntity account = new AccountEntity(resultSet);
+
+            int accountId = account.getId();
+
+            // Decrypt with SHA1, 2000 iterations, using legacy key
+            String accountName = UpdateController.decryptLegacy(legacyKey, account.getName(), 2000);
+            String accountUser = UpdateController.decryptLegacy(legacyKey, account.getUser(), 2000);
+            String accountPass = UpdateController.decryptLegacy(legacyKey, account.getPass(), 2000);
+            String accountUrl  = UpdateController.decryptLegacy(legacyKey, account.getUrl(), 2000);
+            String accountNotes = UpdateController.decryptLegacy(legacyKey, account.getNotes(), 2000);
+
+            try {
+                // Encrypt with SHA256, 100000 iterations, using new key
+                String newKey = userSession.getKey();
+                Crypt crypt = new Crypt();
+                accountName = crypt.encrypt(newKey, accountName, 100000);
+                accountUser = crypt.encrypt(newKey, accountUser, 100000);
+                accountPass = crypt.encrypt(newKey, accountPass, 100000);
+                accountUrl = crypt.encrypt(newKey, accountUrl, 100000);
+                accountNotes = crypt.encrypt(newKey, accountNotes, 100000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            accountsModel.updateAccount(accountId, accountName, accountUser, accountPass, accountUrl, accountNotes);
+        }
+
+        resultSet.close();
+        accountsModel.close();
+    }
+
     private static String decrypt(String key, String string, int iterations) {
         try {
             Crypt crypt = new Crypt();
             string = crypt.decrypt(key, string, iterations);
         } catch (Exception e) {
             string = "";
+        }
+
+        return string;
+    }
+
+    private static String decryptLegacy(String key, String string, int iterations) {
+        try {
+            Crypt crypt = new Crypt();
+            string = crypt.decryptLegacy(key, string, iterations);
+        } catch (Exception e) {
+            throw new RuntimeException("Legacy decryption failed", e);
         }
 
         return string;

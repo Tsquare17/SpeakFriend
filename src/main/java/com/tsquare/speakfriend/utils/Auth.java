@@ -25,12 +25,17 @@ public class Auth {
             return false;
         }
 
-        if (!crypt.match(pass, resultSet.getString("pass"))) {
+        String storedPassword = resultSet.getString("pass");
+        boolean passwordValid = crypt.match(pass, storedPassword);
+
+        if (!passwordValid) {
             resultSet.close();
             usersModel.close();
-
             return false;
         }
+
+        int userId = resultSet.getInt("id");
+        String userName = resultSet.getString("name");
 
         UserSession userSession = UserSession.getInstance();
         userSession.setUser(resultSet);
@@ -39,7 +44,13 @@ public class Auth {
         usersModel.close();
 
         try {
-            userSession.setKey(crypt.generateKey(userSession.getPassHash(), pass));
+            // Generate new key
+            String newKey = crypt.generateKey(userSession.getPassHash(), pass);
+            userSession.setKey(newKey);
+
+            // Also generate legacy key for migration purposes
+            String legacyKey = crypt.generateLegacyKeyFromHash(userSession.getPassHash(), pass);
+            userSession.setLegacyKey(legacyKey);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
@@ -54,7 +65,40 @@ public class Auth {
         settingsResult.close();
         userSettingsModel.close();
 
+        // Check if password needs to be upgraded to new format (after migration)
+        if (shouldUpgradePassword(storedPassword)) {
+            try {
+                String newPasswordHash = crypt.generatePassword(pass);
+                // Update with new password hash
+                UsersModel updateModel = new UsersModel();
+                updateModel.updateUser(userId, userName, newPasswordHash);
+                updateModel.close();
+            } catch (Exception e) {
+                // If upgrade fails, user can still log in but will probably not be able to decrypt accounts
+                e.printStackTrace();
+            }
+        }
+
         return true;
+    }
+
+    /**
+     * Check if a password hash needs to be upgraded to the new format
+     * Old format uses SHA1, new format uses SHA256
+     */
+    private boolean shouldUpgradePassword(String storedPassword) {
+        try {
+            String[] parts = storedPassword.split(":");
+            if (parts.length != 3) {
+                return false;
+            }
+
+            int iterations = Integer.parseInt(parts[0]);
+            // If iterations are low, upgrade is needed
+            return iterations < 60000;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public void checkOut() {

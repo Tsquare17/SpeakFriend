@@ -89,11 +89,18 @@ public final class AccountListSession {
             while (resultSet.next()) {
                 AccountPreviewEntity accountPreview = new AccountPreviewEntity(resultSet);
 
-                String accountName = crypt.decrypt(key, accountPreview.getName());
+                try {
+                    String accountName = crypt.decrypt(key, accountPreview.getName());
 
-                accountPreview.setName(accountName);
+                    accountPreview.setName(accountName);
 
-                accountPreviewList.add(accountPreview);
+                    accountPreviewList.add(accountPreview);
+                } catch (Exception e) {
+                    System.out.println("Failed to decrypt account: " + e.getMessage());
+                    accountPreview.setName("Could not decrypt account");
+                    accountPreviewList.add(accountPreview);
+                    e.printStackTrace();
+                }
             }
 
             resultSet.close();

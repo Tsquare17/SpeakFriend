@@ -9,6 +9,7 @@ public final class UserSession {
     private static UserSession instance;
     private UserEntity user;
     private String key;
+    private String legacyKey;
     private int version;
 
     private UserSession() {}
@@ -45,6 +46,14 @@ public final class UserSession {
         return this.key;
     }
 
+    public void setLegacyKey(String legacyKey) {
+        this.legacyKey = legacyKey;
+    }
+
+    public String getLegacyKey() {
+        return this.legacyKey;
+    }
+
     public void setVersion(int version) {
         this.version = version;
     }
@@ -56,6 +65,7 @@ public final class UserSession {
     public void clear() {
         this.user = null;
         this.key = null;
+        this.legacyKey = null;
         this.version = 0;
         instance = null;
     }
